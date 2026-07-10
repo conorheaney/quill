@@ -1,5 +1,5 @@
-const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const { app, BrowserWindow } = require('electron');
 
 app.whenReady().then(() => {
     const win = new BrowserWindow({
@@ -8,12 +8,12 @@ app.whenReady().then(() => {
         x: 100,
         y: 100,
         title: 'Quill Markdown Editor',
-        icon: 'quill.png',
-        frame: false,           // Remove title bar
-        menuBarVisible: true,  // Hide menu bar
+        icon: path.join(__dirname, 'quill-icon.png'),
+        frame: false,           // Use the custom application shell
+        menuBarVisible: true,
         fullscreen: true,       // Start fullscreen
-        maximizable: true,     // Disable maximize
-        resizable: true,       // Disable resizing
+        maximizable: true,
+        resizable: true,
         closable: true,
         minimizable: true,
         alwaysOnTop: false,
@@ -25,5 +25,5 @@ app.whenReady().then(() => {
         win.show();
     });
 
-    win.loadFile('quill.html');
+    win.loadFile(path.join(__dirname, 'quill.html'));
 });

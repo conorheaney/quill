@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quill</title>
+  <link rel="stylesheet" href="./styles/quill.css">
+</head>
+<body class="dark">
+  <main class="shell">
+    <aside class="sidebar">
+      <section class="sidebar-product">
+        <div class="sidebar-brand">
+          <img src="./quill-icon.png" alt="Quill product icon" class="sidebar-brand-icon">
+          <h1>Quill</h1>
+        </div>
+        <p class="sidebar-tagline">MARKDOWN, ELEVATED.</p>
+      </section>
+      <div id="outlinePaneMount"></div>
+    </aside>
+
+    <section class="content-area">
+      <header class="content-header">
+        <div class="content-header-main">
+          <div class="toolbar-group" role="group" aria-label="Document actions">
+            <button type="button" id="cycleThemeButton" class="header-button">CYCLE THEME</button>
+            <button
+              type="button"
+              id="toggleMarkdownPaneButton"
+              class="toggle-switch"
+              role="switch"
+              aria-checked="true"
+              aria-label="Toggle editor visibility"
+              title="EDITOR VISIBLE"
+            >
+              <span class="toggle-switch-label">SHOW MARKDOWN</span>
+              <span class="toggle-switch-track" aria-hidden="true">
+                <span class="toggle-switch-thumb"></span>
+              </span>
+            </button>
+            <button
+              type="button"
+              id="toggleAutoSaveButton"
+              class="toggle-switch"
+              role="switch"
+              aria-checked="true"
+              aria-label="Toggle autosave"
+              title="AUTOSAVE ENABLED"
+            >
+              <span class="toggle-switch-label">AUTOSAVE</span>
+              <span class="toggle-switch-track" aria-hidden="true">
+                <span class="toggle-switch-thumb"></span>
+              </span>
+            </button>
+          </div>
+          <div class="pane-header-actions">
+            <div class="pane-header-buttons">
+              <button type="button" id="createDocumentButton" class="header-button" data-variant="secondary">NEW</button>
+              <button type="button" id="loadDocumentButton" class="header-button" data-variant="secondary">LOAD</button>
+              <button type="button" id="saveDocumentButton" class="header-button" data-accent="true">SAVE</button>
+              <button type="button" id="saveDocumentAsButton" class="header-button">SAVE AS</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="Markdown editor">
+        <div id="markdownPaneMount"></div>
+        <div id="previewPaneMount"></div>
+      </section>
+      <footer class="shell-footer">
+        <span id="documentFileLabel">Untitled draft</span>
+        <span id="markdownWordCount">0 words</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <input id="documentFileInput" class="visually-hidden" type="file" accept=".md,.markdown,.txt,text/markdown,text/plain">
+
+  <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog id="confirmDialog" class="confirm-dialog" aria-labelledby="confirmDialogTitle">
+    <div class="confirm-dialog-content">
+      <h2 id="confirmDialogTitle">Confirm action</h2>
+      <p id="confirmDialogMessage"></p>
+      <div class="dialog-actions">
+        <button type="button" id="confirmDialogCancel">CANCEL</button>
+        <button type="button" id="confirmDialogAccept" data-primary="true">CONTINUE</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="codeDialog" class="code-dialog dialog-backdrop" aria-labelledby="codeDialogTitle">
+    <form method="dialog">
+      <section class="code-dialog-main">
+        <h2 id="codeDialogTitle">Create code snippet image</h2>
+        <p>Select a language, refine the code, and accept to turn it into an embeddable image snippet.</p>
+        <label for="codeSnippetLanguage">Language</label>
+        <select id="codeSnippetLanguage">
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="csharp">C#</option>
+        </select>
+        <label for="codeSnippetInput">Code</label>
+        <textarea id="codeSnippetInput" spellcheck="false"></textarea>
+        <div class="dialog-actions">
+          <button type="button" id="codeDialogCancel">CANCEL</button>
+          <button type="button" id="codeDialogAccept" data-primary="true">ACCEPT</button>
+        </div>
+      </section>
+      <aside class="code-dialog-preview">
+        <div class="code-preview-card">
+          <div class="code-preview-label">
+            <span>Formatted preview</span>
+            <span id="codeSnippetPreviewLanguage">JavaScript</span>
+          </div>
+          <div class="code-preview-surface">
+            <pre id="codeSnippetPreview" aria-live="polite"></pre>
+          </div>
+        </div>
+      </aside>
+    </form>
+  </dialog>
+
+  <template id="outlinePaneTemplate">
+    <section class="sidebar-outline" id="outlinePane">
+      <div class="pane-header">
+        <span>Outline</span>
+      </div>
+      <nav id="outlinePaneNav" class="outline" aria-label="Document outline"></nav>
+    </section>
+  </template>
+
+  <template id="markdownPaneTemplate">
+    <section class="pane" id="editorPane" data-pane-name="markdownPane">
+      <div class="pane-header">
+        <span>Markdown</span>
+        <div class="pane-header-buttons" role="group" aria-label="Formatting actions">
+          <button type="button" class="icon-button" data-action="bold" aria-label="Bold" title="BOLD"><strong>B</strong></button>
+          <button type="button" class="icon-button" data-action="italic" aria-label="Italic" title="ITALIC"><em>I</em></button>
+          <button type="button" class="icon-button" data-action="heading" aria-label="Heading 1" title="HEADING 1">H1</button>
+          <button type="button" class="icon-button" data-action="heading2" aria-label="Heading 2" title="HEADING 2">H2</button>
+          <button type="button" class="icon-button" data-action="heading3" aria-label="Heading 3" title="HEADING 3">H3</button>
+          <button type="button" class="icon-button" data-action="bulletList" aria-label="Bullet list" title="BULLET LIST">&bull;</button>
+          <button type="button" class="icon-button" data-action="codeBlock" aria-label="Code block" title="CODE BLOCK"><code>&lt;/&gt;</code></button>
+        </div>
+      </div>
+      <label for="markdownPaneInput" class="visually-hidden">Markdown source</label>
+      <textarea
+        id="markdownPaneInput"
+        class="editor"
+        spellcheck="false"
+      ></textarea>
+    </section>
+  </template>
+
+  <template id="previewPaneTemplate">
+    <section class="pane preview-pane" id="previewPane">
+      <div class="pane-header">
+        <span>RENDER</span>
+        <div class="pane-header-buttons" role="group" aria-label="Render options">
+          <button
+            type="button"
+            id="togglePreviewEditingButton"
+            class="toggle-switch"
+            role="switch"
+            aria-checked="false"
+            aria-label="Allow inline editing"
+            title="INLINE EDITING DISABLED"
+          >
+            <span class="toggle-switch-label">ALLOW INLINE EDITING</span>
+            <span class="toggle-switch-track" aria-hidden="true">
+              <span class="toggle-switch-thumb"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+      <article id="previewPaneContent" class="preview" aria-label="Rendered markdown preview" tabindex="0"></article>
+    </section>
+  </template>
+
+  <script src="./scripts/markdown.js?v=2"></script>
+  <script src="./scripts/app-config.js?v=2"></script>
+  <script src="./scripts/storage.js?v=2"></script>
+  <script src="./scripts/outline-pane.js?v=3"></script>
+  <script src="./scripts/markdown-pane.js?v=3"></script>
+  <script src="./scripts/preview-pane.js?v=3"></script>
+  <script src="./scripts/quill-app.js?v=3"></script>
+</body>
+</html>

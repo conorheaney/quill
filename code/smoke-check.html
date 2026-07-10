@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quill Smoke Check</title>
+</head>
+<body>
+  <pre id="result">Running...</pre>
+  <script>
+    const resultNode = document.getElementById("result");
+
+    function wait(ms) {
+      return new Promise((resolve) => window.setTimeout(resolve, ms));
+    }
+
+    async function run() {
+      const frame = document.createElement("iframe");
+      frame.src = "./quill.html";
+      frame.width = "1400";
+      frame.height = "1000";
+      frame.style.border = "0";
+      document.body.appendChild(frame);
+
+      await new Promise((resolve, reject) => {
+        frame.addEventListener("load", resolve, { once: true });
+        frame.addEventListener("error", reject, { once: true });
+      });
+
+      const doc = frame.contentDocument;
+      const win = frame.contentWindow;
+      await wait(1200);
+
+      const saveLog = [];
+      win.showSaveFilePicker = async () => ({
+        name: saveLog.length === 0 ? "saved.md" : "saved-as.md",
+        async createWritable() {
+          return {
+            async write(content) {
+              saveLog.push(content);
+            },
+            async close() {}
+          };
+        }
+      });
+      win.showOpenFilePicker = async () => ([{
+        async getFile() {
+          return {
+            name: "loaded.md",
+            async text() {
+              return "# Loaded\n\nLoaded from picker.";
+            }
+          };
+        }
+      }]);
+
+      const input = doc.getElementById("markdownPaneInput");
+      input.value = "# Title\n\nA short test paragraph.";
+      input.dispatchEvent(new win.Event("input", { bubbles: true }));
+      await wait(700);
+
+      const initialCounts = {
+        previewBlocks: doc.querySelectorAll(".preview-block").length,
+        outlineItems: doc.querySelectorAll(".outline-item").length
+      };
+
+      const afterEdit = {
+        wordCount: doc.getElementById("markdownWordCount")?.textContent,
+        previewBlocks: doc.querySelectorAll(".preview-block").length,
+        outlineItems: doc.querySelectorAll(".outline-item").length,
+        outlineText: Array.from(doc.querySelectorAll(".outline-item")).map((el) => el.textContent),
+        previewText: doc.getElementById("previewPaneContent")?.innerText,
+        fileLabel: doc.getElementById("documentFileLabel")?.textContent,
+        autosaveDraft: win.localStorage.getItem("quill-markdown")
+      };
+
+      doc.querySelector("[data-action='codeBlock']").click();
+      await wait(150);
+      doc.getElementById("codeSnippetLanguage").value = "python";
+      doc.getElementById("codeSnippetLanguage").dispatchEvent(new win.Event("change", { bubbles: true }));
+      doc.getElementById("codeSnippetInput").value = "print('hello')";
+      doc.getElementById("codeSnippetInput").dispatchEvent(new win.Event("input", { bubbles: true }));
+      doc.getElementById("codeDialogAccept").click();
+      await wait(250);
+
+      const codeSnippetFlow = {
+        markdownContainsImage: doc.getElementById("markdownPaneInput")?.value.includes("![Code snippet (Python)](data:image/png"),
+        previewContainsImage: !!doc.querySelector("#previewPaneContent img")
+      };
+
+      doc.getElementById("saveDocumentButton").click();
+      await wait(250);
+
+      const afterSave = {
+        savedCount: saveLog.length,
+        lastSavedName: doc.getElementById("documentFileLabel")?.textContent,
+        dirtyCleared: !doc.getElementById("documentFileLabel")?.textContent.includes("*")
+      };
+
+      doc.getElementById("saveDocumentAsButton").click();
+      await wait(250);
+
+      const afterSaveAs = {
+        savedCount: saveLog.length,
+        lastSavedName: doc.getElementById("documentFileLabel")?.textContent,
+        dirtyCleared: !doc.getElementById("documentFileLabel")?.textContent.includes("*")
+      };
+
+      doc.getElementById("loadDocumentButton").click();
+      await wait(350);
+
+      const afterLoad = {
+        fileLabel: doc.getElementById("documentFileLabel")?.textContent,
+        wordCount: doc.getElementById("markdownWordCount")?.textContent,
+        outlineText: Array.from(doc.querySelectorAll(".outline-item")).map((el) => el.textContent),
+        previewText: doc.getElementById("previewPaneContent")?.innerText,
+        markdownValue: doc.getElementById("markdownPaneInput")?.value
+      };
+
+      doc.getElementById("togglePreviewEditingButton").click();
+      doc.querySelector(".preview-block").click();
+      await wait(250);
+
+      const previewEditing = {
+        enabled: doc.getElementById("togglePreviewEditingButton")?.getAttribute("aria-checked"),
+        inlineEditorVisible: !!doc.querySelector("[data-inline-editor='true']")
+      };
+
+      doc.getElementById("toggleMarkdownPaneButton").click();
+      await wait(150);
+
+      const markdownPaneCollapse = {
+        collapsed: doc.querySelector(".workspace")?.classList.contains("editor-collapsed"),
+        ariaChecked: doc.getElementById("toggleMarkdownPaneButton")?.getAttribute("aria-checked")
+      };
+
+      doc.getElementById("cycleThemeButton").click();
+      await wait(150);
+
+      const theme = {
+        dark: doc.body.classList.contains("dark")
+      };
+
+      const result = {
+        title: doc.title,
+        mounted: {
+          outlinePane: !!doc.getElementById("outlinePaneNav"),
+          markdownPane: !!doc.getElementById("markdownPaneInput"),
+          previewPane: !!doc.getElementById("previewPaneContent")
+        },
+        initialCounts,
+        afterEdit,
+        codeSnippetFlow,
+        afterSave,
+        afterSaveAs,
+        afterLoad,
+        previewEditing,
+        markdownPaneCollapse,
+        theme
+      };
+
+      resultNode.textContent = JSON.stringify(result, null, 2);
+    }
+
+    run().catch((error) => {
+      resultNode.textContent = JSON.stringify({ error: String(error) }, null, 2);
+    });
+  </script>
+</body>
+</html>
