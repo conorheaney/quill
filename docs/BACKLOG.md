@@ -2,6 +2,7 @@
 
 ## Rules
 
+- Refuse to implement any code change unless it is tied to a backlogged PRD entry and the relevant detailed item plan is already in place.
 - Use IDs in the format `PRD-NNNN-{CLASS}`.
 - Record every item here first.
 - Create a matching file in `docs/00 - Backlog/`.

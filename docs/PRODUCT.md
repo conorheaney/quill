@@ -25,6 +25,7 @@ Quill is a local-first Markdown editor with side-by-side source and rendered vie
 
 Rules:
 
+- Refuse to implement any code change unless it is tied to a backlogged PRD entry and the relevant detailed item plan is already in place.
 - `docs/BACKLOG.md` is the source of truth for status.
 - Use one file per item, named exactly after the PRD ID.
 - Move the same file forward as the item advances.
