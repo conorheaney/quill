@@ -1,8 +1,35 @@
-# BL-0001-TECH
+# PRD-0001-TECH
 
 ## Short Name
 
 Split UI Controller
+
+## Goal
+
+Reduce the size and responsibility breadth of the main UI controller by reshaping the app around the Shell, the Outline Pane, the Markdown Pane, and the Preview Pane.
+
+## Context
+
+The app structure had become harder to follow because shell layout, pane behavior, shared state, file flows, and preview editing were mixed together.
+
+## Scope
+
+In:
+
+- shell and pane boundary definition
+- pane HTML extraction
+- pane logic extraction
+- code and HTML naming cleanup for the shell-and-panes model
+
+Out:
+
+- framework adoption
+- broad CSS naming cleanup
+- unrelated product changes
+
+## Next Step
+
+Use the new module boundaries to drive `PRD-0002-TECH` test coverage.
 
 ## Status
 
@@ -129,5 +156,5 @@ The Shell is not treated as a component in this pass. The panes are.
 
 ## Follow-on Work
 
-- Use the new module boundaries to drive `BL-0002-TECH` test coverage.
+- Use the new module boundaries to drive `PRD-0002-TECH` test coverage.
 - Revisit whether some helpers should become pure utilities once the first split is stable.
