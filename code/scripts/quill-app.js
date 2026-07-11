@@ -271,6 +271,21 @@ const { createPreviewPane } = window.QuillPreviewPane;
     scheduleSave(showStatusToast);
   }
 
+  function resetDocumentScrollPositions() {
+    const markdownScrollElement = markdownPane.getScrollElement();
+    const previewScrollElement = previewPane.getScrollElement();
+    if (!markdownScrollElement || !previewScrollElement) {
+      return;
+    }
+
+    shellState.isSyncingScroll = true;
+    markdownScrollElement.scrollTop = 0;
+    previewScrollElement.scrollTop = 0;
+    window.requestAnimationFrame(() => {
+      shellState.isSyncingScroll = false;
+    });
+  }
+
   function setDocumentContent(content, options) {
     const settings = options || {};
     markdownPane.setValue(content);
@@ -286,6 +301,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
     }
 
     renderPreviewFromMarkdown(content);
+    resetDocumentScrollPositions();
     persistDraft(Boolean(settings.showStatusToast));
     markDirty(Boolean(settings.dirty));
   }
@@ -682,6 +698,10 @@ const { createPreviewPane } = window.QuillPreviewPane;
         break;
       case "bulletList":
         markdownPane.prefixLines("- ");
+        handleMarkdownInput(false);
+        break;
+      case "link":
+        markdownPane.insertLink();
         handleMarkdownInput(false);
         break;
       case "codeBlock":

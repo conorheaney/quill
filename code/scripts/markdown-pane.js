@@ -67,6 +67,19 @@
       focus();
     }
 
+    function insertLink() {
+      const { start, end } = getSelectionState();
+      const selectedText = inputElement.value.slice(start, end) || "link text";
+      const urlPlaceholder = "https://example.com";
+      const markdownLink = `[${selectedText}](${urlPlaceholder})`;
+      const urlStart = start + selectedText.length + 3;
+      const urlEnd = urlStart + urlPlaceholder.length;
+
+      inputElement.setRangeText(markdownLink, start, end, "end");
+      focus();
+      setSelectionRange(urlStart, urlEnd);
+    }
+
     function getScrollElement() {
       return inputElement;
     }
@@ -144,6 +157,7 @@
       getValue,
       prefixLines,
       replaceSelection,
+      insertLink,
       setSelectionRange,
       setValue,
       wrapSelection

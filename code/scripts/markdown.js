@@ -22,7 +22,7 @@ window.QuillMarkdown = (() => {
 
         const flushParagraph = () => {
           if (!paragraph.length) return;
-          html.push(`<p>${parseInline(paragraph.join(" "))}</p>`);
+          html.push(renderParagraphHtml(paragraph.join("\n")));
           paragraph = [];
         };
 
@@ -132,31 +132,56 @@ window.QuillMarkdown = (() => {
         return `{{${type}:${index}}}`;
       }
 
+      function restoreInlineTokens(html, tokenMap) {
+        return html.replace(/\{\{([A-Z]+):(\d+)}}/g, (_, type, index) => {
+          const bucket = tokenMap[type];
+          if (!bucket) return "";
+          return bucket[Number(index)] || "";
+        });
+      }
+
       function restoreTokens(html, codeBlocks) {
         return html.replace(/\{\{CODEBLOCK:(\d+)}}/g, (_, index) => codeBlocks[Number(index)] || "");
       }
 
+      function renderParagraphHtml(text) {
+        return `<p>${parseInline(text || "").replace(/\n/g, "<br>")}</p>`;
+      }
+
       function parseInline(text) {
         let output = text;
+        const inlineTokens = {
+          IMAGE: [],
+          LINK: [],
+          INLINECODE: []
+        };
 
         output = output.replace(/!\[([^\]]*)]\(([^)]+)\)/g, (_, alt, url) => {
           const safeUrl = sanitizeUrl(url);
           if (!safeUrl) return alt;
-          return `<img src="${safeUrl}" alt="${alt}">`;
+          const token = createToken("IMAGE", inlineTokens.IMAGE.length);
+          inlineTokens.IMAGE.push(`<img src="${safeUrl}" alt="${alt}">`);
+          return token;
         });
 
         output = output.replace(/\[([^\]]+)]\(([^)]+)\)/g, (_, label, url) => {
           const safeUrl = sanitizeUrl(url);
           if (!safeUrl) return label;
-          return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+          const token = createToken("LINK", inlineTokens.LINK.length);
+          inlineTokens.LINK.push(`<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${label}</a>`);
+          return token;
         });
 
-        output = output.replace(/`([^`]+)`/g, "<code>$1</code>");
+        output = output.replace(/`([^`]+)`/g, (_, code) => {
+          const token = createToken("INLINECODE", inlineTokens.INLINECODE.length);
+          inlineTokens.INLINECODE.push(`<code>${code}</code>`);
+          return token;
+        });
         output = output.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
         output = output.replace(/(^|[^\*])\*([^*]+)\*(?!\*)/g, "$1<em>$2</em>");
         output = output.replace(/(^|[^_])_([^_]+)_(?!_)/g, "$1<em>$2</em>");
 
-        return output;
+        return restoreInlineTokens(output, inlineTokens);
       }
 
       function sanitizeUrl(url) {
@@ -347,7 +372,7 @@ window.QuillMarkdown = (() => {
 
           blocks.push({
             type: "paragraph",
-            content: paragraphLines.join(" ")
+            content: paragraphLines.join("\n")
           });
         }
 
@@ -409,7 +434,7 @@ window.QuillMarkdown = (() => {
             return renderTableFromRows(block.rows || []);
           case "paragraph":
           default:
-            return `<p>${parseInline(block.content || "")}</p>`;
+            return renderParagraphHtml(block.content || "");
         }
       }
 
