@@ -28,7 +28,14 @@ Out:
 
 Move this item to `01 - Plan` once the release approach is clear enough to define the change safely.
 
-## Notes
+## History
 
-- Backlog entry created.
-- Waiting to move into `01 - Plan`.
+| Timestamp | Stage |
+| --- | --- |
+
+## Audit
+
+| Timestamp | Type | Detail |
+| --- | --- | --- |
+| Legacy | Backfill | Historical stage-transition timestamps were not captured before the audit structure was introduced. |
+| 2026-07-12T00:00:00Z | State | Current state: backlogged and waiting to move into `01 - Plan`. |

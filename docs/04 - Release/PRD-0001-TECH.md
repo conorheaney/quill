@@ -31,6 +31,17 @@ Out:
 
 Use the new module boundaries to drive `PRD-0002-TECH` test coverage.
 
+## History
+
+| Timestamp | Stage |
+| --- | --- |
+
+## Audit
+
+| Timestamp | Type | Detail |
+| --- | --- | --- |
+| Legacy | Backfill | Historical stage-transition timestamps were not captured before the audit structure was introduced. |
+
 ## Status
 
 Done

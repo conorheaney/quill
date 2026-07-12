@@ -32,4 +32,9 @@ Rules:
 - An item should pass through every stage before `Release`.
 - `Blocked` items stay in `In Progress` until they can move again.
 - If the backlog phase and folder location disagree, `docs/BACKLOG.md` wins and the file should be moved immediately.
-- Every PRD file should include `Short Name`, `Goal`, `Context`, `Scope`, `Next Step`, and `Notes`.
+- Every PRD file should include `Short Name`, `Goal`, `Context`, `Scope`, `Next Step`, `History`, and `Audit`.
+- `History` and `Audit` should both be maintained as tables.
+- Any timestamp fields should be recorded in UTC format.
+- `History` is only for stage transitions and should record the UTC timestamp and the end stage only, for example `2026-07-12T08:10:00Z | Plan`.
+- `Audit` is for other timestamped audit information such as decisions, evidence, risks, approvals, and exceptions.
+- Do not invent old timestamps when backfilling legacy PRD files. Leave `History` empty if needed and explain the gap in `Audit`.
