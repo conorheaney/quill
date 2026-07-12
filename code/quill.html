@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quill</title>
-  <link rel="stylesheet" href="./styles/quill.css">
+  <link rel="stylesheet" href="./styles/quill.css?v=15">
 </head>
 <body class="dark">
   <main class="shell">
@@ -57,6 +57,25 @@
             <div class="pane-header-buttons">
               <button type="button" id="createDocumentButton" class="header-button" data-variant="secondary">NEW</button>
               <button type="button" id="loadDocumentButton" class="header-button" data-variant="secondary">LOAD</button>
+              <div class="recent-files-menu">
+                <button
+                  type="button"
+                  id="recentFilesButton"
+                  class="header-button"
+                  data-variant="secondary"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  aria-controls="recentFilesPanel"
+                >
+                  RECENT
+                </button>
+                <div id="recentFilesPanel" class="recent-files-panel" hidden>
+                  <div class="recent-files-panel-header">
+                    <h2 class="recent-files-panel-title">Recent files</h2>
+                  </div>
+                  <div id="recentFilesList" class="recent-files-list" role="list"></div>
+                </div>
+              </div>
               <button type="button" id="saveDocumentButton" class="header-button" data-accent="true">SAVE</button>
               <button type="button" id="saveDocumentAsButton" class="header-button">SAVE AS</button>
             </div>
@@ -183,10 +202,10 @@
 
   <script src="./scripts/markdown.js?v=2"></script>
   <script src="./scripts/app-config.js?v=2"></script>
-  <script src="./scripts/storage.js?v=2"></script>
+  <script src="./scripts/storage.js?v=6"></script>
   <script src="./scripts/outline-pane.js?v=3"></script>
   <script src="./scripts/markdown-pane.js?v=3"></script>
   <script src="./scripts/preview-pane.js?v=3"></script>
-  <script src="./scripts/quill-app.js?v=3"></script>
+  <script src="./scripts/quill-app.js?v=8"></script>
 </body>
 </html>
