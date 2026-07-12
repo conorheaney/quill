@@ -44,3 +44,5 @@ Rules:
 - If a stage transition was missed, add the missing `History` row as soon as the gap is discovered using the current UTC time, then record in `Audit` that the timestamp is a backfill and that the original transition time is unknown.
 - When backfilling multiple missed stage transitions, record a fresh UTC timestamp for each inserted `History` row.
 - Do not assign the same timestamp to multiple stage transitions or audit events unless they genuinely occurred at that exact time.
+- Ship releases from `main` by default and create a version tag for each shipped release, for example `v1.0.2`.
+- Create a dedicated release branch only when an older release line needs parallel maintenance while `main` continues toward a newer version.
