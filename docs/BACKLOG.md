@@ -35,6 +35,8 @@
 | PRD-0004-UI | UI | Accessibility Pass | Proposed | Backlog | Review keyboard behaviour, focus handling, labels, and error feedback across the editor and preview flows. |
 | PRD-0007-TECH | TECH | Remove Electron Runtime | Proposed | Backlog | Remove Electron-specific app code, packaging, and leftover filesystem artifacts after the replacement runtime and launch path are defined. |
 | PRD-0008-TECH | TECH | Refactor Stylesheet Structure | Proposed | Backlog | Reshape the CSS into clearer sections and ownership boundaries so shell, panes, dialogs, and theme tokens are easier to maintain. |
+| PRD-0009-UI | UI | Predefined Theme Picker | Proposed | Backlog | Let users choose from a set of predefined themes instead of only cycling between the current built-in options. |
+| PRD-0010-TECH | TECH | Critical Codebase Review And Refactor | Proposed | Backlog | Review the current codebase critically, document the highest-value structural issues, and carry out follow-on refactoring to improve maintainability. |
 
 ## In Progress
 

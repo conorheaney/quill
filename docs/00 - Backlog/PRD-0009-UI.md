@@ -1,0 +1,45 @@
+# PRD-0009-UI
+
+## Short Name
+
+Predefined Theme Picker
+
+## Goal
+
+Let users choose from a set of predefined visual themes through an explicit theme-selection UI.
+
+## Context
+
+The current app supports theme switching through the `CYCLE THEME` control and persists the active theme, but it does not offer a direct way to browse and choose from multiple named predefined themes.
+
+## Scope
+
+In:
+
+- add a user-facing control for selecting from predefined themes
+- define the initial set of supported built-in themes
+- keep theme choice persistence aligned with the existing saved-theme behavior
+- update product and usage documentation for theme selection
+
+Out:
+
+- user-created custom themes
+- a broad visual redesign unrelated to theme selection
+- low-level stylesheet refactoring that belongs in `PRD-0008-TECH`
+
+## Next Step
+
+Move this item to `01 - Plan` and define the selection UI, initial theme list, persistence behavior, and regression-check approach.
+
+## History
+
+| Timestamp | Stage |
+| --- | --- |
+| 2026-07-12T02:44:51.7632659Z | Backlog |
+
+## Audit
+
+| Timestamp | Type | Detail |
+| --- | --- | --- |
+| 2026-07-12T02:44:51.7632659Z | Scope discovery | Added as a backlog item for named predefined theme selection, separate from CSS refactoring and accessibility work. |
+| 2026-07-12T02:44:51.7632659Z | State | Current state: backlogged and waiting to move into `01 - Plan`. |
