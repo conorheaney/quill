@@ -1,4 +1,4 @@
-# PRD-0001-TECH
+# PRD-000001-TECH
 
 ## Short Name
 
@@ -29,18 +29,23 @@ Out:
 
 ## Next Step
 
-Use the new module boundaries to drive `PRD-0002-TECH` test coverage.
+Use the new module boundaries to drive `PRD-000002-TECH` test coverage.
 
 ## History
 
 | Timestamp | Stage |
 | --- | --- |
+| 2026-07-12T13:08:52.6398072Z | Backlog |
+| 2026-07-12T13:08:53.6398072Z | Plan |
+| 2026-07-12T13:08:54.6398072Z | Implement |
+| 2026-07-12T13:08:55.6398072Z | Test |
+| 2026-07-12T13:08:56.6398072Z | Release |
 
 ## Audit
 
 | Timestamp | Type | Detail |
 | --- | --- | --- |
-| Legacy | Backfill | Historical stage-transition timestamps were not captured before the audit structure was introduced. |
+| 2026-07-12T13:08:57.6398072Z | Backfill | Rebuilt the missing `Backlog`, `Plan`, `Implement`, `Test`, and `Release` history rows during the consistency sweep. These UTC timestamps record when the legacy gap was repaired; the original transition times were not captured. |
 
 ## Status
 
@@ -167,5 +172,5 @@ The Shell is not treated as a component in this pass. The panes are.
 
 ## Follow-on Work
 
-- Use the new module boundaries to drive `PRD-0002-TECH` test coverage.
+- Use the new module boundaries to drive `PRD-000002-TECH` test coverage.
 - Revisit whether some helpers should become pure utilities once the first split is stable.

@@ -1,4 +1,4 @@
-# PRD-0003-CHANGE
+# PRD-000003-CHANGE
 
 ## Short Name
 
@@ -32,11 +32,10 @@ Move this item to `01 - Plan` once the release approach is clear enough to defin
 
 | Timestamp | Stage |
 | --- | --- |
-| 2026-07-12T00:00:00Z | Backlog |
+| 2026-07-12T13:09:11.6398072Z | Backlog |
 
 ## Audit
 
 | Timestamp | Type | Detail |
 | --- | --- | --- |
-| Legacy | Backfill | Historical stage-transition timestamps were not captured before the audit structure was introduced. |
-| 2026-07-12T00:00:00Z | State | Current state: backlogged and waiting to move into `01 - Plan`. |
+| 2026-07-12T13:09:22.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `01 - Plan`. |

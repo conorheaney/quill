@@ -12,5 +12,5 @@ Typical content:
 Rules:
 
 - keep one file per backlog item when needed
-- name the file exactly after the backlog ID, for example `PRD-0002-TECH.md`
+- name the file exactly after the backlog ID, for example `PRD-000002-TECH.md` or `PRD-000011-BUG.md`
 - move the file to `docs/02 - Implement/` when implementation starts

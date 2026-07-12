@@ -1,4 +1,4 @@
-# PRD-0008-TECH
+# PRD-000008-TECH
 
 ## Short Name
 
@@ -24,7 +24,7 @@ In:
 Out:
 
 - broad UI redesign work
-- accessibility remediation that should stay in `PRD-0004-UI`
+- accessibility remediation that should stay in `PRD-000004-UI`
 - unrelated markup or behavior changes unless required to support the CSS refactor safely
 
 ## Next Step
@@ -35,11 +35,10 @@ Move this item to `01 - Plan` and define the target stylesheet organization, nam
 
 | Timestamp | Stage |
 | --- | --- |
-| 2026-07-12T00:00:00Z | Backlog |
+| 2026-07-12T13:09:14.6398072Z | Backlog |
 
 ## Audit
 
 | Timestamp | Type | Detail |
 | --- | --- | --- |
-| 2026-07-12T00:00:00Z | Scope discovery | Added as a backlog item to track technical CSS refactoring separately from UI redesign or accessibility work. |
-| 2026-07-12T00:00:00Z | State | Current state: backlogged and waiting to move into `01 - Plan`. |
+| 2026-07-12T13:09:25.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep and preserved the original item intent: track technical CSS refactoring separately from UI redesign or accessibility work. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `01 - Plan`. |

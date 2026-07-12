@@ -8,8 +8,10 @@ Always follow the rules in [docs/PRODUCT.md](C:/Users/conor/Documents/Markdown%2
 
 - Treat `docs/BACKLOG.md` as the source of truth for PRD status.
 - Follow the PRD file flow defined in `docs/PRODUCT.md` and `docs/BACKLOG.md`.
+- Use PRD IDs in the format `PRD-NNNNNN-{CLASS}` and keep filenames aligned exactly with that ID.
 - When adding a new requirement, use the [$grill-me](C:\Users\conor\.codex\skills\grill-me\SKILL.md) skill to flesh it out to a basic level.
 - Keep PRD files aligned with the required minimum structure: `Short Name`, `Goal`, `Context`, `Scope`, `Next Step`, `History`, and `Audit`.
 - Maintain `History` and `Audit` as tables. Use UTC timestamps. Use `History` only for timestamped stage transitions using the end stage only, and use `Audit` for other timestamped audit information.
 - Record PRD file creation itself in `History` as the move into `Backlog`.
+- Record `History` and `Audit` entries just in time when the event happens. Never skip a workflow stage in `History`. If a stage transition was missed, backfill the missing `History` row immediately using the current UTC time and note in `Audit` that the original transition time is unknown. Use a fresh UTC timestamp for each backfilled stage row.
 - Keep changes aligned with the repo's documented workflow before doing anything else.
