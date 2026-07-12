@@ -34,6 +34,7 @@ Move this item to `01 - Plan` for a focused accessibility review once higher-pri
 
 | Timestamp | Stage |
 | --- | --- |
+| 2026-07-12T00:00:00Z | Backlog |
 
 ## Audit
 

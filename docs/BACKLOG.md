@@ -6,6 +6,7 @@
 - Use IDs in the format `PRD-NNNN-{CLASS}`.
 - Record every item here first.
 - Create a matching file in `docs/00 - Backlog/`.
+- Creating the PRD file counts as the move into `Backlog` and should be recorded in `History`.
 - Track overall status here.
 - Move the matching file through `01 - Plan`, `02 - Implement`, `03 - Test`, and `04 - Release`.
 - `Blocked` items stay in `In Progress` until they can move again.

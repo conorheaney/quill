@@ -33,6 +33,7 @@ Move this item to `01 - Plan` and define the first test targets and test approac
 
 | Timestamp | Stage |
 | --- | --- |
+| 2026-07-12T00:00:00Z | Backlog |
 
 ## Audit
 

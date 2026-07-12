@@ -32,6 +32,7 @@ Move this item to `01 - Plan` once the release approach is clear enough to defin
 
 | Timestamp | Stage |
 | --- | --- |
+| 2026-07-12T00:00:00Z | Backlog |
 
 ## Audit
 
