@@ -233,6 +233,15 @@ window.QuillMarkdown = (() => {
           .map((cell) => cell.trim());
       }
 
+      function normaliseLanguage(language) {
+        const value = (language || "").toLowerCase();
+        if (!value || value === "text" || value === "plain" || value === "plaintext") return "text";
+        if (value === "js" || value === "javascript") return "javascript";
+        if (value === "py" || value === "python") return "python";
+        if (value === "c#" || value === "cs" || value === "csharp") return "csharp";
+        return "text";
+      }
+
       function isRawTableHeader(lines, index) {
         if (index + 1 >= lines.length) return false;
         const header = lines[index].trim();
@@ -443,6 +452,7 @@ window.QuillMarkdown = (() => {
     blocksToMarkdown,
     escapeAttribute,
     escapeHtml,
+    normaliseLanguage,
     parseMarkdownBlocks,
     renderBlockContent,
     renderMarkdown,
