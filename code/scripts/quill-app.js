@@ -1177,6 +1177,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
     onToast: showToast,
     renderBlockContent: window.QuillMarkdown.renderBlockContent,
     requestConfirm: openConfirmDialog,
+    splitTableCells: window.QuillMarkdown.splitTableCells,
     tableRowsToMarkdown: window.QuillMarkdown.tableRowsToMarkdown
   });
 

@@ -149,6 +149,17 @@ window.QuillMarkdown = (() => {
       }
 
       function parseInline(text) {
+        return parseInlineTokens(text || "", { useFencedCodeSpans: false });
+      }
+
+      function parseTableCellInline(text, options) {
+        const settings = options || {};
+        const prepared = settings.inputAlreadyEscaped ? (text || "") : escapeHtml(text || "");
+        return parseInlineTokens(prepared, { useFencedCodeSpans: true });
+      }
+
+      function parseInlineTokens(text, options) {
+        const settings = options || {};
         let output = text;
         const inlineTokens = {
           IMAGE: [],
@@ -172,16 +183,70 @@ window.QuillMarkdown = (() => {
           return token;
         });
 
-        output = output.replace(/`([^`]+)`/g, (_, code) => {
-          const token = createToken("INLINECODE", inlineTokens.INLINECODE.length);
-          inlineTokens.INLINECODE.push(`<code>${code}</code>`);
-          return token;
-        });
+        if (settings.useFencedCodeSpans) {
+          output = replaceInlineCodeSpans(output, inlineTokens);
+        } else {
+          output = output.replace(/`([^`]+)`/g, (_, code) => {
+            const token = createToken("INLINECODE", inlineTokens.INLINECODE.length);
+            inlineTokens.INLINECODE.push(`<code>${code}</code>`);
+            return token;
+          });
+        }
         output = output.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
         output = output.replace(/(^|[^\*])\*([^*]+)\*(?!\*)/g, "$1<em>$2</em>");
         output = output.replace(/(^|[^_])_([^_]+)_(?!_)/g, "$1<em>$2</em>");
 
         return restoreInlineTokens(output, inlineTokens);
+      }
+
+      function replaceInlineCodeSpans(text, inlineTokens) {
+        let output = "";
+
+        for (let index = 0; index < text.length; index += 1) {
+          if (text[index] !== "`") {
+            output += text[index];
+            continue;
+          }
+
+          let fenceLength = 1;
+          while (index + fenceLength < text.length && text[index + fenceLength] === "`") {
+            fenceLength += 1;
+          }
+
+          const closingIndex = findClosingBacktickFence(text, index + fenceLength, fenceLength);
+          if (closingIndex === -1) {
+            output += text.slice(index, index + fenceLength);
+            index += fenceLength - 1;
+            continue;
+          }
+
+          const code = text.slice(index + fenceLength, closingIndex);
+          const token = createToken("INLINECODE", inlineTokens.INLINECODE.length);
+          inlineTokens.INLINECODE.push(`<code>${code}</code>`);
+          output += token;
+          index = closingIndex + fenceLength - 1;
+        }
+
+        return output;
+      }
+
+      function findClosingBacktickFence(text, startIndex, fenceLength) {
+        for (let index = startIndex; index < text.length; index += 1) {
+          if (text[index] !== "`") {
+            continue;
+          }
+
+          let runLength = 1;
+          while (index + runLength < text.length && text[index + runLength] === "`") {
+            runLength += 1;
+          }
+
+          if (runLength === fenceLength) {
+            return index;
+          }
+        }
+
+        return -1;
       }
 
       function sanitizeUrl(url) {
@@ -219,18 +284,55 @@ window.QuillMarkdown = (() => {
         const headerCells = rows[0];
         const bodyRows = rows.slice(2);
 
-        const head = `<thead><tr>${headerCells.map((cell) => `<th>${parseInline(cell)}</th>`).join("")}</tr></thead>`;
-        const body = `<tbody>${bodyRows.map((row) => `<tr>${row.map((cell) => `<td>${parseInline(cell)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+        const head = `<thead><tr>${headerCells.map((cell) => `<th>${parseTableCellInline(cell, { inputAlreadyEscaped: true })}</th>`).join("")}</tr></thead>`;
+        const body = `<tbody>${bodyRows.map((row) => `<tr>${row.map((cell) => `<td>${parseTableCellInline(cell, { inputAlreadyEscaped: true })}</td>`).join("")}</tr>`).join("")}</tbody>`;
         return { html: `<table>${head}${body}</table>`, endIndex };
       }
 
       function splitTableCells(line) {
-        return line
-          .trim()
-          .replace(/^\|/, "")
-          .replace(/\|$/, "")
-          .split("|")
-          .map((cell) => cell.trim());
+        const trimmed = line.trim();
+        const normalized = trimmed.replace(/^\|/, "").replace(/\|$/, "");
+        const cells = [];
+        let current = "";
+        let codeSpanFenceLength = 0;
+
+        for (let index = 0; index < normalized.length; index += 1) {
+          const character = normalized[index];
+
+          if (character === "`") {
+            let fenceLength = 1;
+            while (index + fenceLength < normalized.length && normalized[index + fenceLength] === "`") {
+              fenceLength += 1;
+            }
+            current += normalized.slice(index, index + fenceLength);
+            if (!codeSpanFenceLength) {
+              codeSpanFenceLength = fenceLength;
+            } else if (codeSpanFenceLength === fenceLength) {
+              codeSpanFenceLength = 0;
+            }
+            index += fenceLength - 1;
+            continue;
+          }
+
+          if (character === "|" && !codeSpanFenceLength && !isEscapedTablePipe(normalized, index)) {
+            cells.push(current.trim());
+            current = "";
+            continue;
+          }
+
+          current += character;
+        }
+
+        cells.push(current.trim());
+        return cells;
+      }
+
+      function isEscapedTablePipe(value, index) {
+        let backslashCount = 0;
+        for (let cursor = index - 1; cursor >= 0 && value[cursor] === "\\"; cursor -= 1) {
+          backslashCount += 1;
+        }
+        return backslashCount % 2 === 1;
       }
 
       function normaliseLanguage(language) {
@@ -420,8 +522,8 @@ window.QuillMarkdown = (() => {
         if (!rows.length) return "<p></p>";
         const headerCells = rows[0];
         const bodyRows = rows.slice(2);
-        const head = `<thead><tr>${headerCells.map((cell) => `<th>${parseInline(cell)}</th>`).join("")}</tr></thead>`;
-        const body = `<tbody>${bodyRows.map((row) => `<tr>${row.map((cell) => `<td>${parseInline(cell)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+        const head = `<thead><tr>${headerCells.map((cell) => `<th>${parseTableCellInline(cell)}</th>`).join("")}</tr></thead>`;
+        const body = `<tbody>${bodyRows.map((row) => `<tr>${row.map((cell) => `<td>${parseTableCellInline(cell)}</td>`).join("")}</tr>`).join("")}</tbody>`;
         return `<table>${head}${body}</table>`;
       }
 
@@ -457,6 +559,7 @@ window.QuillMarkdown = (() => {
     renderBlockContent,
     renderMarkdown,
     renderTableFromRows,
+    splitTableCells,
     tableRowsToMarkdown
   };
 })();

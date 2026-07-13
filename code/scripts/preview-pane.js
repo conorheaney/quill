@@ -7,15 +7,6 @@
       .replace(/\s+/g, "-") || "section";
   }
 
-  function splitTableCells(line) {
-    return line
-      .trim()
-      .replace(/^\|/, "")
-      .replace(/\|$/, "")
-      .split("|")
-      .map((cell) => cell.trim());
-  }
-
   function cloneBlocks(blocks) {
     return JSON.parse(JSON.stringify(blocks || []));
   }
@@ -26,6 +17,7 @@
       contentElement,
       escapeHtml,
       renderBlockContent,
+      splitTableCells,
       tableRowsToMarkdown,
       normaliseLanguage,
       onBlocksCommitted,

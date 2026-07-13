@@ -55,3 +55,5 @@
 | PRD-000005-CHANGE | CHANGE | Bump App Version | Done | Release | Update the packaged app version to the semver-safe equivalent of release label `1.02`. |
 | PRD-000006-UI | UI | Recent Files Picker | Done | Release | Let users quickly reopen one of the 10 most recently opened files. |
 | PRD-000011-BUG | BUG | Fix Fenced Markdown Load State | Done | Release | Prevent fenced code blocks from breaking preview and outline updates during file open, leaving Quill in a half-loaded state. |
+| PRD-000012-BUG | BUG | Fix Escaped Pipe Table Rendering | Done | Release | Prevent render-pane tables from showing extra cells when a cell contains a literal Markdown pipe character as content. |
+| PRD-000013-BUG | BUG | Fix Render Stop After Table | Done | Release | Prevent HTML-like text inside backticked table-cell content from corrupting Quill's live preview render path and stopping the rest of the document from rendering. |
