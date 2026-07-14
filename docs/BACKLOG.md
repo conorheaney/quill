@@ -37,7 +37,6 @@
 | PRD-000002-TECH | TECH | Add Core Tests | Proposed | Backlog | Add automated coverage for Markdown parsing, block conversion, and persistence behaviour. |
 | PRD-000003-CHANGE | CHANGE | Remove Cache Busting | Proposed | Backlog | Remove static asset query-string cache busting once the app's loading and release approach is settled. |
 | PRD-000004-UI | UI | Accessibility Pass | Proposed | Backlog | Review keyboard behaviour, focus handling, labels, and error feedback across the editor and preview flows. |
-| PRD-000007-TECH | TECH | Remove Electron Runtime | Proposed | Backlog | Remove Electron-specific app code, packaging, and leftover filesystem artifacts after the replacement runtime and launch path are defined. |
 | PRD-000008-TECH | TECH | Refactor Stylesheet Structure | Proposed | Backlog | Reshape the CSS into clearer sections and ownership boundaries so shell, panes, dialogs, and theme tokens are easier to maintain. |
 | PRD-000009-UI | UI | Predefined Theme Picker | Proposed | Backlog | Let users choose from a set of predefined themes instead of only cycling between the current built-in options. |
 | PRD-000010-TECH | TECH | Critical Codebase Review And Refactor | Proposed | Backlog | Review the current codebase critically, document the highest-value structural issues, and carry out follow-on refactoring to improve maintainability. |
@@ -46,6 +45,8 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000007-TECH | TECH | Remove Electron Runtime | Planned | Plan | Remove Electron-specific app code, packaging, and leftover filesystem artifacts after the replacement runtime and launch path are defined. |
+| PRD-000014-BUG | BUG | Fix Table Cell Link Rendering | Done | Release | Make markdown links inside render-pane table cells behave correctly, including same-document anchor links that should jump to the matching heading within the current rendered markdown, without causing backticked href-like content in general markdown to over-link the rest of the line. |
 
 ## Done
 

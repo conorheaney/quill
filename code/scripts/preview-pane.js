@@ -7,6 +7,19 @@
       .replace(/\s+/g, "-") || "section";
   }
 
+  function resolvePreviewAnchorTarget(anchor) {
+    const href = anchor?.getAttribute?.("href") || "";
+    if (!href.startsWith("#")) {
+      return "";
+    }
+
+    try {
+      return decodeURIComponent(href.slice(1)).trim();
+    } catch (error) {
+      return href.slice(1).trim();
+    }
+  }
+
   function cloneBlocks(blocks) {
     return JSON.parse(JSON.stringify(blocks || []));
   }
@@ -316,6 +329,16 @@
     }
 
     async function handlePreviewClick(event) {
+      const anchor = event.target.closest("a[href]");
+      if (anchor && contentElement.contains(anchor)) {
+        const headingId = resolvePreviewAnchorTarget(anchor);
+        if (headingId) {
+          event.preventDefault();
+          scrollToHeading(headingId);
+          return;
+        }
+      }
+
       if (isReadOnly) return;
 
       const blockAction = event.target.closest("[data-block-action]");
@@ -411,6 +434,7 @@
   }
 
   window.QuillPreviewPane = {
-    createPreviewPane
+    createPreviewPane,
+    resolvePreviewAnchorTarget
   };
 })();

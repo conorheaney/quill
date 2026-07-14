@@ -167,6 +167,16 @@ window.QuillMarkdown = (() => {
           INLINECODE: []
         };
 
+        if (settings.useFencedCodeSpans) {
+          output = replaceInlineCodeSpans(output, inlineTokens);
+        } else {
+          output = output.replace(/`([^`]+)`/g, (_, code) => {
+            const token = createToken("INLINECODE", inlineTokens.INLINECODE.length);
+            inlineTokens.INLINECODE.push(`<code>${escapeHtml(code)}</code>`);
+            return token;
+          });
+        }
+
         output = output.replace(/!\[([^\]]*)]\(([^)]+)\)/g, (_, alt, url) => {
           const safeUrl = sanitizeUrl(url);
           if (!safeUrl) return alt;
@@ -176,27 +186,37 @@ window.QuillMarkdown = (() => {
         });
 
         output = output.replace(/\[([^\]]+)]\(([^)]+)\)/g, (_, label, url) => {
+          const rawUrl = (url || "").trim();
+          if (isSameDocumentHash(rawUrl)) {
+            const safeHash = sanitizeHashUrl(rawUrl);
+            if (!safeHash) return label;
+            const token = createToken("LINK", inlineTokens.LINK.length);
+            inlineTokens.LINK.push(`<a href="${safeHash}" data-preview-anchor="true">${label}</a>`);
+            return token;
+          }
           const safeUrl = sanitizeUrl(url);
           if (!safeUrl) return label;
           const token = createToken("LINK", inlineTokens.LINK.length);
           inlineTokens.LINK.push(`<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${label}</a>`);
           return token;
         });
-
-        if (settings.useFencedCodeSpans) {
-          output = replaceInlineCodeSpans(output, inlineTokens);
-        } else {
-          output = output.replace(/`([^`]+)`/g, (_, code) => {
-            const token = createToken("INLINECODE", inlineTokens.INLINECODE.length);
-            inlineTokens.INLINECODE.push(`<code>${code}</code>`);
-            return token;
-          });
-        }
         output = output.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
         output = output.replace(/(^|[^\*])\*([^*]+)\*(?!\*)/g, "$1<em>$2</em>");
         output = output.replace(/(^|[^_])_([^_]+)_(?!_)/g, "$1<em>$2</em>");
 
         return restoreInlineTokens(output, inlineTokens);
+      }
+
+      function isSameDocumentHash(url) {
+        return /^#[^\s].*$/.test(url || "");
+      }
+
+      function sanitizeHashUrl(url) {
+        const fragment = (url || "").trim().slice(1).trim();
+        if (!fragment) {
+          return "";
+        }
+        return `#${escapeAttribute(fragment)}`;
       }
 
       function replaceInlineCodeSpans(text, inlineTokens) {
@@ -222,7 +242,7 @@ window.QuillMarkdown = (() => {
 
           const code = text.slice(index + fenceLength, closingIndex);
           const token = createToken("INLINECODE", inlineTokens.INLINECODE.length);
-          inlineTokens.INLINECODE.push(`<code>${code}</code>`);
+          inlineTokens.INLINECODE.push(`<code>${escapeHtml(code)}</code>`);
           output += token;
           index = closingIndex + fenceLength - 1;
         }
@@ -250,10 +270,15 @@ window.QuillMarkdown = (() => {
       }
 
       function sanitizeUrl(url) {
-        const raw = url.trim();
+        const raw = (url || "").trim();
+        if (!raw) {
+          return "";
+        }
+
+        const normalized = normaliseUrlForParsing(raw);
         try {
-          const parsed = new URL(raw, window.location.href);
-          const allowedProtocols = ["http:", "https:", "data:", "blob:"];
+          const parsed = new URL(normalized, window.location.href);
+          const allowedProtocols = ["http:", "https:", "data:", "blob:", "file:"];
           const isDataImage = parsed.protocol === "data:" && raw.startsWith("data:image/");
           if (allowedProtocols.includes(parsed.protocol) && (parsed.protocol !== "data:" || isDataImage)) {
             return escapeAttribute(parsed.href);
@@ -262,6 +287,13 @@ window.QuillMarkdown = (() => {
           return "";
         }
         return "";
+      }
+
+      function normaliseUrlForParsing(raw) {
+        if (/^[A-Za-z]:[\\/]/.test(raw)) {
+          return `file:///${raw.replace(/\\/g, "/")}`;
+        }
+        return raw;
       }
 
       function isTableHeader(lines, index) {
