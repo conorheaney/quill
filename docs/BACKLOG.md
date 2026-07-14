@@ -45,7 +45,7 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
-| PRD-000007-TECH | TECH | Remove Electron Runtime | Planned | Plan | Remove Electron-specific app code, packaging, and leftover filesystem artifacts after the replacement runtime and launch path are defined. |
+| PRD-000007-TECH | TECH | Remove Electron Runtime | Done | Release | Replace Electron with Tauri, preserve the desktop file workflows, and ship the desktop runtime and Windows installer from the verified Tauri path. |
 | PRD-000014-BUG | BUG | Fix Table Cell Link Rendering | Done | Release | Make markdown links inside render-pane table cells behave correctly, including same-document anchor links that should jump to the matching heading within the current rendered markdown, without causing backticked href-like content in general markdown to over-link the rest of the line. |
 
 ## Done

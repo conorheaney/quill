@@ -8,7 +8,7 @@ Quill is a local-first Markdown editor with side-by-side source and rendered vie
 
 - The app runs from the `code/` structure.
 - The current baseline includes inline preview editing, outline navigation, theme cycling, load/save, and autosave.
-- `code/main.js` passes a Node syntax check.
+- The desktop runtime now targets Tauri through `src-tauri/`, while the renderer stays in `code/`.
 
 ## Product Docs
 

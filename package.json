@@ -1,24 +1,25 @@
 {
   "name": "Quill",
   "version": "1.0.2",
-  "description": "",
-  "main": "code/main.js",
-  "build": {
-    "appId": "quill.markdown.editor",
-    "win": {
-      "target": "nsis"
-    }
-  },
+  "description": "Local-first Markdown editor with a Tauri desktop shell.",
+  "private": true,
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder --win"
+    "start": "npm run tauri:dev",
+    "web:dev": "node scripts/serve-quill.mjs",
+    "tauri:info": "tauri info",
+    "tauri:dev": "tauri dev",
+    "build": "npm run tauri:build",
+    "tauri:build": "tauri build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "electron": "^43.1.0",
-    "electron-builder": "^26.15.3"
+    "@tauri-apps/cli": "^2.0.0"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/plugin-dialog": "^2.7.1"
   }
 }
