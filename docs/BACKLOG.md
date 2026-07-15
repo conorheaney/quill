@@ -58,3 +58,4 @@
 | PRD-000011-BUG | BUG | Fix Fenced Markdown Load State | Done | Release | Prevent fenced code blocks from breaking preview and outline updates during file open, leaving Quill in a half-loaded state. |
 | PRD-000012-BUG | BUG | Fix Escaped Pipe Table Rendering | Done | Release | Prevent render-pane tables from showing extra cells when a cell contains a literal Markdown pipe character as content. |
 | PRD-000013-BUG | BUG | Fix Render Stop After Table | Done | Release | Prevent HTML-like text inside backticked table-cell content from corrupting Quill's live preview render path and stopping the rest of the document from rendering. |
+| PRD-000015-CHANGE | CHANGE | Enable Tauri Window Chrome | Done | Release | Turn standard window chrome back on in the Tauri desktop configuration instead of keeping the desktop shell frameless. |

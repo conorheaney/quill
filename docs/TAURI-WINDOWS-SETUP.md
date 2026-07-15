@@ -34,7 +34,7 @@ npm run tauri:dev
 Expected development behavior:
 
 - Tauri serves the static `code/` frontend directly in development.
-- The Quill window opens with the custom shell.
+- The Quill window opens with the standard platform window chrome enabled.
 - `LOAD`, `SAVE`, `SAVE AS`, and Recent-file reopen should work through the Tauri desktop bridge.
 
 ## First Windows Build
@@ -61,14 +61,18 @@ Run these after `npm run tauri:dev` succeeds:
 6. Confirm unsaved-change warnings still appear.
 7. Confirm theme state and autosave still persist.
 
-## Known Current Environment Gap
+## Current Machine Verification Snapshot
 
-The current Codex machine verified these facts on 2026-07-14:
+The current Codex machine verified these facts on 2026-07-15:
 
 - WebView2 is present.
 - Node and npm are present.
 - `@tauri-apps/cli` is installed in the repo.
-- Rust and Cargo are not yet installed.
-- Visual Studio Build Tools with MSVC were not detected.
+- Rust, Cargo, and the MSVC toolchain are installed.
+- `npm run tauri:dev -- --no-watch` successfully launched Quill.
 
-If your local run fails after installing those prerequisites, capture the full `npm exec tauri info` output and the exact `npm run tauri:dev` error.
+One environment quirk remains:
+
+- the Rust toolchain is not currently present in the default Codex PATH, so ad hoc launches may need an explicit PATH prefix until the shell environment is refreshed or updated.
+
+If your local run still fails, capture the full `npm exec tauri info` output and the exact `npm run tauri:dev` error.

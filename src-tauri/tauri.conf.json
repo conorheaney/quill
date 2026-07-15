@@ -23,7 +23,7 @@
         "maximizable": true,
         "minimizable": true,
         "closable": true,
-        "decorations": false,
+        "decorations": true,
         "fullscreen": false
       }
     ]
