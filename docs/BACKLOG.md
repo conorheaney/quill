@@ -45,8 +45,6 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
-| PRD-000007-TECH | TECH | Remove Electron Runtime | Done | Release | Replace Electron with Tauri, preserve the desktop file workflows, and ship the desktop runtime and Windows installer from the verified Tauri path. |
-| PRD-000014-BUG | BUG | Fix Table Cell Link Rendering | Done | Release | Make markdown links inside render-pane table cells behave correctly, including same-document anchor links that should jump to the matching heading within the current rendered markdown, without causing backticked href-like content in general markdown to over-link the rest of the line. |
 
 ## Done
 
@@ -55,7 +53,9 @@
 | PRD-000001-TECH | TECH | Split UI Controller | Done | Release | Reshape the app around a Shell plus Outline Pane, Markdown Pane, and Preview Pane components, including HTML and code naming cleanup. |
 | PRD-000005-CHANGE | CHANGE | Bump App Version | Done | Release | Update the packaged app version to the semver-safe equivalent of release label `1.02`. |
 | PRD-000006-UI | UI | Recent Files Picker | Done | Release | Let users quickly reopen one of the 10 most recently opened files. |
+| PRD-000007-TECH | TECH | Remove Electron Runtime | Done | Release | Replace Electron with Tauri, preserve the desktop file workflows, and ship the desktop runtime and Windows installer from the verified Tauri path. |
 | PRD-000011-BUG | BUG | Fix Fenced Markdown Load State | Done | Release | Prevent fenced code blocks from breaking preview and outline updates during file open, leaving Quill in a half-loaded state. |
 | PRD-000012-BUG | BUG | Fix Escaped Pipe Table Rendering | Done | Release | Prevent render-pane tables from showing extra cells when a cell contains a literal Markdown pipe character as content. |
 | PRD-000013-BUG | BUG | Fix Render Stop After Table | Done | Release | Prevent HTML-like text inside backticked table-cell content from corrupting Quill's live preview render path and stopping the rest of the document from rendering. |
+| PRD-000014-BUG | BUG | Fix Table Cell Link Rendering | Done | Release | Make markdown links inside render-pane table cells behave correctly, including same-document anchor links that should jump to the matching heading within the current rendered markdown, without causing backticked href-like content in general markdown to over-link the rest of the line. |
 | PRD-000015-CHANGE | CHANGE | Enable Tauri Window Chrome | Done | Release | Turn standard window chrome back on in the Tauri desktop configuration instead of keeping the desktop shell frameless. |
