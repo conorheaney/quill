@@ -28,6 +28,18 @@ Out:
 - visual redesign work
 - speculative rewrites without a documented review rationale
 
+## Plan
+
+- Define the review criteria, evidence format, prioritization rules, and first refactoring slice during `01 - Plan`.
+
+## Acceptance Criteria
+
+- Define the review outputs, refactoring boundary, and pass conditions during `01 - Plan`.
+
+## Verification
+
+- Define the verification approach and evidence format during `01 - Plan`.
+
 ## Next Step
 
 Move this item to `01 - Plan` and define the review criteria, evidence format, decision rules for what should be refactored, and the first refactoring slice.

@@ -31,6 +31,8 @@ npm install
 npm run tauri:dev
 ```
 
+If you only want the browser shell during development, run `npm run web:dev` and open the local URL it prints.
+
 Expected development behavior:
 
 - Tauri serves the static `code/` frontend directly in development.

@@ -1,26 +1,6 @@
 # Quill Backlog
 
-## Rules
-
-- Refuse to implement any code change unless it is tied to a backlogged PRD entry and the relevant detailed item plan is already in place.
-- Use IDs in the format `PRD-NNNNNN-{CLASS}` where `{CLASS}` can be values such as `BUG`, `CHANGE`, `TECH`, or `UI`.
-- Record every item here first.
-- Create a matching file in `docs/00 - Backlog/`.
-- Creating the PRD file counts as the move into `Backlog` and should be recorded in `History`.
-- Track overall status here.
-- Move the matching file through `01 - Plan`, `02 - Implement`, `03 - Test`, and `04 - Release`.
-- Never skip a stage in the PRD file's `History`. Every item must record `Backlog`, `Plan`, `Implement`, `Test`, and `Release` in order as it reaches them.
-- `Blocked` items stay in `In Progress` until they can move again.
-- If the backlog phase and folder location disagree, this file wins and the PRD file should be moved immediately.
-- Every PRD file should include `Short Name`, `Goal`, `Context`, `Scope`, `Next Step`, `History`, and `Audit`.
-- `History` and `Audit` should both be maintained as tables.
-- Any timestamp fields should be recorded in UTC format.
-- `History` and `Audit` entries should be recorded just in time, at the moment the event happens, not reconstructed later from memory.
-- `History` is only for stage transitions and should store the UTC timestamp plus the end stage only.
-- `Audit` is for other timestamped audit information such as decisions, evidence, risks, approvals, and exceptions.
-- If a stage transition was missed, add the missing `History` row as soon as the gap is discovered using the current UTC time, then record in `Audit` that the timestamp is a backfill and that the original transition time is unknown.
-- When backfilling multiple missed stage transitions, record a fresh UTC timestamp for each inserted `History` row.
-- Do not assign the same timestamp to multiple stage transitions or audit events unless they genuinely occurred at that exact time.
+`BACKLOG.md` is the canonical source of truth for PRD items, their overall status, and their current workflow phase. Promotion, structure, and code-authorization rules live in [WORKFLOW.md](C:/Users/conor/Documents/Markdown%20Editor/WORKFLOW.md).
 
 ## Status
 

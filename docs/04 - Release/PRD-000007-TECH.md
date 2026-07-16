@@ -12,6 +12,10 @@ Remove Electron from the codebase and project-managed filesystem footprint once 
 
 The current project still depends on Electron entrypoints and packaging. `package.json` uses Electron start and build scripts, and the app shell still relies on Electron main-process and preload wiring.
 
+## Objective
+
+Remove Electron without breaking Quill's existing document workflows, then replace it with a lighter Windows-portable desktop delivery path that still supports opening, saving, and reopening local Markdown files.
+
 ## Scope
 
 In:
@@ -26,42 +30,6 @@ Out:
 - defining the replacement runtime architecture in detail
 - unrelated editor feature work
 - deleting user-machine artifacts outside the project-managed removal plan
-
-## Next Step
-
-No further implementation work is required for this item.
-
-## History
-
-| Timestamp | Stage |
-| --- | --- |
-| 2026-07-12T13:09:13.6398072Z | Backlog |
-| 2026-07-14T08:55:39.0213870Z | Plan |
-| 2026-07-14T19:39:19.1700461Z | Implement |
-| 2026-07-14T21:57:18.6079417Z | Test |
-| 2026-07-14T21:57:18.7142589Z | Release |
-
-## Audit
-
-| Timestamp | Type | Detail |
-| --- | --- | --- |
-| 2026-07-12T13:09:24.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep and preserved the original item intent: track full Electron removal from both code and project-managed filesystem surfaces. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `01 - Plan`. |
-| 2026-07-14T08:55:39.0531359Z | Promotion | Promoted this item to `Plan`. The PRD is now the active planning record for defining the replacement runtime, the migration order, and the project-managed cleanup boundary before any Electron removal work begins. |
-| 2026-07-14T19:27:26.6414154Z | Analysis | Expanded the plan using the current repo state. Verified that Electron is currently concentrated in `package.json`, `code/main.js`, `code/preload.js`, and the desktop file-open/save branches inside `code/scripts/quill-app.js`, while the renderer already has browser File System Access and download fallbacks that can anchor a migration. |
-| 2026-07-14T19:38:23.3212871Z | Decision | Locked the replacement runtime to Tauri and recorded the implementation workflow, packaging target, and manual setup requirements needed to begin implementation safely. |
-| 2026-07-14T19:39:19.1700461Z | Promotion | Promoted this item to `Implement` because the implementation gate is now satisfied: the runtime choice, desktop bridge contract, Windows packaging target, recent-file behavior, cleanup boundary, and manual setup workflow are all documented. |
-| 2026-07-14T20:45:13.7053925Z | Implementation | Replaced the repo's Electron entrypoints with a Tauri scaffold: `src-tauri/` now owns the desktop shell and file commands, `code/scripts/desktop-bridge.js` preserves the existing `window.QuillDesktop` contract for the renderer, `package.json` now targets Tauri scripts, and the local Node bootstrap now includes `@tauri-apps/cli`. Verified the static dev server and Tauri CLI install locally; `tauri info` confirmed WebView2 is present but also confirmed that `rustc`, `cargo`, and Visual Studio Build Tools with MSVC are still missing on this machine. |
-| 2026-07-14T20:52:39.7066938Z | Implementation | Tightened the scaffold to match a fresh Tauri 2 template more closely: generated `src-tauri/icons/` from the Quill icon, added a Windows prereq check script and setup guide, switched the config schema to the local CLI schema, added explicit bundle icon entries, added the standard Windows release subsystem flag in `src-tauri/src/main.rs`, and installed `@tauri-apps/api` plus `@tauri-apps/plugin-dialog` so `tauri info` now reports the JS packages cleanly. The only remaining verified blockers for a live desktop run on this machine are the missing Rust and MSVC build prerequisites. |
-| 2026-07-14T21:57:18.6079417Z | Verification | Installed Rust and Visual Studio Build Tools on the Windows machine, then verified the Tauri path end-to-end: `npm run tauri:info` reported all native prerequisites available, `npm run tauri:dev -- --no-watch` compiled and launched `target\\debug\\quill-tauri.exe`, the built debug executable stayed running during a direct launch check, `npm run build` produced `src-tauri\\target\\release\\bundle\\nsis\\Quill_1.0.2_x64-setup.exe`, and the release executable also stayed running during a direct launch check. |
-| 2026-07-14T21:57:18.7142589Z | Cleanup | Removed the obsolete Electron runtime entrypoints, removed the old Electron `dist/` build output after Tauri packaging succeeded, and left the repo targeting Tauri-only desktop scripts and artifacts. |
-
-## Status
-
-Done
-
-## Objective
-
-Remove Electron without breaking Quill's existing document workflows, then replace it with a lighter Windows-portable desktop delivery path that still supports opening, saving, and reopening local Markdown files.
 
 ## Repo Findings
 
@@ -255,6 +223,10 @@ Quill's Electron dependence is narrow, the renderer already degrades gracefully 
 - Window behavior target: preserve the current branded app title, icon, minimum size, and frameless custom shell intent; start fullscreen only if Tauri implementation proves stable enough to keep it without regressions.
 - Cleanup boundary: remove Electron only after the Tauri shell and native file flows pass the defined smoke checks.
 
+## Plan
+
+- Choose the replacement runtime, define the desktop bridge and packaging path, migrate the shell and native file flows, then remove the remaining Electron-specific repo surfaces.
+
 ## Tauri Implementation Workflow
 
 ### Phase 1. Prepare The Repo For Dual Runtime Work
@@ -324,23 +296,6 @@ These are required operator steps for Windows development and packaging and shou
   - dialog save
   - any file access required by the chosen command/plugin mix
 
-### Manual Development Workflow
-
-1. Install the Windows prerequisites on the developer machine.
-2. Bootstrap the repo's Tauri app structure.
-3. Run the Tauri development shell against the existing frontend.
-4. Verify that Quill launches and renders without changing any editor behavior first.
-5. Implement the open/save bridge in Tauri.
-6. Re-run the manual smoke flow after each native bridge milestone.
-
-### Manual Release Workflow
-
-1. Confirm the Windows machine has the required Tauri toolchain.
-2. Run the Tauri production build.
-3. Verify the NSIS installer output.
-4. Verify the unpacked executable output for internal portable smoke testing.
-5. Run the full desktop smoke checklist before deleting Electron artifacts or marking the PRD ready for `Test`.
-
 ## Tauri-Specific Implementation Notes
 
 - Tauri's frontend-to-Rust command model maps cleanly to Quill's current three-call desktop bridge.
@@ -391,3 +346,49 @@ The exit criteria for leaving `Plan` are now satisfied:
 - Packaging target decided for Windows release.
 - Recent-file behavior decision recorded.
 - Cleanup boundary defined for Electron entrypoints, dependencies, and generated artifacts.
+
+## Acceptance Criteria
+
+- Electron runtime entrypoints and packaging are removed from the repo.
+- The replacement desktop runtime preserves Quill's required file workflows.
+- The Windows desktop build and installer path are verified end to end.
+
+## Verification
+
+- Use the active implementation notes and smoke workflow in this PRD to verify the replacement runtime, packaging output, and direct desktop launch behavior before release.
+
+## Next Step
+
+No further implementation work is required for this item.
+
+## Status
+
+Done
+
+## History
+
+| Timestamp | Stage |
+| --- | --- |
+| 2026-07-12T13:09:13.6398072Z | Backlog |
+| 2026-07-14T08:55:39.0213870Z | Plan |
+| 2026-07-14T19:39:19.1700461Z | Implement |
+| 2026-07-14T21:57:18.6079417Z | Test |
+| 2026-07-14T21:57:18.7142589Z | Release |
+
+## Audit
+
+| Timestamp | Type | Detail |
+| --- | --- | --- |
+| 2026-07-12T13:09:24.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep and preserved the original item intent: track full Electron removal from both code and project-managed filesystem surfaces. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `01 - Plan`. |
+| 2026-07-14T08:55:39.0531359Z | Promotion | Promoted this item to `Plan`. The PRD is now the active planning record for defining the replacement runtime, the migration order, and the project-managed cleanup boundary before any Electron removal work begins. |
+| 2026-07-14T19:27:26.6414154Z | Analysis | Expanded the plan using the current repo state. Verified that Electron is currently concentrated in `package.json`, `code/main.js`, `code/preload.js`, and the desktop file-open/save branches inside `code/scripts/quill-app.js`, while the renderer already has browser File System Access and download fallbacks that can anchor a migration. |
+| 2026-07-14T19:38:23.3212871Z | Decision | Locked the replacement runtime to Tauri and recorded the implementation workflow, packaging target, and manual setup requirements needed to begin implementation safely. |
+| 2026-07-14T19:39:19.1700461Z | Promotion | Promoted this item to `Implement` because the implementation gate is now satisfied: the runtime choice, desktop bridge contract, Windows packaging target, recent-file behavior, cleanup boundary, and manual setup workflow are all documented. |
+| 2026-07-14T20:45:13.7053925Z | Implementation | Replaced the repo's Electron entrypoints with a Tauri scaffold: `src-tauri/` now owns the desktop shell and file commands, `code/scripts/desktop-bridge.js` preserves the existing `window.QuillDesktop` contract for the renderer, `package.json` now targets Tauri scripts, and the local Node bootstrap now includes `@tauri-apps/cli`. Verified the static dev server and Tauri CLI install locally; `tauri info` confirmed WebView2 is present but also confirmed that `rustc`, `cargo`, and Visual Studio Build Tools with MSVC are still missing on this machine. |
+| 2026-07-14T20:52:39.7066938Z | Implementation | Tightened the scaffold to match a fresh Tauri 2 template more closely: generated `src-tauri/icons/` from the Quill icon, added a Windows prereq check script and setup guide, switched the config schema to the local CLI schema, added explicit bundle icon entries, added the standard Windows release subsystem flag in `src-tauri/src/main.rs`, and installed `@tauri-apps/api` plus `@tauri-apps/plugin-dialog` so `tauri info` now reports the JS packages cleanly. The only remaining verified blockers for a live desktop run on this machine are the missing Rust and MSVC build prerequisites. |
+| 2026-07-14T21:57:18.6079417Z | Verification | Installed Rust and Visual Studio Build Tools on the Windows machine, then verified the Tauri path end-to-end: `npm run tauri:info` reported all native prerequisites available, `npm run tauri:dev -- --no-watch` compiled and launched `target\\debug\\quill-tauri.exe`, the built debug executable stayed running during a direct launch check, `npm run build` produced `src-tauri\\target\\release\\bundle\\nsis\\Quill_1.0.2_x64-setup.exe`, and the release executable also stayed running during a direct launch check. |
+| 2026-07-14T21:57:18.7142589Z | Cleanup | Removed the obsolete Electron runtime entrypoints, removed the old Electron `dist/` build output after Tauri packaging succeeded, and left the repo targeting Tauri-only desktop scripts and artifacts. |
+
+## Legacy Notes
+
+- This PRD includes a repaired `Backlog` capture from an earlier consistency sweep, so the original creation event was not recorded just in time.

@@ -27,6 +27,18 @@ Out:
 - accessibility remediation that should stay in `PRD-000004-UI`
 - unrelated markup or behavior changes unless required to support the CSS refactor safely
 
+## Plan
+
+- Define the target stylesheet structure, ownership boundaries, and first refactoring slice during `01 - Plan`.
+
+## Acceptance Criteria
+
+- Define the structure outcomes and non-regression checks during `01 - Plan`.
+
+## Verification
+
+- Define the verification approach and evidence format during `01 - Plan`.
+
 ## Next Step
 
 Move this item to `01 - Plan` and define the target stylesheet organization, naming rules, and regression-check approach.
@@ -42,3 +54,7 @@ Move this item to `01 - Plan` and define the target stylesheet organization, nam
 | Timestamp | Type | Detail |
 | --- | --- | --- |
 | 2026-07-12T13:09:25.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep and preserved the original item intent: track technical CSS refactoring separately from UI redesign or accessibility work. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `01 - Plan`. |
+
+## Legacy Notes
+
+- This PRD includes a repaired `Backlog` capture from an earlier consistency sweep, so the original creation event was not recorded just in time.

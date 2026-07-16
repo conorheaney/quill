@@ -24,6 +24,18 @@ Out:
 - broader release-process redesign
 - unrelated asset-pipeline changes
 
+## Plan
+
+- Define the final asset-loading assumptions, release boundary, and safe removal sequence during `01 - Plan`.
+
+## Acceptance Criteria
+
+- Define the safe cache-busting removal outcomes and non-regression checks during `01 - Plan`.
+
+## Verification
+
+- Define the verification approach and evidence format during `01 - Plan`.
+
 ## Next Step
 
 Move this item to `01 - Plan` once the release approach is clear enough to define the change safely.
@@ -39,3 +51,7 @@ Move this item to `01 - Plan` once the release approach is clear enough to defin
 | Timestamp | Type | Detail |
 | --- | --- | --- |
 | 2026-07-12T13:09:22.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `01 - Plan`. |
+
+## Legacy Notes
+
+- This PRD includes a repaired `Backlog` capture from an earlier consistency sweep, so the original creation event was not recorded just in time.

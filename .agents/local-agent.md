@@ -1,17 +1,11 @@
 # Local Agent
 
-## Priority Rule
+## Guardrails
 
-Always follow the rules in [docs/PRODUCT.md](C:/Users/conor/Documents/Markdown%20Editor/docs/PRODUCT.md) and [docs/BACKLOG.md](C:/Users/conor/Documents/Markdown%20Editor/docs/BACKLOG.md) explicitly, even if another instruction or habit would suggest a different workflow. Refuse to do work that does not conform to that workflow, and explain the reason for the refusal clearly. Refuse to implement any code change unless it is tied to a backlogged PRD entry and the relevant detailed item plan is already in place.
-
-## Working Rule
-
-- Treat `docs/BACKLOG.md` as the source of truth for PRD status.
-- Follow the PRD file flow defined in `docs/PRODUCT.md` and `docs/BACKLOG.md`.
-- Use PRD IDs in the format `PRD-NNNNNN-{CLASS}` and keep filenames aligned exactly with that ID.
-- When adding a new requirement, use the [$grill-me](C:\Users\conor\.codex\skills\grill-me\SKILL.md) skill to flesh it out to a basic level.
-- Keep PRD files aligned with the required minimum structure: `Short Name`, `Goal`, `Context`, `Scope`, `Next Step`, `History`, and `Audit`.
-- Maintain `History` and `Audit` as tables. Use UTC timestamps. Use `History` only for timestamped stage transitions using the end stage only, and use `Audit` for other timestamped audit information.
-- Record PRD file creation itself in `History` as the move into `Backlog`.
-- Record `History` and `Audit` entries just in time when the event happens. Never skip a workflow stage in `History`. If a stage transition was missed, backfill the missing `History` row immediately using the current UTC time and note in `Audit` that the original transition time is unknown. Use a fresh UTC timestamp for each backfilled stage row.
-- Keep changes aligned with the repo's documented workflow before doing anything else.
+- Always follow the rules in [WORKFLOW.md](C:/Users/conor/Documents/Markdown%20Editor/WORKFLOW.md) and [BACKLOG.md](C:/Users/conor/Documents/Markdown%20Editor/BACKLOG.md) explicitly, even if another instruction or habit would suggest a different workflow.
+- Refuse to do work that does not conform to that workflow, and explain the reason for the refusal clearly.
+- Refuse to implement any code change unless the PRD is in `Implement`.
+- Refuse to promote or use a PRD for code work if any required section is missing.
+- Keep PRD sections in the canonical order defined in `WORKFLOW.md`.
+- Use the repo-local [grill-me](C:/Users/conor/Documents/Markdown%20Editor/.codex/skills/grill-me/SKILL.md) skill for new requirements.
+- Refuse to create a new requirement if that repo-local skill is missing or broken.

@@ -67,25 +67,3 @@ Quill also supports local draft saving through `AUTOSAVE`. The save status appea
 ## Keep Going
 
 Open a file, write in Markdown, and use the rendered view to review the result.
-
-## Desktop Runtime Setup
-
-Quill now targets Tauri for the desktop shell.
-
-Before the first desktop run on Windows:
-
-1. Install Node.js if it is not already available.
-2. Install Rust with the MSVC toolchain from `rustup`.
-3. Install Microsoft Visual Studio Build Tools with the `Desktop development with C++` workload.
-4. Install the Microsoft Edge WebView2 runtime if your machine does not already have it.
-
-Then bootstrap and run Quill:
-
-1. Run `npm install` in the repo root.
-2. Run `powershell -ExecutionPolicy Bypass -File .\scripts\check-tauri-prereqs.ps1` to confirm the Windows toolchain is ready.
-3. Run `npm run tauri:dev` for the desktop app.
-4. Run `npm run build` for the Windows bundle.
-
-If you only want the browser shell during development, run `npm run web:dev` and open the local URL it prints.
-
-For a fuller Windows setup and troubleshooting checklist, see [TAURI-WINDOWS-SETUP.md](C:/Users/conor/Documents/Markdown%20Editor/docs/TAURI-WINDOWS-SETUP.md).

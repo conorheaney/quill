@@ -28,6 +28,23 @@ Out:
 - custom titlebar implementation beyond restoring standard window chrome
 - fullscreen or branded shell experimentation beyond the simple config change
 
+## Plan
+
+- Re-enable standard window decorations in the Tauri configuration, align the affected docs, and verify the change in the real desktop runtime before closing the PRD.
+
+## Acceptance Criteria
+
+- The main Tauri window uses standard platform window chrome.
+- The documented desktop baseline matches the shipped shell behavior.
+- Live desktop verification confirms the change outside repo-state inspection alone.
+
+## Verification
+
+- Verified `src-tauri/tauri.conf.json` now sets `"decorations": true` for the main Tauri window.
+- Verified the Tauri setup guide now matches the shipped baseline by describing standard platform window chrome instead of the custom shell.
+- Verified the backlog row and released PRD record both reflect this item as `Done` / `Release`.
+- Verified in a live Tauri desktop launch on 2026-07-15 that Quill opens a real top-level window titled `Quill Markdown Editor` with Windows style bits `0x15CF0000`, including caption, system menu, minimize box, and maximize box.
+
 ## Deferred Future Options
 
 - custom titlebar or branded window controls
@@ -41,13 +58,6 @@ No further implementation work is required for this item.
 ## Status
 
 Done
-
-## Verification
-
-- Verified `src-tauri/tauri.conf.json` now sets `"decorations": true` for the main Tauri window.
-- Verified the Tauri setup guide now matches the shipped baseline by describing standard platform window chrome instead of the custom shell.
-- Verified the backlog row and released PRD record both reflect this item as `Done` / `Release`.
-- Verified in a live Tauri desktop launch on 2026-07-15 that Quill opens a real top-level window titled `Quill Markdown Editor` with Windows style bits `0x15CF0000`, including caption, system menu, minimize box, and maximize box.
 
 ## History
 
@@ -69,7 +79,7 @@ Done
 | 2026-07-14T22:39:07.0836796Z | State | Current state: backlogged and waiting to move into `01 - Plan`. |
 | 2026-07-14T22:57:50.4123287Z | Promotion | Promoted this item to `Plan`. The simple baseline change is now locked: enable standard Tauri window chrome immediately and keep richer shell options deferred in this PRD instead of expanding scope. |
 | 2026-07-14T22:57:50.5099037Z | Promotion | Promoted this item to `Implement` because the implementation path is now explicit and small: change the Tauri window `decorations` setting and align the affected desktop-shell docs. |
-| 2026-07-14T22:57:50.5099037Z | Implementation | Updated `src-tauri/tauri.conf.json` so the main Tauri window now uses `"decorations": true`, and updated `docs/TAURI-WINDOWS-SETUP.md` so the documented desktop baseline no longer claims a custom shell. |
+| 2026-07-14T22:57:50.5099037Z | Implementation | Updated `src-tauri/tauri.conf.json` so the main Tauri window now uses `"decorations": true`, and updated `TAURI.md` so the documented desktop baseline no longer claims a custom shell. |
 | 2026-07-14T22:57:50.5424740Z | Verification | Confirmed in the repo state that the main Tauri window config now enables decorations and that the Tauri setup guide reflects the standard platform window chrome baseline. |
 | 2026-07-14T22:57:50.5760495Z | Release | Promoted this item to `Release` after the config change, docs alignment, backlog row, and released PRD record were updated together. |
 | 2026-07-14T23:54:28.5553999Z | Workflow correction | Re-entered `Test` after the release-review complaint identified that the earlier promotion relied only on repo-state checks and did not include a live desktop runtime verification pass. |

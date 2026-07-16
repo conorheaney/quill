@@ -25,6 +25,20 @@ Out:
 - installer branding changes
 - release packaging changes beyond the manifest version
 
+## Plan
+
+- Apply the semver-safe version change, align the workflow record, and confirm the manifest value used for the shipped release.
+
+## Acceptance Criteria
+
+- `package.json` uses the intended semver-safe version.
+- The workflow record reflects the released version bump accurately.
+
+## Verification
+
+- Confirmed [package.json](C:/Users/conor/Documents/Markdown%20Editor/package.json) reports version `1.0.2`.
+- Confirmed this PRD now resides in `docs/04 - Release/`.
+
 ## Next Step
 
 No further implementation work is required for this item.
@@ -32,11 +46,6 @@ No further implementation work is required for this item.
 ## Status
 
 Done
-
-## Verification
-
-- Confirmed [package.json](C:/Users/conor/Documents/Markdown%20Editor/package.json) reports version `1.0.2`.
-- Confirmed this PRD now resides in `docs/04 - Release/`.
 
 ## History
 
@@ -55,3 +64,7 @@ Done
 | 2026-07-12T13:09:03.6398072Z | Backfill | Rebuilt the missing `Backlog`, `Plan`, `Implement`, `Test`, and `Release` history rows during the consistency sweep. These UTC timestamps record when the legacy gap was repaired; the original transition times were not captured. |
 | 2026-07-12T13:09:17.2378048Z | Request backfill | Backfilled request context during the consistency sweep: user-facing release label requested was `1.02`. The original capture time was not recorded. |
 | 2026-07-12T13:09:18.2378048Z | Evidence backfill | Backfilled release evidence during the consistency sweep: manifest version applied was `1.0.2`. The original capture time was not recorded. |
+
+## Legacy Notes
+
+- This PRD includes reconstructed stage history and backfilled audit context from a prior consistency sweep, so it does not fully meet the current just-in-time chronology standard.

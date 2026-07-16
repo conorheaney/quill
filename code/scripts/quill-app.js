@@ -1271,7 +1271,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
       shellState.isRecentFilesHydrated = true;
     });
   setDocumentContent(DEFAULT_CONTENT, {
-    fileName: "README.md",
+    fileName: "quill.md",
     fileHandle: null,
     filePath: "",
     sourceFile: null,

@@ -12,45 +12,6 @@ Reduce the size and responsibility breadth of the main UI controller by reshapin
 
 The app structure had become harder to follow because shell layout, pane behavior, shared state, file flows, and preview editing were mixed together.
 
-## Scope
-
-In:
-
-- shell and pane boundary definition
-- pane HTML extraction
-- pane logic extraction
-- code and HTML naming cleanup for the shell-and-panes model
-
-Out:
-
-- framework adoption
-- broad CSS naming cleanup
-- unrelated product changes
-
-## Next Step
-
-Use the new module boundaries to drive `PRD-000002-TECH` test coverage.
-
-## History
-
-| Timestamp | Stage |
-| --- | --- |
-| 2026-07-12T13:08:52.6398072Z | Backlog |
-| 2026-07-12T13:08:53.6398072Z | Plan |
-| 2026-07-12T13:08:54.6398072Z | Implement |
-| 2026-07-12T13:08:55.6398072Z | Test |
-| 2026-07-12T13:08:56.6398072Z | Release |
-
-## Audit
-
-| Timestamp | Type | Detail |
-| --- | --- | --- |
-| 2026-07-12T13:08:57.6398072Z | Backfill | Rebuilt the missing `Backlog`, `Plan`, `Implement`, `Test`, and `Release` history rows during the consistency sweep. These UTC timestamps record when the legacy gap was repaired; the original transition times were not captured. |
-
-## Status
-
-Done
-
 ## Objective
 
 Reduce the size and responsibility breadth of the main UI controller by reshaping the app around the real UI concepts: the Shell, the Outline Pane, the Markdown Pane, and the Preview Pane.
@@ -67,6 +28,21 @@ The current UI controller and page structure currently mix:
 - file, autosave, theme, dialog, and snippet flows
 
 This makes both the UI structure and the implementation harder to follow than they need to be.
+
+## Scope
+
+In:
+
+- shell and pane boundary definition
+- pane HTML extraction
+- pane logic extraction
+- code and HTML naming cleanup for the shell-and-panes model
+
+Out:
+
+- framework adoption
+- broad CSS naming cleanup
+- unrelated product changes
 
 ## Proposed Target Structure
 
@@ -128,7 +104,7 @@ The Shell is not treated as a component in this pass. The panes are.
 - New pane component HTML files.
 - A smaller shell entrypoint.
 - An updated main page that acts as the Shell and composes the pane components.
-- A short note in [BACKLOG.md](C:/Users/conor/Documents/Markdown%20Editor/docs/BACKLOG.md) kept aligned with implementation status when work starts or completes.
+- A short note in [BACKLOG.md](C:/Users/conor/Documents/Markdown%20Editor/BACKLOG.md) kept aligned with implementation status when work starts or completes.
 
 ## Progress Update
 
@@ -174,3 +150,31 @@ The Shell is not treated as a component in this pass. The panes are.
 
 - Use the new module boundaries to drive `PRD-000002-TECH` test coverage.
 - Revisit whether some helpers should become pure utilities once the first split is stable.
+
+## Next Step
+
+Use the new module boundaries to drive `PRD-000002-TECH` test coverage.
+
+## Status
+
+Done
+
+## History
+
+| Timestamp | Stage |
+| --- | --- |
+| 2026-07-12T13:08:52.6398072Z | Backlog |
+| 2026-07-12T13:08:53.6398072Z | Plan |
+| 2026-07-12T13:08:54.6398072Z | Implement |
+| 2026-07-12T13:08:55.6398072Z | Test |
+| 2026-07-12T13:08:56.6398072Z | Release |
+
+## Audit
+
+| Timestamp | Type | Detail |
+| --- | --- | --- |
+| 2026-07-12T13:08:57.6398072Z | Backfill | Rebuilt the missing `Backlog`, `Plan`, `Implement`, `Test`, and `Release` history rows during the consistency sweep. These UTC timestamps record when the legacy gap was repaired; the original transition times were not captured. |
+
+## Legacy Notes
+
+- This PRD includes reconstructed stage history from a prior consistency sweep, so it does not fully meet the current just-in-time chronology standard.
