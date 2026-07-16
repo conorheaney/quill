@@ -26,6 +26,7 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000018-BUG | BUG | Fix Relative Image Rendering | Planned | Plan | Render valid Markdown images in the application render view, and reuse the same behavior in browser mode when practical or fall back to a placeholder when it is not. |
 
 ## Done
 
