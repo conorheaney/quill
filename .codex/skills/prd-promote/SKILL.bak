@@ -1,0 +1,222 @@
+---
+name: prd-promote
+description: Validate and promote an existing Quill PRD to its next allowed workflow phase while conforming to the live repo rules. Use when the user wants to promote a PRD, check whether a PRD is ready for its next phase, repair promotion blockers, or carry out the paired backlog-plus-file move for `Backlog`, `Plan`, `Implement`, `Test`, or `Release`.
+---
+
+# PRD Promote
+
+Use this skill to promote an existing Quill PRD only when the next workflow gate is genuinely satisfied.
+
+Keep it lightweight. Read the repo rules, inspect the target PRD, surface blockers first, and make workflow edits only after the promotion is valid.
+
+## Guardrail
+
+- Always conform to the live rules in `WORKFLOW.md`, `BACKLOG.md`, and `.agents/local-agent.md`.
+- If the requested promotion would violate the workflow, stop and explain why.
+- Never skip phases.
+- Never implement code work from this skill unless the repo workflow separately authorizes it.
+- Treat `BACKLOG.md` as the source of truth for the PRD's current overall status and phase.
+
+## Read First
+
+1. `WORKFLOW.md`
+2. `BACKLOG.md`
+3. `.agents/local-agent.md`
+4. the target PRD file
+
+Use the live repo text if it disagrees with this skill.
+
+## Promotion Flow
+
+1. Find the target PRD row in `BACKLOG.md`.
+2. Find the matching PRD file under `docs/00 - Backlog/`, `docs/01 - Plan/`, `docs/02 - Implement/`, `docs/03 - Test/`, or `docs/04 - Release/`.
+3. Determine the current phase from the backlog row first, then compare it with the file location and `History`.
+4. Determine the next allowed phase:
+   - `Backlog -> Plan`
+   - `Plan -> Implement`
+   - `Implement -> Test`
+   - `Test -> Release`
+   - `Release` has no next phase
+5. Validate the PRD against the next phase gate.
+6. If blockers exist, report them clearly and do not mutate files.
+7. Only when the promotion is valid:
+   - update the backlog row
+   - move the PRD file to the next folder
+   - append the new `History` row at the moment of promotion
+   - add any matching `Audit` note needed to explain the promotion
+
+## Required Checks
+
+Run these checks before every promotion attempt.
+
+### Identity And State
+
+- A backlog row for the PRD must exist.
+- Exactly one matching PRD file should exist in the stage folders.
+- The PRD ID and filename must match exactly.
+- The backlog phase must be a valid workflow phase.
+- The backlog status/phase pairing must be valid:
+  - `Proposed / Backlog`
+  - `Planned / Plan`
+  - `In Progress / Implement`
+  - `In Progress / Test`
+  - `Blocked / Implement`
+  - `Blocked / Test`
+  - `Done / Release`
+- If backlog phase and file location disagree, treat that as a blocker to promotion. Repair the PRD back to the current backlog phase first, then re-evaluate.
+- If `History` does not end at the current backlog phase, treat that as a blocker unless the repo workflow explicitly allows a backfill note in `Audit` instead.
+
+### Required Structure
+
+- The PRD must include these required sections:
+  - `Short Name`
+  - `Goal`
+  - `Context`
+  - `Scope`
+  - `Plan`
+  - `Acceptance Criteria`
+  - `Verification`
+  - `Next Step`
+  - `History`
+  - `Audit`
+- Required sections must appear in canonical order. Optional sections may appear, but they must not cause the required sections to appear out of order.
+- `History` and `Audit` must both be Markdown tables.
+- If `Legacy Notes` is present, keep it after the main workflow record instead of mixing it into `History`.
+
+### Lightweight Content Validation
+
+Prefer lightweight judgment. Catch obviously weak gates without inventing extra ceremony.
+
+Flag blockers when:
+
+- a required section is empty
+- a required section is just a placeholder for a later phase
+- `Next Step` still points at the current phase instead of the next real action
+- `History` skips a stage or uses a stage order that does not match the workflow
+- a timestamp is not in UTC form
+- the backlog row, folder, and PRD record tell conflicting stories
+
+Treat language like these as not ready for promotion when they appear in gate-critical sections:
+
+- "define this during `01 - Plan`"
+- "to be decided"
+- "TBD"
+- "later"
+- "move this item to ..."
+
+## Phase Gates
+
+### `Backlog -> Plan`
+
+Allow promotion when:
+
+- the baseline PRD is valid
+- the backlog row exists and currently says `Proposed / Backlog`
+- the PRD file is in `docs/00 - Backlog/`
+- `History` already includes the `Backlog` entry
+
+Block promotion when:
+
+- the item is missing any required baseline section
+- the PRD is in the wrong folder
+- the backlog row and PRD file were not created as a pair
+
+Promotion result:
+
+- backlog row becomes `Planned / Plan`
+- file moves to `docs/01 - Plan/`
+- append a `Plan` row to `History`
+- add an `Audit` note if the promotion needs explanation
+
+### `Plan -> Implement`
+
+Allow promotion when:
+
+- `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` are present and materially filled out
+- those sections no longer read like placeholders for future planning
+- the PRD is detailed enough to guide implementation and verification
+- the backlog row currently says `Planned / Plan`
+- the PRD file is in `docs/01 - Plan/`
+
+Block promotion when:
+
+- `Plan` is just a one-line reminder to plan later
+- `Acceptance Criteria` does not define a concrete success state
+- `Verification` does not define how the work will be checked
+- `Next Step` still says to move into planning or to decide basics later
+
+Promotion result:
+
+- backlog row becomes `In Progress / Implement`
+- file moves to `docs/02 - Implement/`
+- append an `Implement` row to `History`
+- add an `Audit` promotion note if helpful
+
+### `Implement -> Test`
+
+Allow promotion when:
+
+- the implementation work described by the PRD is complete enough to verify
+- `Verification` reflects a real test approach rather than a planning placeholder
+- `Next Step` now points at verification, acceptance, or release preparation
+- the backlog row currently says `In Progress / Implement` or `Blocked / Implement`
+- the PRD file is in `docs/02 - Implement/`
+
+Block promotion when:
+
+- the PRD still reads like active design or unfinished implementation work
+- the next action is still to build the main feature
+- key implementation decisions or scope changes were discovered but never recorded clearly enough to understand what is being tested
+
+Promotion result:
+
+- backlog row becomes `In Progress / Test`
+- file moves to `docs/03 - Test/`
+- append a `Test` row to `History`
+- add an `Audit` note if the verification handoff needs context
+
+### `Test -> Release`
+
+Allow promotion when:
+
+- planned verification is complete enough to support acceptance
+- the PRD records the verification outcome and any important evidence or exceptions
+- there is no unresolved signal in the PRD that the item still needs implementation or re-test
+- the backlog row currently says `In Progress / Test` or `Blocked / Test`
+- the PRD file is in `docs/03 - Test/`
+
+Block promotion when:
+
+- the PRD does not show that verification actually happened
+- failures or open risks are present without a clear accepted exception
+- the next action still points back to implementation or unfinished testing
+
+Promotion result:
+
+- backlog row becomes `Done / Release`
+- file moves to `docs/04 - Release/`
+- append a `Release` row to `History`
+- add an `Audit` note for release/acceptance evidence if needed
+
+## Output Pattern
+
+When evaluating a promotion, prefer this order:
+
+1. Current state
+2. Requested next phase
+3. Blockers
+4. If valid, the exact edits to make
+5. Result summary after the move
+
+Keep blocker output concise and actionable. For example:
+
+- `Missing required section: Verification`
+- `Section order invalid: Next Step appears before Verification`
+- `Backlog says Plan but file is still in docs/00 - Backlog/`
+- `Plan -> Implement blocked: Acceptance Criteria still says "define during 01 - Plan"`
+
+## Notes
+
+- Follow the live repo workflow even if older PRDs contain historical irregularities.
+- Prefer fixing the smallest real blocker instead of rewriting the whole PRD.
+- When the promotion is valid, update the backlog row and move the PRD file in the same pass so the repo stays consistent.
