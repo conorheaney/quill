@@ -1,5 +1,6 @@
 (function () {
   const tauriGlobal = window.__TAURI__;
+  const appApi = tauriGlobal && tauriGlobal.app;
   const dialogApi = tauriGlobal && tauriGlobal.dialog;
   const coreApi = tauriGlobal && tauriGlobal.core;
 
@@ -34,6 +35,14 @@
   }
 
   window.QuillDesktop = {
+    async getAppVersion() {
+      if (!appApi || typeof appApi.getVersion !== "function") {
+        return null;
+      }
+
+      return appApi.getVersion();
+    },
+
     async openMarkdownFile() {
       const selectedPath = await dialogApi.open({
         directory: false,

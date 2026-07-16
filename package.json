@@ -1,6 +1,6 @@
 {
   "name": "Quill",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Local-first Markdown editor with a Tauri desktop shell.",
   "private": true,
   "scripts": {
@@ -8,6 +8,7 @@
     "web:dev": "node scripts/serve-quill.mjs",
     "tauri:info": "tauri info",
     "tauri:dev": "tauri dev",
+    "version:bump": "node scripts/bump-version.mjs",
     "build": "npm run tauri:build",
     "tauri:build": "tauri build"
   },

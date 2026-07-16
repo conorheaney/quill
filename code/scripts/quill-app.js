@@ -48,6 +48,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
   const recentFilesButton = document.getElementById("recentFilesButton");
   const recentFilesPanel = document.getElementById("recentFilesPanel");
   const recentFilesList = document.getElementById("recentFilesList");
+  const sidebarVersionLabel = document.getElementById("sidebarVersionLabel");
   const documentFileLabel = document.getElementById("documentFileLabel");
   const markdownWordCount = document.getElementById("markdownWordCount");
   const documentFileInput = document.getElementById("documentFileInput");
@@ -381,6 +382,31 @@ const { createPreviewPane } = window.QuillPreviewPane;
   function updateDocumentFileLabel() {
     const label = shellState.currentFileName || "Untitled draft";
     documentFileLabel.textContent = shellState.isDirty ? `${label} *` : label;
+  }
+
+  async function loadDesktopProductVersion() {
+    if (!sidebarVersionLabel) {
+      return;
+    }
+
+    if (!window.QuillDesktop || typeof window.QuillDesktop.getAppVersion !== "function") {
+      sidebarVersionLabel.hidden = true;
+      return;
+    }
+
+    try {
+      const version = await window.QuillDesktop.getAppVersion();
+      if (!version) {
+        sidebarVersionLabel.hidden = true;
+        return;
+      }
+
+      sidebarVersionLabel.textContent = `Version ${version}`;
+      sidebarVersionLabel.hidden = false;
+    } catch (error) {
+      console.error("Unable to load the desktop product version", error);
+      sidebarVersionLabel.hidden = true;
+    }
   }
 
   function markDirty(nextDirty) {
@@ -1295,4 +1321,5 @@ const { createPreviewPane } = window.QuillPreviewPane;
   }
   setMarkdownPaneCollapsed(false);
   setPreviewEditingEnabled(false);
+  loadDesktopProductVersion();
 })();
