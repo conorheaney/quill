@@ -9,6 +9,7 @@ Quill uses a single-file PRD workflow to move work from idea to shipped change w
 - `WORKFLOW.md` is the canonical workflow definition.
 - `BACKLOG.md` is the canonical source of truth for PRD items, their overall status, and their current workflow phase.
 - Refuse to do work that does not conform to this workflow, and explain the reason clearly.
+- Never promote a PRD automatically. Only promote a PRD when the user explicitly executes the repo-local `prd-promote` skill for that item.
 - Refuse to implement any code change unless the PRD is currently in `Implement`.
 - When adding a new requirement, use the repo-local [$grill-me](C:\Users\conor\Documents\Markdown Editor\.codex\skills\grill-me\SKILL.md) skill to flesh it out to a basic level before turning it into a PRD item.
 - If the repo-local `grill-me` skill is missing or broken, refuse to create a new requirement and explain that the required workflow dependency is unavailable.
@@ -23,9 +24,10 @@ Quill uses a single-file PRD workflow to move work from idea to shipped change w
 - If any required PRD section is missing, the PRD is invalid and must not be promoted or used for code work until fixed.
 - PRD sections must appear in the same canonical order across all work items. Optional sections are only included when relevant, but when present they must keep the same relative order.
 - `History` and `Audit` must both be maintained as tables.
-- Any timestamp field must be recorded in UTC format.
+- Any timestamp field must be recorded in UTC using the canonical format `yyyy-MM-ddTHH:mm:ss.fffffffZ`.
+- Do not mix timestamp precisions across workflow docs. `History` and `Audit` entries must use the same canonical timestamp format in every PRD and related workflow document.
 - `History` and `Audit` entries must be recorded just in time, at the moment the event happens, not reconstructed later from memory.
-- `History` is only for stage transitions and must record the UTC timestamp and the end stage only, for example `2026-07-12T08:10:00Z | Plan`.
+- `History` is only for stage transitions and must record the UTC timestamp and the end stage only, for example `2026-07-12T08:10:00.0000000Z | Plan`.
 - `Audit` is for other timestamped audit information such as decisions, evidence, risks, approvals, exceptions, and backfill notes.
 - Creating the initial PRD file counts as the move into `Backlog` and must be recorded in `History`.
 - `History` must remain chronologically true. If a missed stage transition is discovered later, do not insert a reconstructed `History` row. Record the gap, inferred sequence, and what is still unknown in `Audit` instead.

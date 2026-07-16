@@ -1,0 +1,4 @@
+interface:
+  display_name: "PRD Implement"
+  short_description: "Implement Quill PRDs safely."
+  default_prompt: "Use $prd-implement to validate a Quill PRD for implementation and carry out only the approved scope."

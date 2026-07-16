@@ -1,0 +1,4 @@
+interface:
+  display_name: "PRD Promote"
+  short_description: "Promote Quill PRDs between workflow phases."
+  default_prompt: "Use $prd-promote to validate and promote a Quill PRD to its next allowed workflow phase."
