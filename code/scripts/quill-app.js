@@ -260,9 +260,21 @@ const { createPreviewPane } = window.QuillPreviewPane;
     recentFilesPanel.hidden = !isOpen;
   }
 
+  function isDesktopRecentFilesSupported() {
+    return Boolean(window.QuillDesktop);
+  }
+
   function renderRecentFiles() {
     recentFilesList.replaceChildren();
     recentFilesButton.disabled = false;
+
+    if (!isDesktopRecentFilesSupported()) {
+      const unavailableState = document.createElement("div");
+      unavailableState.className = "recent-file-empty";
+      unavailableState.textContent = "Recent Files is unavailable in a standard web browser.";
+      recentFilesList.appendChild(unavailableState);
+      return;
+    }
 
     if (!shellState.recentFiles.length) {
       const emptyState = document.createElement("div");

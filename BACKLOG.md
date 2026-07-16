@@ -20,6 +20,7 @@
 | PRD-000008-TECH | TECH | Refactor Stylesheet Structure | Proposed | Backlog | Reshape the CSS into clearer sections and ownership boundaries so shell, panes, dialogs, and theme tokens are easier to maintain. |
 | PRD-000009-UI | UI | Predefined Theme Picker | Proposed | Backlog | Let users choose from a set of predefined themes instead of only cycling between the current built-in options. |
 | PRD-000010-TECH | TECH | Critical Codebase Review And Refactor | Proposed | Backlog | Review the current codebase critically, document the highest-value structural issues, and carry out follow-on refactoring to improve maintainability. |
+| PRD-000017-TECH | TECH | Centralize Product Version Source | Proposed | Backlog | Centralize Quill's product version in one shared source that both the UI and Tauri build configuration can consume so the displayed version and shipped build stay aligned. |
 
 ## In Progress
 
@@ -30,6 +31,7 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000016-CHANGE | CHANGE | Limit Recent Files To Tauri | Done | Release | Restrict the Recent Files option to the Tauri desktop runtime instead of exposing it in non-Tauri paths. |
 | PRD-000001-TECH | TECH | Split UI Controller | Done | Release | Reshape the app around a Shell plus Outline Pane, Markdown Pane, and Preview Pane components, including HTML and code naming cleanup. |
 | PRD-000005-CHANGE | CHANGE | Bump App Version | Done | Release | Update the packaged app version to the semver-safe equivalent of release label `1.02`. |
 | PRD-000006-UI | UI | Recent Files Picker | Done | Release | Let users quickly reopen one of the 10 most recently opened files. |
