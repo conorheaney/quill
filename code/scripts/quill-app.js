@@ -543,11 +543,73 @@ const { createPreviewPane } = window.QuillPreviewPane;
     setPreviewEditingEnabled(!shellState.isPreviewEditingEnabled);
   }
 
+  function getDocumentBaseUrl(filePath) {
+    const rawPath = String(filePath || "").trim();
+    if (!rawPath) {
+      return "";
+    }
+
+    const normalizedPath = rawPath.replace(/\\/g, "/");
+    try {
+      if (/^[A-Za-z]:\//.test(normalizedPath)) {
+        return new URL(`file:///${normalizedPath}`).href;
+      }
+      if (normalizedPath.startsWith("/")) {
+        return new URL(`file://${normalizedPath}`).href;
+      }
+    } catch (error) {
+      console.warn("Unable to derive a document base URL", error);
+    }
+
+    return "";
+  }
+
   function renderPreviewFromMarkdown(markdown) {
+    window.QuillMarkdown.setRenderContext({
+      documentBasePath: shellState.currentFilePath,
+      documentBaseUrl: getDocumentBaseUrl(shellState.currentFilePath)
+      ,
+      isDesktop: Boolean(window.QuillDesktop)
+    });
     const blocks = parseMarkdownBlocks(markdown);
     previewPane.setBlocks(blocks);
+    hydrateDesktopPreviewImages();
     updateWordCount(markdown);
     syncWorkspaceHeight();
+  }
+
+  let previewImageHydrationRun = 0;
+
+  async function hydrateDesktopPreviewImages() {
+    if (!window.QuillDesktop || typeof window.QuillDesktop.readImageDataUrl !== "function") {
+      return;
+    }
+
+    const currentRun = ++previewImageHydrationRun;
+    const contentElement = previewPane.getContentElement();
+    const previewImages = [...contentElement.querySelectorAll("img[data-local-image-path]")];
+
+    await Promise.all(previewImages.map(async (imageElement) => {
+      const localImagePath = imageElement.getAttribute("data-local-image-path") || "";
+      if (!localImagePath) {
+        return;
+      }
+
+      try {
+        const dataUrl = await window.QuillDesktop.readImageDataUrl(localImagePath);
+        if (currentRun !== previewImageHydrationRun || !imageElement.isConnected) {
+          return;
+        }
+        imageElement.src = dataUrl;
+        imageElement.removeAttribute("data-local-image-path");
+      } catch (error) {
+        if (currentRun !== previewImageHydrationRun || !imageElement.isConnected) {
+          return;
+        }
+        console.error("Unable to hydrate preview image", error);
+        imageElement.outerHTML = `<span class="preview-image-placeholder" data-preview-image-placeholder="true" title="Unable to load local image"><span class="preview-image-placeholder-label">${escapeHtml(imageElement.alt || "Image")}</span><span class="preview-image-placeholder-path">${escapeHtml(localImagePath)}</span></span>`;
+      }
+    }));
   }
 
   function handleMarkdownInput(showStatusToast) {

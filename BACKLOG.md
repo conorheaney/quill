@@ -20,13 +20,15 @@
 | PRD-000008-TECH | TECH | Refactor Stylesheet Structure | Proposed | Backlog | Reshape the CSS into clearer sections and ownership boundaries so shell, panes, dialogs, and theme tokens are easier to maintain. |
 | PRD-000009-UI | UI | Predefined Theme Picker | Proposed | Backlog | Let users choose from a set of predefined themes instead of only cycling between the current built-in options. |
 | PRD-000010-TECH | TECH | Critical Codebase Review And Refactor | Proposed | Backlog | Review the current codebase critically, document the highest-value structural issues, and carry out follow-on refactoring to improve maintainability. |
+| PRD-000019-CHANGE | CHANGE | Externalize Default Getting Started Guide | Proposed | Backlog | Store the default getting-started guide in a deployed markdown document for the desktop app, and use a simple generated markdown fallback in browser mode when direct startup-file loading is unavailable. |
+| PRD-000020-CHANGE | CHANGE | Remove Browser Mode Paths | Proposed | Backlog | Remove broader browser-mode code paths so Quill is shaped around the packaged desktop runtime as its supported end-user experience. |
 | PRD-000017-TECH | TECH | Centralize Product Version Source | Done | Release | Centralize Quill's product version in one shared source that both the UI and Tauri build configuration can consume so the displayed version and shipped build stay aligned. |
 
 ## In Progress
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
-| PRD-000018-BUG | BUG | Fix Relative Image Rendering | Planned | Plan | Render valid Markdown images in the application render view, and reuse the same behavior in browser mode when practical or fall back to a placeholder when it is not. |
+| PRD-000018-BUG | BUG | Fix Relative Image Rendering | Done | Release | Render valid Markdown images in the application render view, including fully specified local image paths as well as relative and online image sources. |
 
 ## Done
 

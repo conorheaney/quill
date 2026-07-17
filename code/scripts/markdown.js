@@ -4,6 +4,20 @@
  */
 
 window.QuillMarkdown = (() => {
+      let renderContext = {
+        documentBasePath: "",
+        documentBaseUrl: "",
+        isDesktop: false
+      };
+
+      function setRenderContext(context) {
+        const settings = context || {};
+        renderContext = {
+          documentBasePath: typeof settings.documentBasePath === "string" ? settings.documentBasePath : "",
+          isDesktop: Boolean(settings.isDesktop),
+          documentBaseUrl: typeof settings.documentBaseUrl === "string" ? settings.documentBaseUrl : ""
+        };
+      }
 
       function renderMarkdown(markdown) {
         const normalized = markdown.replace(/\r\n?/g, "\n");
@@ -178,10 +192,8 @@ window.QuillMarkdown = (() => {
         }
 
         output = output.replace(/!\[([^\]]*)]\(([^)]+)\)/g, (_, alt, url) => {
-          const safeUrl = sanitizeUrl(url);
-          if (!safeUrl) return alt;
           const token = createToken("IMAGE", inlineTokens.IMAGE.length);
-          inlineTokens.IMAGE.push(`<img src="${safeUrl}" alt="${alt}">`);
+          inlineTokens.IMAGE.push(buildImageHtml(alt, url));
           return token;
         });
 
@@ -217,6 +229,123 @@ window.QuillMarkdown = (() => {
           return "";
         }
         return `#${escapeAttribute(fragment)}`;
+      }
+
+      function buildImageHtml(alt, url) {
+        const rawUrl = (url || "").trim();
+        const safeAlt = escapeAttribute(alt || "");
+        if (!rawUrl) {
+          return safeAlt;
+        }
+
+        if (isRelativeMarkdownAssetUrl(rawUrl) && !renderContext.documentBaseUrl) {
+          return buildImagePlaceholderHtml(alt, rawUrl);
+        }
+
+        const localImagePath = resolveLocalImagePath(rawUrl);
+        if (localImagePath) {
+          return `<img data-local-image-path="${escapeAttribute(localImagePath)}" alt="${safeAlt}">`;
+        }
+
+        const safeUrl = sanitizeUrl(rawUrl, isRelativeMarkdownAssetUrl(rawUrl) ? renderContext.documentBaseUrl : "");
+        if (!safeUrl) {
+          return escapeHtml(alt || "");
+        }
+        return `<img src="${safeUrl}" alt="${safeAlt}">`;
+      }
+
+      function buildImagePlaceholderHtml(alt, rawUrl) {
+        const altLabel = (alt || "Image").trim() || "Image";
+        const safeAlt = escapeHtml(altLabel);
+        const safePath = escapeHtml(rawUrl);
+        return `<span class="preview-image-placeholder" data-preview-image-placeholder="true" title="Relative image preview unavailable without a file path"><span class="preview-image-placeholder-label">${safeAlt}</span><span class="preview-image-placeholder-path">${safePath}</span></span>`;
+      }
+
+      function isRelativeMarkdownAssetUrl(raw) {
+        if (!raw) return false;
+        if (raw.startsWith("#") || raw.startsWith("//") || raw.startsWith("/")) {
+          return false;
+        }
+        if (/^[A-Za-z][A-Za-z0-9+.-]*:/.test(raw)) {
+          return false;
+        }
+        if (/^[A-Za-z]:[\\/]/.test(raw)) {
+          return false;
+        }
+        return true;
+      }
+
+      function resolveLocalImagePath(rawUrl) {
+        if (!renderContext.isDesktop) {
+          return "";
+        }
+
+        if (isRelativeMarkdownAssetUrl(rawUrl)) {
+          return resolveRelativeImagePath(rawUrl);
+        }
+
+        if (/^[A-Za-z]:[\\/]/.test(rawUrl)) {
+          return decodeFileUrlPath(rawUrl);
+        }
+
+        if (rawUrl.startsWith("file:///")) {
+          return decodeFileUrlPath(rawUrl.slice("file:///".length));
+        }
+
+        if (rawUrl.startsWith("file://")) {
+          return decodeFileUrlPath(rawUrl.slice("file://".length));
+        }
+
+        return "";
+      }
+
+      function resolveRelativeImagePath(rawUrl) {
+        const basePath = String(renderContext.documentBasePath || "").trim();
+        if (!basePath) {
+          return "";
+        }
+
+        const normalizedBasePath = basePath.replace(/\//g, "\\");
+        const separatorIndex = Math.max(normalizedBasePath.lastIndexOf("\\"), normalizedBasePath.lastIndexOf("/"));
+        const baseDirectory = separatorIndex >= 0 ? normalizedBasePath.slice(0, separatorIndex) : "";
+        if (!baseDirectory) {
+          return "";
+        }
+
+        const combined = `${baseDirectory}\\${rawUrl.replace(/\//g, "\\")}`;
+        return normalizeWindowsLikePath(combined);
+      }
+
+      function normalizeWindowsLikePath(pathValue) {
+        const hasDrivePrefix = /^[A-Za-z]:\\/.test(pathValue);
+        const segments = pathValue.split("\\");
+        const normalizedSegments = [];
+
+        segments.forEach((segment, index) => {
+          if (!segment && index !== 0) {
+            return;
+          }
+          if (segment === ".") {
+            return;
+          }
+          if (segment === "..") {
+            if (normalizedSegments.length > 1 || (!hasDrivePrefix && normalizedSegments.length > 0)) {
+              normalizedSegments.pop();
+            }
+            return;
+          }
+          normalizedSegments.push(segment);
+        });
+
+        return normalizedSegments.join("\\");
+      }
+
+      function decodeFileUrlPath(pathValue) {
+        try {
+          return decodeURIComponent(pathValue).replace(/\//g, "\\");
+        } catch (error) {
+          return pathValue.replace(/\//g, "\\");
+        }
       }
 
       function replaceInlineCodeSpans(text, inlineTokens) {
@@ -269,7 +398,7 @@ window.QuillMarkdown = (() => {
         return -1;
       }
 
-      function sanitizeUrl(url) {
+      function sanitizeUrl(url, baseUrl) {
         const raw = (url || "").trim();
         if (!raw) {
           return "";
@@ -277,7 +406,8 @@ window.QuillMarkdown = (() => {
 
         const normalized = normaliseUrlForParsing(raw);
         try {
-          const parsed = new URL(normalized, window.location.href);
+          const fallbackBaseUrl = baseUrl || window.location.href;
+          const parsed = new URL(normalized, fallbackBaseUrl);
           const allowedProtocols = ["http:", "https:", "data:", "blob:", "file:"];
           const isDataImage = parsed.protocol === "data:" && raw.startsWith("data:image/");
           if (allowedProtocols.includes(parsed.protocol) && (parsed.protocol !== "data:" || isDataImage)) {
@@ -591,6 +721,7 @@ window.QuillMarkdown = (() => {
     renderBlockContent,
     renderMarkdown,
     renderTableFromRows,
+    setRenderContext,
     splitTableCells,
     tableRowsToMarkdown
   };

@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use serde::{Deserialize, Serialize};
+use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, Engine as _};
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -34,6 +35,23 @@ fn build_markdown_result(file_path: PathBuf, content: String) -> MarkdownFileRes
     }
 }
 
+fn guess_image_mime_type(file_path: &Path) -> &'static str {
+    match file_path
+        .extension()
+        .and_then(|extension| extension.to_str())
+        .map(|extension| extension.to_ascii_lowercase())
+        .as_deref()
+    {
+        Some("png") => "image/png",
+        Some("jpg") | Some("jpeg") => "image/jpeg",
+        Some("gif") => "image/gif",
+        Some("webp") => "image/webp",
+        Some("svg") => "image/svg+xml",
+        Some("bmp") => "image/bmp",
+        _ => "application/octet-stream",
+    }
+}
+
 #[tauri::command]
 fn read_markdown_file(file_path: String) -> Result<MarkdownFileResult, String> {
     let normalized_path = file_path.trim();
@@ -59,11 +77,26 @@ fn write_markdown_file(payload: WriteMarkdownPayload) -> Result<MarkdownFileResu
     Ok(build_markdown_result(target_path, payload.content))
 }
 
+#[tauri::command]
+fn read_image_data_url(file_path: String) -> Result<String, String> {
+    let normalized_path = file_path.trim();
+    if normalized_path.is_empty() {
+        return Err("A file path is required to read an image.".to_string());
+    }
+
+    let target_path = PathBuf::from(normalized_path);
+    let image_bytes = fs::read(&target_path).map_err(|error| error.to_string())?;
+    let mime_type = guess_image_mime_type(&target_path);
+    let encoded = BASE64_STANDARD.encode(image_bytes);
+    Ok(format!("data:{mime_type};base64,{encoded}"))
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             read_markdown_file,
+            read_image_data_url,
             write_markdown_file
         ])
         .run(tauri::generate_context!())

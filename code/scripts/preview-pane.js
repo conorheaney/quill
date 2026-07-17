@@ -300,6 +300,10 @@
       return contentElement;
     }
 
+    function getContentElement() {
+      return contentElement;
+    }
+
     function scrollToHeading(headingId) {
       const target = contentElement.querySelector(`#${CSS.escape(headingId)}`);
       if (!target) return;
@@ -426,6 +430,7 @@
 
     return {
       focus,
+      getContentElement,
       getScrollElement,
       scrollToHeading,
       setBlocks,

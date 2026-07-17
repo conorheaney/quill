@@ -74,6 +74,16 @@
         autosaveDraft: win.localStorage.getItem("quill-markdown")
       };
 
+      input.value = "# Browser relative image\n\n![Quill workflow lifecycle](./assets/workflow-lifecycle.png)";
+      input.dispatchEvent(new win.Event("input", { bubbles: true }));
+      await wait(250);
+
+      const browserRelativeImage = {
+        placeholderVisible: !!doc.querySelector("[data-preview-image-placeholder='true']"),
+        placeholderText: doc.querySelector("[data-preview-image-placeholder='true']")?.innerText,
+        imageCount: doc.querySelectorAll("#previewPaneContent img").length
+      };
+
       doc.querySelector("[data-action='codeBlock']").click();
       await wait(150);
       doc.getElementById("codeSnippetLanguage").value = "python";
@@ -150,6 +160,7 @@
         },
         initialCounts,
         afterEdit,
+        browserRelativeImage,
         codeSnippetFlow,
         afterSave,
         afterSaveAs,

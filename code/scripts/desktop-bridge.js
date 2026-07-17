@@ -34,6 +34,26 @@
     });
   }
 
+  const previewImageCache = new Map();
+
+  async function readImageDataUrl(filePath) {
+    const normalizedPath = String(filePath || "").trim();
+    if (!normalizedPath) {
+      throw new Error("A file path is required to preview an image.");
+    }
+
+    if (!previewImageCache.has(normalizedPath)) {
+      previewImageCache.set(normalizedPath, coreApi.invoke("read_image_data_url", {
+        filePath: normalizedPath
+      }).catch((error) => {
+        previewImageCache.delete(normalizedPath);
+        throw error;
+      }));
+    }
+
+    return previewImageCache.get(normalizedPath);
+  }
+
   window.QuillDesktop = {
     async getAppVersion() {
       if (!appApi || typeof appApi.getVersion !== "function") {
@@ -59,6 +79,10 @@
 
     async reopenMarkdownFile(filePath) {
       return readMarkdownFile(filePath);
+    },
+
+    async readImageDataUrl(filePath) {
+      return readImageDataUrl(filePath);
     },
 
     async saveMarkdownFile(payload) {
