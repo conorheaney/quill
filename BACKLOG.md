@@ -22,6 +22,7 @@
 | PRD-000010-TECH | TECH | Critical Codebase Review And Refactor | Proposed | Backlog | Review the current codebase critically, document the highest-value structural issues, and carry out follow-on refactoring to improve maintainability. |
 | PRD-000019-CHANGE | CHANGE | Externalize Default Getting Started Guide | Proposed | Backlog | Store the default getting-started guide in a deployed markdown document for the desktop app, and use a simple generated markdown fallback in browser mode when direct startup-file loading is unavailable. |
 | PRD-000020-CHANGE | CHANGE | Remove Browser Mode Paths | Proposed | Backlog | Remove broader browser-mode code paths so Quill is shaped around the packaged desktop runtime as its supported end-user experience. |
+| PRD-000021-TECH | TECH | TypeScript Migration For Frontend Runtime | Proposed | Backlog | Plan and execute a staged TypeScript migration for Quill's frontend runtime and desktop bridge so the editor gains stronger module contracts, safer state handling, and better refactor support. |
 | PRD-000017-TECH | TECH | Centralize Product Version Source | Done | Release | Centralize Quill's product version in one shared source that both the UI and Tauri build configuration can consume so the displayed version and shipped build stay aligned. |
 
 ## In Progress
