@@ -51,7 +51,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
   const sidebarVersionLabel = document.getElementById("sidebarVersionLabel");
   const documentFileLabel = document.getElementById("documentFileLabel");
   const markdownWordCount = document.getElementById("markdownWordCount");
-  const documentFileInput = document.getElementById("documentFileInput");
   const toastStack = document.getElementById("toastStack");
   const confirmDialog = document.getElementById("confirmDialog");
   const confirmDialogTitle = document.getElementById("confirmDialogTitle");
@@ -65,6 +64,16 @@ const { createPreviewPane } = window.QuillPreviewPane;
   const codeSnippetPreviewLanguage = document.getElementById("codeSnippetPreviewLanguage");
   const codeDialogCancel = document.getElementById("codeDialogCancel");
   const codeDialogAccept = document.getElementById("codeDialogAccept");
+  const desktopBridge = window.QuillDesktop || null;
+  const requiredDesktopMethods = [
+    "getAppVersion",
+    "openMarkdownFile",
+    "readImageDataUrl",
+    "reopenMarkdownFile",
+    "saveMarkdownFile"
+  ];
+  const missingDesktopMethods = requiredDesktopMethods.filter((methodName) => !desktopBridge || typeof desktopBridge[methodName] !== "function");
+  const isDesktopBridgeReady = missingDesktopMethods.length === 0;
 
   const outlinePane = createOutlinePane({
     navElement: document.getElementById("outlinePaneNav"),
@@ -76,11 +85,9 @@ const { createPreviewPane } = window.QuillPreviewPane;
 
   const shellState = {
     confirmResolver: null,
-    currentFileHandle: null,
     currentFileName: "",
     currentFilePath: "",
     currentRecentFileKey: "",
-    currentSourceFile: null,
     dialogSelection: { start: 0, end: 0 },
     isAutoSaveEnabled: true,
     isDirty: false,
@@ -100,25 +107,8 @@ const { createPreviewPane } = window.QuillPreviewPane;
   }
 
   function normaliseRecentEntry(entry) {
-    if (!entry || !entry.type) {
+    if (!entry) {
       return null;
-    }
-
-    if (entry.type === "handle") {
-      const handleKey = entry.handleKey ? String(entry.handleKey).trim() : "";
-      const handle = entry.handle || null;
-      const fileName = entry.fileName ? String(entry.fileName).trim() : (handle && handle.name ? handle.name : "");
-      if (!handleKey) {
-        return null;
-      }
-
-      return {
-        type: "handle",
-        handleKey,
-        handle,
-        fileName,
-        isAvailable: entry.isAvailable !== false && Boolean(handle)
-      };
     }
 
     const filePath = entry.filePath ? String(entry.filePath).trim() : "";
@@ -127,7 +117,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
     }
 
     return {
-      type: "path",
       filePath,
       fileName: entry.fileName ? String(entry.fileName).trim() : getFileNameFromPath(filePath),
       isAvailable: entry.isAvailable !== false
@@ -143,14 +132,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
   }
 
   function getRecentEntryKey(entry) {
-    if (!entry) return "";
-    if (entry.type === "handle") {
-      return entry.handleKey ? `handle:${entry.handleKey}` : "";
-    }
-    if (entry.type === "path") {
-      return entry.filePath ? `path:${entry.filePath}` : "";
-    }
-    return "";
+    return entry && entry.filePath ? entry.filePath : "";
   }
 
   function setCurrentRecentFile(entry) {
@@ -161,95 +143,28 @@ const { createPreviewPane } = window.QuillPreviewPane;
     return Boolean(shellState.currentRecentFileKey) && shellState.currentRecentFileKey === getRecentEntryKey(entry);
   }
 
-  function findMatchingPathEntryIndex(filePath) {
-    return shellState.recentFiles.findIndex((entry) => entry.type === "path" && entry.filePath === filePath);
-  }
-
-  async function findMatchingHandleEntryIndex(handle) {
-    if (!handle || typeof handle.isSameEntry !== "function") {
-      return -1;
-    }
-
-    for (let index = 0; index < shellState.recentFiles.length; index += 1) {
-      const entry = shellState.recentFiles[index];
-      if (entry.type !== "handle" || !entry.handle || typeof entry.handle.isSameEntry !== "function") {
-        continue;
-      }
-
-      try {
-        if (await entry.handle.isSameEntry(handle)) {
-          return index;
-        }
-      } catch (error) {
-        console.warn("Unable to compare recent file handles", error);
-      }
-    }
-
-    return -1;
-  }
-
-  function createHandleKey() {
-    if (window.crypto && typeof window.crypto.randomUUID === "function") {
-      return window.crypto.randomUUID();
-    }
-
-    return `recent-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-  }
-
   function recordRecentFile(filePath, fileName) {
     if (!filePath) {
       return null;
     }
 
     const nextEntry = normaliseRecentEntry({
-      type: "path",
       filePath,
       fileName,
       isAvailable: true
     });
-    const nextRecentFiles = [nextEntry].concat(shellState.recentFiles.filter((entry) => !(entry.type === "path" && entry.filePath === nextEntry.filePath)));
-    setRecentFiles(nextRecentFiles);
-    return nextEntry;
-  }
-
-  async function recordRecentFileHandle(handle, fileName) {
-    if (!handle) {
-      return null;
-    }
-
-    const existingIndex = await findMatchingHandleEntryIndex(handle);
-    const existingEntry = existingIndex >= 0 ? shellState.recentFiles[existingIndex] : null;
-    const nextEntry = normaliseRecentEntry({
-      type: "handle",
-      handleKey: existingEntry ? existingEntry.handleKey : createHandleKey(),
-      handle,
-      fileName: fileName || handle.name || "",
-      isAvailable: true
-    });
-
-    const nextRecentFiles = [nextEntry].concat(shellState.recentFiles.filter((_, index) => index !== existingIndex));
+    const nextRecentFiles = [nextEntry].concat(shellState.recentFiles.filter((entry) => entry.filePath !== nextEntry.filePath));
     setRecentFiles(nextRecentFiles);
     return nextEntry;
   }
 
   function updateRecentFileAvailability(entryToUpdate, isAvailable) {
     setRecentFiles(shellState.recentFiles.map((entry) => {
-      if (entry.type === "path" && entryToUpdate.type === "path" && entry.filePath === entryToUpdate.filePath) {
+      if (entry.filePath === entryToUpdate.filePath) {
         return {
           ...entry,
           isAvailable
         };
-      }
-
-      if (entry.type === "handle" && entryToUpdate.type === "handle" && entry.handleKey === entryToUpdate.handleKey) {
-        return {
-          ...entry,
-          isAvailable
-        };
-      }
-
-      if ((entry.type === "path") !== (entryToUpdate.type === "path")) {
-        return entry;
       }
       return entry;
     }));
@@ -261,21 +176,8 @@ const { createPreviewPane } = window.QuillPreviewPane;
     recentFilesPanel.hidden = !isOpen;
   }
 
-  function isDesktopRecentFilesSupported() {
-    return Boolean(window.QuillDesktop);
-  }
-
   function renderRecentFiles() {
     recentFilesList.replaceChildren();
-    recentFilesButton.disabled = false;
-
-    if (!isDesktopRecentFilesSupported()) {
-      const unavailableState = document.createElement("div");
-      unavailableState.className = "recent-file-empty";
-      unavailableState.textContent = "Recent Files is unavailable in a standard web browser.";
-      recentFilesList.appendChild(unavailableState);
-      return;
-    }
 
     if (!shellState.recentFiles.length) {
       const emptyState = document.createElement("div");
@@ -295,16 +197,16 @@ const { createPreviewPane } = window.QuillPreviewPane;
       const itemMain = document.createElement("button");
       itemMain.type = "button";
       itemMain.className = "recent-file-open";
-      itemMain.title = entry.type === "path" ? entry.filePath : entry.fileName;
+      itemMain.title = entry.filePath;
       itemMain.innerHTML = `
         <span class="recent-file-entry-main">
           <span class="recent-file-title-group">
-            <span class="recent-file-name">${escapeHtml(entry.fileName || (entry.type === "path" ? getFileNameFromPath(entry.filePath) : "Recent file"))}</span>
+            <span class="recent-file-name">${escapeHtml(entry.fileName || getFileNameFromPath(entry.filePath))}</span>
             ${isCurrent ? '<span class="recent-file-current-indicator">Current</span>' : ""}
           </span>
           ${entry.isAvailable ? "" : '<span class="recent-file-status">Unavailable</span>'}
         </span>
-        <span class="recent-file-path">${escapeHtml(entry.type === "path" ? entry.filePath : "Browser file access handle")}</span>
+        <span class="recent-file-path">${escapeHtml(entry.filePath)}</span>
       `;
       itemMain.addEventListener("click", () => {
         handleRecentFileOpen(entry).catch((error) => {
@@ -379,6 +281,17 @@ const { createPreviewPane } = window.QuillPreviewPane;
     }
   }
 
+  function configureDesktopFileControls() {
+    [loadDocumentButton, saveDocumentButton, saveDocumentAsButton, recentFilesButton].forEach((button) => {
+      button.disabled = !isDesktopBridgeReady;
+    });
+
+    if (!isDesktopBridgeReady) {
+      showToast("Quill desktop app required", "File actions are unavailable outside the packaged desktop app.", { duration: 0 });
+      console.error("Quill desktop bridge is incomplete", missingDesktopMethods);
+    }
+  }
+
   function updateDocumentFileLabel() {
     const label = shellState.currentFileName || "Untitled draft";
     documentFileLabel.textContent = shellState.isDirty ? `${label} *` : label;
@@ -389,13 +302,13 @@ const { createPreviewPane } = window.QuillPreviewPane;
       return;
     }
 
-    if (!window.QuillDesktop || typeof window.QuillDesktop.getAppVersion !== "function") {
+    if (!isDesktopBridgeReady) {
       sidebarVersionLabel.hidden = true;
       return;
     }
 
     try {
-      const version = await window.QuillDesktop.getAppVersion();
+      const version = await desktopBridge.getAppVersion();
       if (!version) {
         sidebarVersionLabel.hidden = true;
         return;
@@ -567,9 +480,8 @@ const { createPreviewPane } = window.QuillPreviewPane;
   function renderPreviewFromMarkdown(markdown) {
     window.QuillMarkdown.setRenderContext({
       documentBasePath: shellState.currentFilePath,
-      documentBaseUrl: getDocumentBaseUrl(shellState.currentFilePath)
-      ,
-      isDesktop: Boolean(window.QuillDesktop)
+      documentBaseUrl: getDocumentBaseUrl(shellState.currentFilePath),
+      isDesktop: isDesktopBridgeReady
     });
     const blocks = parseMarkdownBlocks(markdown);
     previewPane.setBlocks(blocks);
@@ -581,7 +493,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
   let previewImageHydrationRun = 0;
 
   async function hydrateDesktopPreviewImages() {
-    if (!window.QuillDesktop || typeof window.QuillDesktop.readImageDataUrl !== "function") {
+    if (!isDesktopBridgeReady) {
       return;
     }
 
@@ -596,7 +508,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
       }
 
       try {
-        const dataUrl = await window.QuillDesktop.readImageDataUrl(localImagePath);
+        const dataUrl = await desktopBridge.readImageDataUrl(localImagePath);
         if (currentRun !== previewImageHydrationRun || !imageElement.isConnected) {
           return;
         }
@@ -640,14 +552,8 @@ const { createPreviewPane } = window.QuillPreviewPane;
     if (settings.fileName !== undefined) {
       shellState.currentFileName = settings.fileName;
     }
-    if (settings.fileHandle !== undefined) {
-      shellState.currentFileHandle = settings.fileHandle;
-    }
     if (settings.filePath !== undefined) {
       shellState.currentFilePath = settings.filePath || "";
-    }
-    if (settings.sourceFile !== undefined) {
-      shellState.currentSourceFile = settings.sourceFile;
     }
 
     renderPreviewFromMarkdown(content);
@@ -878,52 +784,8 @@ const { createPreviewPane } = window.QuillPreviewPane;
     closeCodeDialog();
   }
 
-  function downloadFile(filename, content, mimeType) {
-    const blob = new Blob([content], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-
   function getSuggestedMarkdownFilename() {
     return shellState.currentFileName || "document.md";
-  }
-
-  async function loadMarkdownFromFile(file, fileHandle, options) {
-    const settings = options || {};
-    const content = await file.text();
-    const filePath = typeof file.path === "string" ? file.path : "";
-    let recentEntry = null;
-    setDocumentContent(content, {
-      fileName: file.name || shellState.currentFileName,
-      fileHandle,
-      filePath,
-      sourceFile: file,
-      dirty: false,
-      showStatusToast: false
-    });
-
-    if (filePath) {
-      recentEntry = recordRecentFile(filePath, file.name || getFileNameFromPath(filePath));
-    } else if (fileHandle) {
-      recentEntry = await recordRecentFileHandle(fileHandle, file.name || fileHandle.name || "");
-    } else if (settings.showPathWarning !== false) {
-      showToast("Recent file not tracked", "This file was opened without a reusable path or browser file handle, so it cannot appear in Recent.");
-    }
-
-    if (recentEntry) {
-      setCurrentRecentFile(recentEntry);
-    } else {
-      shellState.currentRecentFileKey = "";
-      renderRecentFiles();
-    }
-
-    if (settings.showLoadedToast !== false) {
-      showToast("Loaded", `${file.name || "Document"} is now open.`);
-    }
   }
 
   async function loadMarkdownFromDesktopResult(result, options) {
@@ -935,9 +797,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
 
     setDocumentContent(result.content, {
       fileName: result.fileName || getFileNameFromPath(result.filePath),
-      fileHandle: null,
       filePath: result.filePath || "",
-      sourceFile: null,
       dirty: false,
       showStatusToast: false
     });
@@ -961,6 +821,10 @@ const { createPreviewPane } = window.QuillPreviewPane;
   }
 
   async function handleLoadDocument() {
+    if (!isDesktopBridgeReady) {
+      return;
+    }
+
     try {
       const canContinue = await confirmIfDirty(
         "Load another file?",
@@ -969,33 +833,9 @@ const { createPreviewPane } = window.QuillPreviewPane;
       );
       if (!canContinue) return;
 
-      if (window.QuillDesktop && typeof window.QuillDesktop.openMarkdownFile === "function") {
-        const result = await window.QuillDesktop.openMarkdownFile();
-        if (!result) return;
-        await loadMarkdownFromDesktopResult(result);
-        return;
-      }
-
-      if (window.showOpenFilePicker) {
-        const [fileHandle] = await window.showOpenFilePicker({
-          multiple: false,
-          types: [
-            {
-              description: "Markdown files",
-              accept: {
-                "text/markdown": [".md", ".markdown"],
-                "text/plain": [".txt"]
-              }
-            }
-          ]
-        });
-        if (!fileHandle) return;
-        const file = await fileHandle.getFile();
-        await loadMarkdownFromFile(file, fileHandle);
-        return;
-      }
-
-      documentFileInput.click();
+      const result = await desktopBridge.openMarkdownFile();
+      if (!result) return;
+      await loadMarkdownFromDesktopResult(result);
     } catch (error) {
       if (error && error.name === "AbortError") return;
       console.error("Unable to load markdown file", error);
@@ -1004,76 +844,35 @@ const { createPreviewPane } = window.QuillPreviewPane;
   }
 
   async function handleSaveDocument(saveAs) {
+    if (!isDesktopBridgeReady) {
+      return;
+    }
+
     const useSaveAs = Boolean(saveAs);
     const content = markdownPane.getValue();
-    const previousFilePath = shellState.currentFilePath || "";
 
     try {
-      if (window.QuillDesktop && typeof window.QuillDesktop.saveMarkdownFile === "function") {
-        const result = await window.QuillDesktop.saveMarkdownFile({
-          content,
-          filePath: useSaveAs ? "" : shellState.currentFilePath,
-          saveAs: useSaveAs,
-          suggestedName: getSuggestedMarkdownFilename()
-        });
-        if (!result) return;
+      const result = await desktopBridge.saveMarkdownFile({
+        content,
+        filePath: useSaveAs ? "" : shellState.currentFilePath,
+        saveAs: useSaveAs,
+        suggestedName: getSuggestedMarkdownFilename()
+      });
+      if (!result) return;
 
-        shellState.currentFileHandle = null;
-        shellState.currentSourceFile = null;
-        shellState.currentFilePath = result.filePath || "";
-        shellState.currentFileName = result.fileName || shellState.currentFileName;
+      shellState.currentFilePath = result.filePath || "";
+      shellState.currentFileName = result.fileName || shellState.currentFileName;
 
-        if (shellState.currentFilePath) {
-          const recentEntry = recordRecentFile(shellState.currentFilePath, shellState.currentFileName);
-          setCurrentRecentFile(recentEntry);
-        } else {
-          showToast("Recent file not tracked", "This save target did not provide a reusable full path, so it cannot appear in Recent.");
-        }
-
-        markDirty(false);
-        showToast("SAVED TO FILE", "", { id: "save-status", duration: 1600 });
-        showToast(useSaveAs ? "Saved as" : "Saved", `${shellState.currentFileName || "Document"} was written to disk.`);
-        return;
-      }
-
-      if (window.showSaveFilePicker) {
-        const fileHandle = !useSaveAs && shellState.currentFileHandle ? shellState.currentFileHandle : await window.showSaveFilePicker({
-          suggestedName: getSuggestedMarkdownFilename(),
-          types: [
-            {
-              description: "Markdown files",
-              accept: {
-                "text/markdown": [".md", ".markdown"],
-                "text/plain": [".txt"]
-              }
-            }
-          ]
-        });
-        if (!fileHandle) return;
-
-        const writable = await fileHandle.createWritable();
-        await writable.write(content);
-        await writable.close();
-
-        shellState.currentFileHandle = fileHandle;
-        shellState.currentFilePath = "";
-        shellState.currentFileName = fileHandle.name || shellState.currentFileName;
-        shellState.currentSourceFile = null;
-        const recentEntry = await recordRecentFileHandle(fileHandle, shellState.currentFileName);
+      if (shellState.currentFilePath) {
+        const recentEntry = recordRecentFile(shellState.currentFilePath, shellState.currentFileName);
         setCurrentRecentFile(recentEntry);
-        markDirty(false);
-        showToast("SAVED TO FILE", "", { id: "save-status", duration: 1600 });
-        showToast(useSaveAs ? "Saved as" : "Saved", `${shellState.currentFileName || "Document"} was written to disk.`);
-        return;
+      } else {
+        showToast("Recent file not tracked", "This save target did not provide a reusable full path, so it cannot appear in Recent.");
       }
 
-      const fileName = useSaveAs || !shellState.currentFileName ? getSuggestedMarkdownFilename() : shellState.currentFileName;
-      downloadFile(fileName, content, "text/markdown;charset=utf-8");
-      shellState.currentFileName = fileName;
-      shellState.currentFilePath = "";
       markDirty(false);
-      showToast("DOWNLOADED MARKDOWN", "", { id: "save-status", duration: 1600 });
-      showToast("Downloaded", `${fileName} was downloaded from the browser.`);
+      showToast("SAVED TO FILE", "", { id: "save-status", duration: 1600 });
+      showToast(useSaveAs ? "Saved as" : "Saved", `${shellState.currentFileName || "Document"} was written to disk.`);
     } catch (error) {
       if (error && error.name === "AbortError") return;
       console.error("Unable to save markdown file", error);
@@ -1089,16 +888,12 @@ const { createPreviewPane } = window.QuillPreviewPane;
     );
     if (!canContinue) return;
 
-    shellState.currentFileHandle = null;
     shellState.currentFileName = "";
     shellState.currentFilePath = "";
     shellState.currentRecentFileKey = "";
-    shellState.currentSourceFile = null;
     setDocumentContent(NEW_DOCUMENT_CONTENT, {
       fileName: "",
-      fileHandle: null,
       filePath: "",
-      sourceFile: null,
       dirty: false,
       showStatusToast: false
     });
@@ -1120,27 +915,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
     handleMarkdownInput(false);
   }
 
-  async function ensureRecentHandlePermission(handle) {
-    if (!handle || typeof handle.queryPermission !== "function") {
-      return true;
-    }
-
-    try {
-      const currentPermission = await handle.queryPermission({ mode: "read" });
-      if (currentPermission === "granted") {
-        return true;
-      }
-      if (typeof handle.requestPermission === "function") {
-        const nextPermission = await handle.requestPermission({ mode: "read" });
-        return nextPermission === "granted";
-      }
-    } catch (error) {
-      console.warn("Unable to verify handle permission", error);
-    }
-
-    return false;
-  }
-
   async function handleRecentFileOpen(entry) {
     if (!entry) {
       return;
@@ -1154,34 +928,12 @@ const { createPreviewPane } = window.QuillPreviewPane;
     if (!canContinue) return;
 
     try {
-      if (entry.type === "handle" && entry.handle) {
-        const hasPermission = await ensureRecentHandlePermission(entry.handle);
-      if (!hasPermission) {
-        throw new Error("Permission to reopen the selected file was denied.");
-      }
-
-        const file = await entry.handle.getFile();
-        await loadMarkdownFromFile(file, entry.handle, {
-          showLoadedToast: false,
-          showPathWarning: false
-        });
-        updateRecentFileAvailability(entry, true);
-        showToast("Recent file opened", `${file.name || "Document"} is now open.`);
-        setRecentFilesMenuOpen(false);
-        return;
-      }
-
-      if (entry.type === "path" && window.QuillDesktop && typeof window.QuillDesktop.reopenMarkdownFile === "function") {
-        const result = await window.QuillDesktop.reopenMarkdownFile(entry.filePath);
-        if (!result) return;
-        await loadMarkdownFromDesktopResult(result, { showLoadedToast: false });
-        updateRecentFileAvailability(entry, true);
-        showToast("Recent file opened", `${result.fileName || "Document"} is now open.`);
-        setRecentFilesMenuOpen(false);
-        return;
-      }
-
-      showToast("Recent files unavailable", "This recent-file entry cannot be reopened in the current environment.");
+      const result = await desktopBridge.reopenMarkdownFile(entry.filePath);
+      if (!result) return;
+      await loadMarkdownFromDesktopResult(result, { showLoadedToast: false });
+      updateRecentFileAvailability(entry, true);
+      showToast("Recent file opened", `${result.fileName || "Document"} is now open.`);
+      setRecentFilesMenuOpen(false);
     } catch (error) {
       console.error("Unable to reopen recent file", error);
       updateRecentFileAvailability(entry, false);
@@ -1308,16 +1060,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
   toggleMarkdownPaneButton.addEventListener("click", toggleMarkdownPaneCollapsed);
   toggleAutoSaveButton.addEventListener("click", toggleAutoSave);
   togglePreviewEditingButton.addEventListener("click", togglePreviewEditingEnabled);
-  documentFileInput.addEventListener("change", (event) => {
-    const [file] = event.target.files || [];
-    if (!file) return;
-    shellState.currentFileHandle = null;
-    loadMarkdownFromFile(file, null).catch((error) => {
-      console.error("Unable to load markdown file", error);
-      showToast("Load failed", "The selected file could not be opened.");
-    });
-    documentFileInput.value = "";
-  });
 
   codeSnippetLanguage.addEventListener("change", updateCodePreview);
   codeSnippetInput.addEventListener("input", updateCodePreview);
@@ -1356,6 +1098,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
 
   setTheme(savedTheme);
   setAutoSave(savedAutoSave !== "false");
+  configureDesktopFileControls();
   renderRecentFiles();
   getRecentFiles()
     .then((entries) => {
@@ -1372,9 +1115,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
     });
   setDocumentContent(DEFAULT_CONTENT, {
     fileName: "quill.md",
-    fileHandle: null,
     filePath: "",
-    sourceFile: null,
     dirty: false,
     showStatusToast: false
   });

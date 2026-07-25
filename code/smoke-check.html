@@ -3,178 +3,187 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quill Smoke Check</title>
+  <title>Quill Desktop-Bridge Smoke Check</title>
 </head>
 <body>
   <pre id="result">Running...</pre>
   <script>
     const resultNode = document.getElementById("result");
+    const scenario = new URLSearchParams(window.location.search).get("bridge") || "complete";
+    const bridgeLog = [];
+    const saveLog = [];
+    let browserFallbackCalls = 0;
 
     function wait(ms) {
       return new Promise((resolve) => window.setTimeout(resolve, ms));
     }
 
+    window.recordBrowserFallback = () => {
+      browserFallbackCalls += 1;
+    };
+
+    window.createDesktopBridgeMock = () => {
+      if (scenario === "absent") {
+        return null;
+      }
+
+      const bridge = {
+        async getAppVersion() {
+          bridgeLog.push("getAppVersion");
+          return "1.0.4";
+        },
+        async openMarkdownFile() {
+          bridgeLog.push("openMarkdownFile");
+          return {
+            content: "# Loaded\n\nLoaded from the desktop bridge.",
+            fileName: "loaded.md",
+            filePath: "C:\\Quill Smoke\\loaded.md"
+          };
+        },
+        async readImageDataUrl(filePath) {
+          bridgeLog.push(`readImageDataUrl:${filePath}`);
+          return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+XnV3NwAAAABJRU5ErkJggg==";
+        },
+        async reopenMarkdownFile(filePath) {
+          bridgeLog.push(`reopenMarkdownFile:${filePath}`);
+          return {
+            content: "# Reopened\n\nLoaded from Recent.",
+            fileName: "loaded.md",
+            filePath
+          };
+        },
+        async saveMarkdownFile(payload) {
+          bridgeLog.push(`saveMarkdownFile:${payload.saveAs ? "saveAs" : "save"}`);
+          saveLog.push(payload.content);
+          const fileName = payload.saveAs ? "saved-as.md" : "saved.md";
+          return {
+            content: payload.content,
+            fileName,
+            filePath: `C:\\Quill Smoke\\${fileName}`
+          };
+        }
+      };
+
+      if (scenario === "incomplete") {
+        delete bridge.saveMarkdownFile;
+      }
+
+      return bridge;
+    };
+
     async function run() {
       const frame = document.createElement("iframe");
-      frame.src = "./quill.html";
       frame.width = "1400";
       frame.height = "1000";
       frame.style.border = "0";
-      document.body.appendChild(frame);
 
-      await new Promise((resolve, reject) => {
+      const appHtml = await fetch("./quill.html").then((response) => response.text());
+      const bootstrap = `<script>
+        window.localStorage.removeItem("quill-recent-files");
+        window.QuillDesktop = window.parent.createDesktopBridgeMock();
+        window.showOpenFilePicker = window.parent.recordBrowserFallback;
+        window.showSaveFilePicker = window.parent.recordBrowserFallback;
+      <\/script>`;
+      frame.srcdoc = appHtml
+        .replace("<head>", "<head><base href=\"./\">")
+        .replace('<script src="./scripts/markdown.js?v=9"><\/script>', `${bootstrap}<script src="./scripts/markdown.js?v=9"><\/script>`);
+
+      const loaded = new Promise((resolve, reject) => {
         frame.addEventListener("load", resolve, { once: true });
         frame.addEventListener("error", reject, { once: true });
       });
+      document.body.appendChild(frame);
+      await loaded;
+      await wait(1200);
 
       const doc = frame.contentDocument;
       const win = frame.contentWindow;
-      await wait(1200);
 
-      const saveLog = [];
-      win.showSaveFilePicker = async () => ({
-        name: saveLog.length === 0 ? "saved.md" : "saved-as.md",
-        async createWritable() {
-          return {
-            async write(content) {
-              saveLog.push(content);
-            },
-            async close() {}
-          };
-        }
-      });
-      win.showOpenFilePicker = async () => ([{
-        async getFile() {
-          return {
-            name: "loaded.md",
-            async text() {
-              return "# Loaded\n\nLoaded from picker.";
-            }
-          };
-        }
-      }]);
+      if (scenario !== "complete") {
+        ["loadDocumentButton", "saveDocumentButton", "saveDocumentAsButton", "recentFilesButton"].forEach((id) => {
+          doc.getElementById(id).click();
+        });
+        resultNode.textContent = JSON.stringify({
+          scenario,
+          controlsDisabled: ["loadDocumentButton", "saveDocumentButton", "saveDocumentAsButton", "recentFilesButton"].every((id) => doc.getElementById(id).disabled),
+          message: doc.getElementById("toastStack")?.innerText,
+          browserFallbackCalls
+        }, null, 2);
+        return;
+      }
 
       const input = doc.getElementById("markdownPaneInput");
       input.value = "# Title\n\nA short test paragraph.";
       input.dispatchEvent(new win.Event("input", { bubbles: true }));
       await wait(700);
 
-      const initialCounts = {
-        previewBlocks: doc.querySelectorAll(".preview-block").length,
-        outlineItems: doc.querySelectorAll(".outline-item").length
-      };
-
       const afterEdit = {
         wordCount: doc.getElementById("markdownWordCount")?.textContent,
         previewBlocks: doc.querySelectorAll(".preview-block").length,
-        outlineItems: doc.querySelectorAll(".outline-item").length,
-        outlineText: Array.from(doc.querySelectorAll(".outline-item")).map((el) => el.textContent),
-        previewText: doc.getElementById("previewPaneContent")?.innerText,
-        fileLabel: doc.getElementById("documentFileLabel")?.textContent,
-        autosaveDraft: win.localStorage.getItem("quill-markdown")
-      };
-
-      input.value = "# Browser relative image\n\n![Quill workflow lifecycle](./assets/workflow-lifecycle.png)";
-      input.dispatchEvent(new win.Event("input", { bubbles: true }));
-      await wait(250);
-
-      const browserRelativeImage = {
-        placeholderVisible: !!doc.querySelector("[data-preview-image-placeholder='true']"),
-        placeholderText: doc.querySelector("[data-preview-image-placeholder='true']")?.innerText,
-        imageCount: doc.querySelectorAll("#previewPaneContent img").length
-      };
-
-      doc.querySelector("[data-action='codeBlock']").click();
-      await wait(150);
-      doc.getElementById("codeSnippetLanguage").value = "python";
-      doc.getElementById("codeSnippetLanguage").dispatchEvent(new win.Event("change", { bubbles: true }));
-      doc.getElementById("codeSnippetInput").value = "print('hello')";
-      doc.getElementById("codeSnippetInput").dispatchEvent(new win.Event("input", { bubbles: true }));
-      doc.getElementById("codeDialogAccept").click();
-      await wait(250);
-
-      const codeSnippetFlow = {
-        markdownContainsImage: doc.getElementById("markdownPaneInput")?.value.includes("![Code snippet (Python)](data:image/png"),
-        previewContainsImage: !!doc.querySelector("#previewPaneContent img")
+        outlineText: Array.from(doc.querySelectorAll(".outline-item")).map((element) => element.textContent),
+        dirty: doc.getElementById("documentFileLabel")?.textContent.includes("*")
       };
 
       doc.getElementById("saveDocumentButton").click();
       await wait(250);
-
       const afterSave = {
         savedCount: saveLog.length,
-        lastSavedName: doc.getElementById("documentFileLabel")?.textContent,
+        fileLabel: doc.getElementById("documentFileLabel")?.textContent,
         dirtyCleared: !doc.getElementById("documentFileLabel")?.textContent.includes("*")
+      };
+
+      input.value = "# Relative image\n\n![Smoke image](./assets/smoke.png)";
+      input.dispatchEvent(new win.Event("input", { bubbles: true }));
+      await wait(250);
+      const relativeImage = {
+        imageCount: doc.querySelectorAll("#previewPaneContent img").length,
+        bridgeRead: bridgeLog.some((entry) => entry.startsWith("readImageDataUrl:"))
       };
 
       doc.getElementById("saveDocumentAsButton").click();
       await wait(250);
-
       const afterSaveAs = {
         savedCount: saveLog.length,
-        lastSavedName: doc.getElementById("documentFileLabel")?.textContent,
-        dirtyCleared: !doc.getElementById("documentFileLabel")?.textContent.includes("*")
+        fileLabel: doc.getElementById("documentFileLabel")?.textContent
       };
 
       doc.getElementById("loadDocumentButton").click();
       await wait(350);
-
       const afterLoad = {
         fileLabel: doc.getElementById("documentFileLabel")?.textContent,
-        wordCount: doc.getElementById("markdownWordCount")?.textContent,
-        outlineText: Array.from(doc.querySelectorAll(".outline-item")).map((el) => el.textContent),
-        previewText: doc.getElementById("previewPaneContent")?.innerText,
-        markdownValue: doc.getElementById("markdownPaneInput")?.value
+        markdownValue: input.value,
+        recentCount: doc.querySelectorAll(".recent-file-entry").length
+      };
+
+      doc.getElementById("recentFilesButton").click();
+      doc.querySelector(".recent-file-open")?.click();
+      await wait(350);
+      const afterRecent = {
+        markdownValue: input.value,
+        reopened: bridgeLog.some((entry) => entry.startsWith("reopenMarkdownFile:"))
       };
 
       doc.getElementById("togglePreviewEditingButton").click();
-      doc.querySelector(".preview-block").click();
-      await wait(250);
+      doc.querySelector(".preview-block")?.click();
+      await wait(200);
+      const previewEditing = !!doc.querySelector("[data-inline-editor='true']");
 
-      const previewEditing = {
-        enabled: doc.getElementById("togglePreviewEditingButton")?.getAttribute("aria-checked"),
-        inlineEditorVisible: !!doc.querySelector("[data-inline-editor='true']")
-      };
-
-      doc.getElementById("toggleMarkdownPaneButton").click();
-      await wait(150);
-
-      const markdownPaneCollapse = {
-        collapsed: doc.querySelector(".workspace")?.classList.contains("editor-collapsed"),
-        ariaChecked: doc.getElementById("toggleMarkdownPaneButton")?.getAttribute("aria-checked")
-      };
-
-      doc.getElementById("cycleThemeButton").click();
-      await wait(150);
-
-      const theme = {
-        dark: doc.body.classList.contains("dark")
-      };
-
-      const result = {
-        title: doc.title,
-        mounted: {
-          outlinePane: !!doc.getElementById("outlinePaneNav"),
-          markdownPane: !!doc.getElementById("markdownPaneInput"),
-          previewPane: !!doc.getElementById("previewPaneContent")
-        },
-        initialCounts,
+      resultNode.textContent = JSON.stringify({
+        scenario,
+        bridgeLog,
+        browserFallbackCalls,
         afterEdit,
-        browserRelativeImage,
-        codeSnippetFlow,
+        relativeImage,
         afterSave,
         afterSaveAs,
         afterLoad,
-        previewEditing,
-        markdownPaneCollapse,
-        theme
-      };
-
-      resultNode.textContent = JSON.stringify(result, null, 2);
+        afterRecent,
+        previewEditing
+      }, null, 2);
     }
 
     run().catch((error) => {
-      resultNode.textContent = JSON.stringify({ error: String(error) }, null, 2);
+      resultNode.textContent = JSON.stringify({ error: String(error), stack: error.stack }, null, 2);
     });
   </script>
 </body>

@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "npm run tauri:dev",
-    "web:dev": "node scripts/serve-quill.mjs",
+    "smoke:dev": "node scripts/serve-quill.mjs",
     "tauri:info": "tauri info",
     "tauri:dev": "tauri dev",
     "version:bump": "node scripts/bump-version.mjs",

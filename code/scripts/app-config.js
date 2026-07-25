@@ -66,7 +66,7 @@ Inline hover controls also let you delete a block, insert a block before or afte
 ## Open And Save Files
 
 - LOAD opens a Markdown, text, or compatible file from your computer.
-- SAVE writes back to the current file when the browser grants file access, or downloads a Markdown copy otherwise.
+- SAVE writes back to the current desktop file.
 - SAVE AS creates a new Markdown file.
 - NEW starts an untitled document with a small writing prompt.
 
