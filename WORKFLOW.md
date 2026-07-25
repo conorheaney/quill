@@ -96,6 +96,7 @@ Turn a backlog item into an implementation-ready work package with enough detail
 - Keep planning decisions, constraints, evidence, risks, and clarifications in `Audit`.
 - Do not move to `Implement` until `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` are present.
 - Do not move to `Implement` until the PRD is detailed enough to guide execution and verification.
+- Number acceptance criteria as `AC-{NN}` and map planned test cases as `TC-{NN}` before implementation.
 
 ### Tracking
 
@@ -136,6 +137,10 @@ Verify the implemented work explicitly before it is treated as release-ready.
 - Update the matching backlog row at the same time.
 - Add a `Test` row to `History` at the moment the phase starts.
 - Record the verification approach, evidence, failures, and outcomes in the PRD.
+- Track each test case in the PRD with its ID, acceptance criterion, product version under test, description, `open` or `complete` status, and evidence link.
+- Record the exact product version for every test case. Use the current value from the canonical `package.json` version source when the test case is created, then confirm or update it to the version actually tested when the case is executed; do not use a floating label such as `current` or `latest`.
+- Store completed test records as uppercase `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md` files using `TESTCASE.md`.
+- Each test record must link to its PRD and include the criterion, product version tested, description, result, status, UTC timestamp, and embedded or linked artifacts.
 - If testing reveals more implementation work, move the PRD back to `Implement`, update the backlog row, record the new stage transition in `History`, and only then resume code changes.
 - Do not move to `Release` until the planned verification is complete enough to support acceptance.
 
@@ -157,6 +162,8 @@ Close the item as shipped, accepted work with the final workflow record preserve
 - Update the matching backlog row to its final state at the same time.
 - Add a `Release` row to `History` at the moment the phase starts.
 - Mark the backlog item `Done` only when the release state is real.
+- Require applicable test cases to be `complete`; record accepted exceptions in `Audit`.
+- Update test-record PRD links after moving the PRD into `04 - Release`.
 - Record final release notes, exceptions, tagging notes, and closing evidence in `Audit`.
 - Release execution should follow the repo release guardrails in this document.
 

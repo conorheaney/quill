@@ -6,53 +6,46 @@ Externalize Default Getting Started Guide
 
 ## Goal
 
-Move Quill's default getting-started guide out of hard-coded script content and into a markdown document that ships with the app, while preserving a simple generated fallback for browser mode when direct startup-file loading is not available.
+Load Quill's default guide from a shipped Markdown file instead of script content.
 
 ## Context
 
-Quill currently maintains default getting-started content in script, even though the repo already includes a markdown guide document. That makes the startup guide harder to edit as content, harder to keep aligned across runtime modes, and less obviously part of the shipped product content. The desktop app should prefer a deployed markdown document for the startup guide, while browser mode should stay resilient by showing simple generated markdown content if direct startup-file loading is not practical there.
+The guide exists in both script and Markdown. Under `PRD-000020-CHANGE`, the Markdown file becomes the sole desktop source with no browser fallback.
 
 ## Scope
 
 In:
 
-- define a deployed markdown document as the source of truth for the default getting-started guide in the desktop app
-- update startup loading so the app reads that document instead of maintaining the guide directly in script
-- keep a simple generated markdown fallback for browser mode when direct startup-file loading is not available
-- clarify which startup-content behavior belongs to Tauri mode versus browser mode
-- update docs if the default-guide source or loading behavior becomes part of the supported product baseline
+- make the deployed Markdown file the sole guide source
+- load it through Tauri with clear failure behavior
+- update affected docs
 
 Out:
 
-- broad document-management features
+- document-management features or guide redesign
 - user-selectable startup documents
-- redesigning the getting-started guide content itself beyond what is needed to externalize it cleanly
-- removing the browser fallback entirely
+- browser fallback behavior
 
 ## Plan
 
-- Confirm the current startup-content flow across Tauri and browser modes, including where hard-coded guide content is still maintained.
-- Define the deployed markdown document path, the desktop loading contract, and the simple browser fallback behavior.
-- Plan the smallest implementation slice that switches desktop mode to the deployed document without breaking startup behavior in browser mode.
+- Define the deployed path, Tauri loading contract, and failure behavior.
+- Remove the duplicate script source and update docs.
 
 ## Acceptance Criteria
 
-- The desktop app no longer relies on directly maintained script content as the primary source of the default getting-started guide.
-- A deployed markdown document is the defined startup-guide source for the desktop app.
-- Browser mode still shows startup content when direct loading of the markdown document is unavailable.
-- The browser fallback is intentionally simple and generated dynamically rather than pretending to be the same file-loading path as the desktop app.
-- The PRD clearly separates current implementation scope from any future expansion of startup-content options.
+- The packaged app loads the shipped Markdown guide.
+- No duplicate script or browser fallback content remains.
+- A missing guide produces the defined desktop error.
 
 ## Verification
 
-- Verify which file becomes the source of truth for the default startup guide in desktop mode.
-- Verify the startup path in Tauri mode uses the deployed markdown document.
-- Verify browser mode still renders fallback startup content when direct loading of the markdown document is unavailable.
-- Verify docs and workflow artifacts describe the chosen baseline accurately if they are affected.
+- Verify normal and missing-guide startup behavior.
+- Search for duplicate or browser fallback content.
+- Review affected docs.
 
 ## Next Step
 
-Move this item to `01 - Plan` and define the startup-guide source path, desktop loading behavior, browser fallback behavior, and first implementation slice.
+After `PRD-000020-CHANGE`, move this item to `01 - Plan` and define the path and loading contract.
 
 ## History
 
@@ -66,3 +59,4 @@ Move this item to `01 - Plan` and define the startup-guide source path, desktop 
 | --- | --- | --- |
 | 2026-07-16T20:45:01.4039955Z | Scope discovery | Added as a backlog item to externalize the default getting-started guide into a deployed markdown document for the desktop app while keeping browser-mode startup content resilient. |
 | 2026-07-16T20:45:01.4349938Z | State | Current state: backlogged and waiting to move into `01 - Plan`. |
+| 2026-07-24T23:40:21.5074095Z | Scope alignment | Aligned with the desktop-only runtime: use Tauri loading with no browser fallback. |

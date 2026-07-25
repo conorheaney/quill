@@ -31,7 +31,7 @@ npm install
 npm run tauri:dev
 ```
 
-If you only want the browser shell during development, run `npm run web:dev` and open the local URL it prints.
+For the bridge-mocked renderer smoke harness, run `npm run smoke:dev` and open `/smoke-check.html`. This is test tooling, not a supported browser runtime.
 
 Expected development behavior:
 

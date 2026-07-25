@@ -94,13 +94,14 @@ Out:
 | Field | Detail |
 | --- | --- |
 | Number | `PRD-000017-TECH-TC-01` |
+| Product Version | `1.0.4` |
 | Title | `Built Quill app shows product version in the desktop UI` |
 | Acceptance Criterion | `The product version must be visible in the Tauri desktop UI.` |
 | Preconditions | A built Quill desktop executable is available. |
 | Expected Result | A version label is visible in the Tauri desktop UI; the label is displayed in the sidebar product area; the label shows a valid product version string. |
 | Date | `2026-07-16T15:51:36.9914018Z` |
 | Note | Screenshot captured from the built Quill Tauri desktop app with the sidebar version label highlighted. The visible label shows `Version 1.0.4` in the product area beside the Quill branding. |
-| Evidence | [prd-000017-version-ui-test-evidence.png](C:/Users/conor/Documents/Markdown%20Editor/docs/evidence/prd-000017-version-ui-test-evidence.png) |
+| Evidence | [prd-000017-version-ui-test-evidence.png](../90%20-%20Evidence/prd-000017-version-ui-test-evidence.png) |
 
 Steps:
 - Launch the built Quill desktop application.
@@ -114,13 +115,14 @@ Steps:
 | Field | Detail |
 | --- | --- |
 | Number | `PRD-000017-TECH-TC-02` |
+| Product Version | `1.0.4` |
 | Title | `Built executable and installer show the same product version in file properties` |
 | Acceptance Criterion | `The latest product version appears in the built app executable properties and installer executable properties.` |
 | Preconditions | A built Quill desktop executable and built Quill installer are available. |
 | Expected Result | The built app executable shows the expected current product version in its properties; the installer executable shows the same expected current product version in its properties; the version values match between the two built artifacts. |
 | Date | `2026-07-16T15:51:36.9914018Z` |
 | Note | Screenshot captured from the built `quill-tauri.exe` file properties `Details` tab. The visible metadata shows `File version 1.0.4` and `Product version 1.0.4`, confirming the built desktop executable carries the expected current product version. |
-| Evidence | [prd-000017-exe-version-test-evidence.png](C:/Users/conor/Documents/Markdown%20Editor/docs/evidence/prd-000017-exe-version-test-evidence.png) |
+| Evidence | [prd-000017-exe-version-test-evidence.png](../90%20-%20Evidence/prd-000017-exe-version-test-evidence.png) |
 
 Steps:
 - In Windows File Explorer, locate the built Quill desktop executable.
@@ -167,6 +169,11 @@ Treat the shared Quill versioning flow as the released baseline and use the manu
 | 2026-07-16T14:30:34.1856565Z | Implementation refinement | Extended the version-bump flow to support release-cycle increments without a second maintained number: explicit calls may now use stable or prerelease semver such as `1.0.4`, `1.0.4-qa.1`, or `1.0.4-rc.1`, while a no-argument call increments the trailing numeric component of the current version once, for example `1.0.3 -> 1.0.4` or `1.0.4-qa.1 -> 1.0.4-qa.2`. |
 | 2026-07-16T14:38:54.5148850Z | Verification refinement | Added a concrete manual verification checklist covering explicit and no-argument version bumps, invalid-input rejection, Tauri desktop UI version display, and built-artifact property checks, including the known local lock caveat for `src-tauri/target/release/quill-tauri.exe`. |
 | 2026-07-16T15:03:07.2629744Z | Promotion | Promoted from `Implement` to `Test` after rebuilding Quill successfully at product version `1.0.4` and confirming the rebuilt release executable and NSIS installer both report product version `1.0.4`. The remaining verification focus is the live Tauri desktop UI check for the sidebar version label. |
-| 2026-07-16T15:51:36.9914018Z | Verification | Verified the remaining live Tauri desktop UI check with screenshot evidence in `docs/evidence/prd-000017-version-ui-test-evidence.png`, showing the sidebar label renders `VERSION 1.0.4` in the running Quill desktop app. Paired artifact evidence in `docs/evidence/prd-000017-exe-version-test-evidence.png` shows the rebuilt `quill-tauri.exe` properties report file version and product version `1.0.4`. |
+| 2026-07-16T15:51:36.9914018Z | Verification | Verified the remaining live Tauri desktop UI check with screenshot evidence in `docs/90 - Evidence/prd-000017-version-ui-test-evidence.png`, showing the sidebar label renders `VERSION 1.0.4` in the running Quill desktop app. Paired artifact evidence in `docs/90 - Evidence/prd-000017-exe-version-test-evidence.png` shows the rebuilt `quill-tauri.exe` properties report file version and product version `1.0.4`. |
 | 2026-07-16T15:51:37.0274104Z | Promotion | Promoted from `Test` to `Release` after the live Tauri UI version-label check and executable-property evidence closed the remaining verification gap for `1.0.4`. |
 | 2026-07-16T15:56:08.6664436Z | Documentation refinement | Updated the release PRD test case formatting so each case now uses a separate title row, `{PRD}-{TC}` numbering, and canonical UTC timestamp formatting in the `Date` field. |
+| 2026-07-25T20:53:18.8487993Z | Test metadata backfill | Added product version `1.0.4` to each existing test case so the version tested is explicit. |
+
+## Legacy Notes
+
+- Product version `1.0.4` was added retrospectively to the existing test cases on 2026-07-25. Original test timestamps and outcomes were not changed.
