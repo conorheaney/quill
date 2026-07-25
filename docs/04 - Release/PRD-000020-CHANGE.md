@@ -109,6 +109,7 @@ Release record complete; commit and ship from `main` under the repository releas
 | 2026-07-25T23:18:13.2663330Z | Test evidence | Marked `TC-06` complete after the Recent-file unsaved-change confirmation flow passed. |
 | 2026-07-25T20:53:18.8487993Z | Test metadata backfill | Added product version `1.0.4` to every planned test case and completed evidence record so the version under test is explicit. |
 | 2026-07-25T23:19:49.1009149Z | Promotion | Promoted to `Release` with user approval after all eight test cases completed. |
+| 2026-07-25T23:35:48.5190238Z | Release build | Bumped the centralized version to `1.0.5`; the isolated production build and NSIS installer succeeded, and executable metadata reports version `1.0.5`. Release tag target: `v1.0.5`. |
 
 ## Legacy Notes
 
