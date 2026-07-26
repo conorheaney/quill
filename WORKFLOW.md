@@ -52,6 +52,7 @@ Quill uses a single-file PRD workflow to move work from idea to shipped change w
 - Every commit to `main` with a product-affecting change must also increase the product version. Commit the change and synchronized version files together.
 - Documentation and test-evidence-only commits do not increase the product version unless they change packaged content.
 - Intermediate product versions may remain unreleased and untagged.
+- Overwrite the root executable after builds.
 - Ship releases from `main` and create one annotated version tag for each shipped release, for example `v1.0.2`.
 - Create the tag only after the exact version has passed formal testing and release approval. Never move or reuse a release tag.
 - Create a dedicated release branch only when an older release line needs parallel maintenance while `main` continues toward a newer version.
