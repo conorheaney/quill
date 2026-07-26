@@ -6,6 +6,8 @@ Quill uses a single-file PRD workflow to move work from idea to shipped change w
 
 ## Global Workflow Guardrails
 
+### Authority and Gates
+
 - `WORKFLOW.md` is the canonical workflow definition.
 - `BACKLOG.md` is the canonical source of truth for PRD items, their overall status, and their current workflow phase.
 - Refuse to do work that does not conform to this workflow, and explain the reason clearly.
@@ -13,6 +15,9 @@ Quill uses a single-file PRD workflow to move work from idea to shipped change w
 - Refuse to implement any code change unless the PRD is currently in `Implement`.
 - When adding a new requirement, use the repo-local [$grill-me](C:\Users\conor\Documents\Markdown Editor\.codex\skills\grill-me\SKILL.md) skill to flesh it out to a basic level before turning it into a PRD item.
 - If the repo-local `grill-me` skill is missing or broken, refuse to create a new requirement and explain that the required workflow dependency is unavailable.
+
+### PRD Identity and Lifecycle
+
 - Use PRD IDs in the format `PRD-NNNNNN-{CLASS}` where `{CLASS}` can be values such as `BUG`, `CHANGE`, `TECH`, or `UI`.
 - Use one PRD file per item, named exactly after the PRD ID.
 - Move the same PRD file forward as the item advances. Do not create replacement PRD files for later phases.
@@ -20,10 +25,17 @@ Quill uses a single-file PRD workflow to move work from idea to shipped change w
 - Never skip a stage in a PRD file's `History`. Every item must record `Backlog`, `Plan`, `Implement`, `Test`, and `Release` in order as it reaches them.
 - If the backlog phase and folder location disagree, `BACKLOG.md` wins and the PRD file should be moved immediately.
 - `Blocked` items stay in `In Progress` until they can move again.
+
+### PRD Structure
+
 - Every PRD file must include `Short Name`, `Goal`, `Context`, `Scope`, `Plan`, `Acceptance Criteria`, `Verification`, `Next Step`, `History`, and `Audit`.
 - If any required PRD section is missing, the PRD is invalid and must not be promoted or used for code work until fixed.
 - PRD sections must appear in the same canonical order across all work items. Optional sections are only included when relevant, but when present they must keep the same relative order.
 - `History` and `Audit` must both be maintained as tables.
+- `Legacy Notes` is required whenever a PRD contains any backfill, chronology gap, or other non-standard historical carryover that should not live in the timestamped `Audit` table.
+
+### History and Audit
+
 - Any timestamp field must be recorded in UTC using the canonical format `yyyy-MM-ddTHH:mm:ss.fffffffZ`.
 - Do not mix timestamp precisions across workflow docs. `History` and `Audit` entries must use the same canonical timestamp format in every PRD and related workflow document.
 - `History` and `Audit` entries must be recorded just in time, at the moment the event happens, not reconstructed later from memory.
@@ -32,8 +44,16 @@ Quill uses a single-file PRD workflow to move work from idea to shipped change w
 - Creating the initial PRD file counts as the move into `Backlog` and must be recorded in `History`.
 - `History` must remain chronologically true. If a missed stage transition is discovered later, do not insert a reconstructed `History` row. Record the gap, inferred sequence, and what is still unknown in `Audit` instead.
 - Do not assign the same timestamp to multiple stage transitions or audit events unless they genuinely occurred at that exact time.
-- `Legacy Notes` is required whenever a PRD contains any backfill, chronology gap, or other non-standard historical carryover that should not live in the timestamped `Audit` table.
-- Ship releases from `main` by default and create a version tag for each shipped release, for example `v1.0.2`.
+
+### Versioning and Releases
+
+- Planning and development may run in parallel, but controlled integration, formal testing, version assignment, and release approval are serialized through `main`.
+- Treat changes to application code, Tauri configuration, runtime dependencies, build scripts, and packaged assets as product-affecting changes.
+- Every commit to `main` with a product-affecting change must also increase the product version. Commit the change and synchronized version files together.
+- Documentation and test-evidence-only commits do not increase the product version unless they change packaged content.
+- Intermediate product versions may remain unreleased and untagged.
+- Ship releases from `main` and create one annotated version tag for each shipped release, for example `v1.0.2`.
+- Create the tag only after the exact version has passed formal testing and release approval. Never move or reuse a release tag.
 - Create a dedicated release branch only when an older release line needs parallel maintenance while `main` continues toward a newer version.
 
 ## Starter
@@ -116,6 +136,9 @@ Carry out the approved plan while keeping the PRD as the live record of what was
 - Update the matching backlog row at the same time.
 - Add an `Implement` row to `History` at the moment implementation starts.
 - Only implement work that fits the approved PRD scope and approved planning sections.
+- Before committing a product-affecting change to `main`, increase the patch version with `npm run version:bump` unless an explicitly approved minor or major version is required.
+- Include the product change and the synchronized `package.json`, `package-lock.json`, and `src-tauri/Cargo.toml` version updates in the same commit.
+- Merge parallel implementations into `main` one at a time so each controlled product state receives its own version.
 - Record meaningful implementation decisions, scope clarifications, risks, and discovered exceptions in `Audit`.
 - If new work is discovered during implementation, capture it in the current PRD only if it stays within scope. If it changes scope materially, create a separate backlog item instead of silently expanding the current one.
 
@@ -136,12 +159,14 @@ Verify the implemented work explicitly before it is treated as release-ready.
 - Move the existing PRD file into `docs/03 - Test/` when implementation is ready for verification.
 - Update the matching backlog row at the same time.
 - Add a `Test` row to `History` at the moment the phase starts.
+- Perform formal release testing only against a packaged build from `main` after its product version has been increased.
 - Record the verification approach, evidence, failures, and outcomes in the PRD.
 - Track each test case in the PRD with its ID, acceptance criterion, product version under test, description, `open` or `complete` status, and evidence link.
 - Record the exact product version for every test case. Use the current value from the canonical `package.json` version source when the test case is created, then confirm or update it to the version actually tested when the case is executed; do not use a floating label such as `current` or `latest`.
 - Store completed test records as uppercase `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md` files using `TESTCASE.md`.
 - Each test record must link to its PRD and include the criterion, product version tested, description, result, status, UTC timestamp, and embedded or linked artifacts.
 - If testing reveals more implementation work, move the PRD back to `Implement`, update the backlog row, record the new stage transition in `History`, and only then resume code changes.
+- Any product-affecting correction found during testing must increase the version again. Rebuild, supersede affected evidence, and repeat the affected tests and required regression coverage against the new version.
 - Do not move to `Release` until the planned verification is complete enough to support acceptance.
 
 ### Tracking
@@ -165,6 +190,9 @@ Close the item as shipped, accepted work with the final workflow record preserve
 - Require applicable test cases to be `complete`; record accepted exceptions in `Audit`.
 - Update test-record PRD links after moving the PRD into `04 - Release`.
 - Record final release notes, exceptions, tagging notes, and closing evidence in `Audit`.
+- Confirm the stable version matches the tested package before tagging.
+- Tag the exact approved commit as `v{package.json version}`, use an annotated tag, and push `main` and the tag together.
+- Do not tag intermediate or failed test versions.
 - Release execution should follow the repo release guardrails in this document.
 
 ### Tracking
