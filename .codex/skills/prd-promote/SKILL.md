@@ -42,6 +42,8 @@ Use the live repo text if it disagrees with this skill.
 4. Give the user a concise 3 to 4 line summary of the PRD and ask whether they want to continue.
 5. Only after the user confirms, determine the current phase and the next allowed phase by following `WORKFLOW.md` and the current `BACKLOG.md` row explicitly.
 6. Validate the PRD against the repo workflow rules instead of re-stating those rules here.
+   - For an `Implement` to `Test` promotion of a product-affecting item, verify that the candidate patch-version bump and product change are committed to `main` before moving the PRD.
+   - For a `Test` to `Release` promotion, verify that each complete test record identifies both the exact product version and Git commit, and treat `Release` as PRD closure rather than an automatic product release.
 7. If any mandatory PRD section is missing or too light on information for the next workflow gate, use the repo-local `grill-me` skill to fill it in before promotion.
 8. Only after the PRD satisfies the workflow rules, carry out the promotion steps required by the repo workflow.
 

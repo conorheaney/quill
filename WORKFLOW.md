@@ -49,12 +49,15 @@ Quill uses a single-file PRD workflow to move work from idea to shipped change w
 
 - Planning and development may run in parallel, but controlled integration, formal testing, version assignment, and release approval are serialized through `main`.
 - Treat changes to application code, Tauri configuration, runtime dependencies, build scripts, and packaged assets as product-affecting changes.
-- Every commit to `main` with a product-affecting change must also increase the product version. Commit the change and synchronized version files together.
-- Documentation and test-evidence-only commits do not increase the product version unless they change packaged content.
-- Intermediate product versions may remain unreleased and untagged.
+- Product versioning is independent of the PRD lifecycle. Moving a PRD into `Test` or `Release` does not by itself create a product release or require a tag.
+- At the start of a product release cycle, manually increase the minor version and reset the patch number to zero, for example `1.0.5` to `1.1.0`, using `npm run version:bump -- 1.1.0`.
+- Before a product-affecting PRD leaves `Implement` for `Test`, create the first or next packaged test candidate by increasing the patch version, for example `1.1.0` to `1.1.1`, with `npm run version:bump`. Commit the product change and synchronized version files to `main` before the PRD enters `Test`.
+- Each subsequent product-affecting correction found during testing requires another patch candidate, such as `1.1.1` to `1.1.2`, before the PRD returns to `Test`.
+- Documentation-only, evidence-only, and PRD phase-transition commits do not increase the product version unless they change packaged content.
+- Intermediate test-candidate versions may remain unreleased and untagged.
 - Overwrite the root executable after builds.
-- Ship releases from `main` and create one annotated version tag for each shipped release, for example `v1.0.2`.
-- Create the tag only after the exact version has passed formal testing and release approval. Never move or reuse a release tag.
+- Product tags are part of the separate product-release process. If a product build is formally shipped, create one annotated version tag from the approved `main` commit, for example `v1.1.1`; do not create a tag merely because a PRD enters `Release`.
+- Create or move no release tag until the exact product version has passed formal testing and product-release approval. Never move or reuse a release tag.
 - Create a dedicated release branch only when an older release line needs parallel maintenance while `main` continues toward a newer version.
 
 ## Starter
@@ -137,8 +140,8 @@ Carry out the approved plan while keeping the PRD as the live record of what was
 - Update the matching backlog row at the same time.
 - Add an `Implement` row to `History` at the moment implementation starts.
 - Only implement work that fits the approved PRD scope and approved planning sections.
-- Before committing a product-affecting change to `main`, increase the patch version with `npm run version:bump` unless an explicitly approved minor or major version is required.
-- Include the product change and the synchronized `package.json`, `package-lock.json`, and `src-tauri/Cargo.toml` version updates in the same commit.
+- Keep implementation changes in the PRD scope. The product version bump belongs in the commit that creates the packaged Test candidate, immediately before promotion to `Test`.
+- Include the product change and the synchronized `package.json`, `package-lock.json`, and `src-tauri/Cargo.toml` version updates in that same `main` commit.
 - Merge parallel implementations into `main` one at a time so each controlled product state receives its own version.
 - Record meaningful implementation decisions, scope clarifications, risks, and discovered exceptions in `Audit`.
 - If new work is discovered during implementation, capture it in the current PRD only if it stays within scope. If it changes scope materially, create a separate backlog item instead of silently expanding the current one.
@@ -160,14 +163,15 @@ Verify the implemented work explicitly before it is treated as release-ready.
 - Move the existing PRD file into `docs/03 - Test/` when implementation is ready for verification.
 - Update the matching backlog row at the same time.
 - Add a `Test` row to `History` at the moment the phase starts.
-- Perform formal release testing only against a packaged build from `main` after its product version has been increased.
+- Perform formal testing against the packaged candidate built from the committed `main` state that introduced the Test phase.
+- Do not promote a product-affecting PRD from `Implement` to `Test` until the candidate version bump and product change are committed to `main`.
 - Record the verification approach, evidence, failures, and outcomes in the PRD.
-- Track each test case in the PRD with its ID, acceptance criterion, product version under test, description, `open` or `complete` status, and evidence link.
-- Record the exact product version for every test case. Use the current value from the canonical `package.json` version source when the test case is created, then confirm or update it to the version actually tested when the case is executed; do not use a floating label such as `current` or `latest`.
+- Track each test case in the PRD with its ID, acceptance criterion, product version under test, Git commit, description, `open` or `complete` status, and evidence link.
+- Record the exact product version and Git commit for every test case. Update both if a later candidate is tested; do not use floating labels such as `current` or `latest`.
 - Store completed test records as uppercase `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md` files using `TESTCASE.md`.
 - Each test record must link to its PRD and include the criterion, product version tested, description, result, status, UTC timestamp, and embedded or linked artifacts.
 - If testing reveals more implementation work, move the PRD back to `Implement`, update the backlog row, record the new stage transition in `History`, and only then resume code changes.
-- Any product-affecting correction found during testing must increase the version again. Rebuild, supersede affected evidence, and repeat the affected tests and required regression coverage against the new version.
+- Any product-affecting correction found during testing must return the PRD to `Implement`, increase the patch version again, commit the correction and synchronized version files to `main`, rebuild, supersede affected evidence, and repeat the affected tests and required regression coverage against the new candidate.
 - Do not move to `Release` until the planned verification is complete enough to support acceptance.
 
 ### Tracking
@@ -180,21 +184,18 @@ Verify the implemented work explicitly before it is treated as release-ready.
 
 ### Intent
 
-Close the item as shipped, accepted work with the final workflow record preserved.
+Close the item as accepted work with the final workflow record preserved. This phase closes the PRD; it is not, by itself, a product release.
 
 ### Rules
 
 - Move the existing PRD file into `docs/04 - Release/` only after the item is accepted.
 - Update the matching backlog row to its final state at the same time.
 - Add a `Release` row to `History` at the moment the phase starts.
-- Mark the backlog item `Done` only when the release state is real.
+- Mark the backlog item `Done` when the PRD is accepted and its applicable test cases are complete; this closes the PRD and does not imply a product release.
 - Require applicable test cases to be `complete`; record accepted exceptions in `Audit`.
 - Update test-record PRD links after moving the PRD into `04 - Release`.
-- Record final release notes, exceptions, tagging notes, and closing evidence in `Audit`.
-- Confirm the stable version matches the tested package before tagging.
-- Tag the exact approved commit as `v{package.json version}`, use an annotated tag, and push `main` and the tag together.
-- Do not tag intermediate or failed test versions.
-- Release execution should follow the repo release guardrails in this document.
+- Record final acceptance notes, exceptions, closing evidence, and any product-release handoff in `Audit`.
+- Do not require a version bump or product tag solely for PRD closure. If a separate product release is approved, confirm that its stable version matches the tested package and follow the product-release process.
 
 ### Tracking
 

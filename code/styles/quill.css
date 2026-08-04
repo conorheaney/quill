@@ -665,7 +665,7 @@
       grid-template-columns: minmax(0, 1fr);
     }
 
-    .workspace.editor-collapsed #editorPane {
+    .workspace.editor-collapsed #markdownPaneMount {
       display: none;
     }
 

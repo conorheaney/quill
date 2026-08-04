@@ -5,6 +5,7 @@
 | PRD | `PRD-NNNNNN-CLASS` |
 | Criterion | `AC-01` |
 | Product Version | `0.0.0` |
+| Git Commit | `abc1234` |
 | Status | `open` |
 | UTC Timestamp | `yyyy-MM-ddTHH:mm:ss.fffffffZ` |
 

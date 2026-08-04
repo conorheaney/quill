@@ -16,7 +16,7 @@ This project uses one backlog record and one PRD file per requirement. The same 
 - Keep mandatory PRD sections in the order below.
 - Keep `History` and `Audit` as separate tables, recording events just in time in UTC.
 - Treat application code, runtime configuration, dependencies, build scripts, and packaged assets as product-affecting changes.
-- Define project-specific versioning and release commands here before using the release gate.
+- Keep product versioning separate from the PRD lifecycle. Define the release-cycle baseline and Test-candidate version commands here before using the Test gate.
 
 ## Starter
 
@@ -54,11 +54,11 @@ Implement only the approved scope. Record meaningful decisions and clarification
 
 ### Test
 
-Verify against the acceptance criteria, record results and evidence, and return to `Implement` before making corrections. Test records should identify the exact product version tested and use the configured Evidence folder.
+Before a product-affecting PRD leaves `Implement`, increase the patch version for the packaged test candidate and commit the product change plus synchronized version files to `main`. Verify against the committed candidate, record the exact product version and Git commit, and return to `Implement` before making corrections.
 
 ### Release
 
-Confirm acceptance, complete applicable tests, record release information, and mark the backlog item done. Update links after the PRD moves, and tag only the exact approved version when the project uses Git releases.
+Confirm acceptance, complete applicable tests, record closing information, and mark the backlog item done. Moving a PRD into `Release` closes the PRD; it does not require a product version bump or tag. Product tags belong to the separate product-release process.
 
 ## Tracking Requirements
 
@@ -66,11 +66,11 @@ Confirm acceptance, complete applicable tests, record release information, and m
 - PRD file, mandatory sections, current `Next Step`, `History` table, `Audit` table
 - History, UTC timestamp and end stage only
 - Audit, UTC timestamp, type, and concise note for decisions, evidence, risks, approvals, exceptions, or backfills
-- Test record, criterion, exact product version, result, status, UTC timestamp, and relative evidence link
+- Test record, criterion, exact product version, Git commit, result, status, UTC timestamp, and relative evidence link
 
 ## Test And Release Gate
 
-Testing must be performed against the version actually being evaluated. If a product-affecting correction is required, return the item to `Implement`, update the version according to project rules, rebuild, supersede affected evidence, and repeat the affected verification before Release. Do not mark an item `Done` until applicable tests are complete or accepted exceptions are recorded in `Audit`.
+Testing must be performed against the committed packaged candidate actually being evaluated. If a product-affecting correction is required, return the item to `Implement`, increase the patch version, commit the correction and synchronized version files to `main`, rebuild, supersede affected evidence, and repeat the affected verification before Release. Do not mark an item `Done` until applicable tests are complete or accepted exceptions are recorded in `Audit`.
 
 ## Timestamp Format
 

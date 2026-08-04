@@ -23,7 +23,6 @@
 | PRD-000019-CHANGE | CHANGE | Externalize Default Getting Started Guide | Proposed | Backlog | Store the default getting-started guide in a deployed Markdown document and load it through Quill's supported desktop runtime. |
 | PRD-000020-CHANGE | CHANGE | Remove Browser Mode Paths | Done | Release | Remove broader browser-mode code paths so Quill is shaped around the packaged desktop runtime as its supported end-user experience. |
 | PRD-000021-TECH | TECH | TypeScript Migration For Frontend Runtime | Proposed | Backlog | Plan and execute a staged TypeScript migration for Quill's frontend runtime and desktop bridge so the editor gains stronger module contracts, safer state handling, and better refactor support. |
-| PRD-000022-BUG | BUG | Fix Minimal Document Render Layout | Proposed | Backlog | Keep the Render pane full-height and top-aligned when a new or minimal document is displayed. |
 | PRD-000023-CHANGE | CHANGE | Make AutoSave Persist Open Files | Proposed | Backlog | Make AutoSave write changes to the current file with clear status feedback and a tuned save interval. |
 | PRD-000017-TECH | TECH | Centralize Product Version Source | Done | Release | Centralize Quill's product version in one shared source that both the UI and Tauri build configuration can consume so the displayed version and shipped build stay aligned. |
 
@@ -31,6 +30,7 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000022-BUG | BUG | Fix Minimal Document Render Layout | Done | Release | Keep the Render pane full-height and top-aligned when a new or minimal document is displayed. |
 | PRD-000018-BUG | BUG | Fix Relative Image Rendering | Done | Release | Render valid Markdown images in the application render view, including fully specified local image paths as well as relative and online image sources. |
 
 ## Done
