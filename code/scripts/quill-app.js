@@ -38,6 +38,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
   const contentHeader = document.querySelector(".content-header");
   const contentFooter = document.querySelector(".content-area > .shell-footer");
   const cycleThemeButton = document.getElementById("cycleThemeButton");
+  const themeStylesheets = Array.from(document.querySelectorAll("[data-quill-theme]"));
   const toggleMarkdownPaneButton = document.getElementById("toggleMarkdownPaneButton");
   const toggleAutoSaveButton = document.getElementById("toggleAutoSaveButton");
   const togglePreviewEditingButton = document.getElementById("togglePreviewEditingButton");
@@ -419,8 +420,12 @@ const { createPreviewPane } = window.QuillPreviewPane;
   }
 
   function setTheme(theme) {
-    document.body.classList.toggle("dark", theme === "dark");
-    saveTheme(theme);
+    const nextTheme = theme === "light" ? "light" : "dark";
+    themeStylesheets.forEach((stylesheet) => {
+      stylesheet.disabled = stylesheet.dataset.quillTheme !== nextTheme;
+    });
+    document.body.classList.toggle("dark", nextTheme === "dark");
+    saveTheme(nextTheme);
   }
 
   function cycleTheme() {
