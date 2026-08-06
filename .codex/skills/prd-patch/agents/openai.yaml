@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prepare PRD Test Candidate"
+  short_description: "Prepare committed PRD Test candidates safely"
+  default_prompt: "Use $prd-patch to bump the patch version, build the candidate, synchronize quill.exe, verify scope, and stop before PRD promotion."
