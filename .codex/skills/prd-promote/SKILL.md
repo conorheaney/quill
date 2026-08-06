@@ -7,7 +7,7 @@ description: Validate and promote an existing Quill PRD to its next allowed work
 
 Use this skill to promote an existing Quill PRD by following the repo workflow rules explicitly.
 
-Keep it lightweight. Read the repo rules, inspect the target PRD, and use the repo-local [$grill-me](C:\Users\conor\Documents\Markdown Editor\.codex\skills\grill-me\SKILL.md) skill to strengthen any mandatory section that is missing or too thin before promotion.
+Keep it lightweight. Read the repo rules, inspect the target PRD, and use the repo-local [$grill-me](../grill-me/SKILL.md) skill to strengthen any mandatory section that is missing or too thin before promotion.
 
 ## Guardrail
 
@@ -49,7 +49,7 @@ Use the live repo text if it disagrees with this skill.
 
 ## How To Use `grill-me`
 
-Use [$grill-me](C:\Users\conor\Documents\Markdown Editor\.codex\skills\grill-me\SKILL.md) to strengthen mandatory PRD sections when they are absent, vague, or still written like placeholders.
+Use [$grill-me](../grill-me/SKILL.md) to strengthen mandatory PRD sections when they are absent, vague, or still written like placeholders.
 
 Focus the questioning on the specific weak section, such as:
 

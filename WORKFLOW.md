@@ -13,7 +13,7 @@ Quill uses a single-file PRD workflow to move work from idea to shipped change w
 - Refuse to do work that does not conform to this workflow, and explain the reason clearly.
 - Never promote a PRD automatically. Only promote a PRD when the user explicitly executes the repo-local `prd-promote` skill for that item.
 - Refuse to implement any code change unless the PRD is currently in `Implement`.
-- When adding a new requirement, use the repo-local [$grill-me](C:\Users\conor\Documents\Markdown Editor\.codex\skills\grill-me\SKILL.md) skill to flesh it out to a basic level before turning it into a PRD item.
+- When adding a new requirement, use the repo-local [$grill-me](.codex/skills/grill-me/SKILL.md) skill to flesh it out to a basic level before turning it into a PRD item.
 - If the repo-local `grill-me` skill is missing or broken, refuse to create a new requirement and explain that the required workflow dependency is unavailable.
 
 ### PRD Identity and Lifecycle
