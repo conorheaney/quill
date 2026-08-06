@@ -43,17 +43,17 @@ Out:
 - `AC-02`: Switching between the named themes preserves the existing supported visual states and does not change editor, pane, dialog, or recent-files behavior.
 - `AC-03`: The refactored stylesheets pass the agreed desktop layout and visual regression checks without an unintended product redesign.
 
-## Verification
+## Verification / Test Cases
 
-| Test Case | Criteria | Product Version | Status | Description | Evidence |
-| --- | --- | --- | --- | --- | --- |
-| `TC-01` | `AC-01` | `TBD` | `open` | Inspect the final stylesheet set and confirm the agreed structural/component ownership boundaries, separate named theme files, shared theme contract, and absence of duplicated theme definitions in structural sections. | `TBD` |
-| `TC-02` | `AC-01`, `AC-03` | `TBD` | `open` | Run the desktop app in each named theme and check the default and minimum window sizes, two-column and Render-only layouts, dialogs, editor states, and recent-files UI against the pre-refactor baseline. | `TBD` |
-| `TC-03` | `AC-02`, `AC-03` | `TBD` | `open` | Switch between the named themes and confirm theme switching remains functional, supported visual states are preserved, and any intentional visual differences are documented as in scope. | `TBD` |
+| Test Case | Criteria | Product Version | Git Commit | Status | Description | Evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| `TC-01` | `AC-01` | `1.0.6` | [07a997e](https://github.com/conorheaney/quill/commit/07a997edf3a9f250ecd8159e50084bc9bfa36b3d) | `complete` | Inspect the final stylesheet set and confirm the agreed structural/component ownership boundaries, separate named theme files, shared theme contract, and absence of duplicated theme definitions in structural sections. | [TC-01 evidence](../90%20-%20Evidence/PRD-000008-TC-01.md) |
+| `TC-02` | `AC-01`, `AC-03` | `1.0.6` | [07a997e](https://github.com/conorheaney/quill/commit/07a997edf3a9f250ecd8159e50084bc9bfa36b3d) | `open` | Run the desktop app in each named theme and check the default and minimum window sizes, two-column and Render-only layouts, dialogs, editor states, and recent-files UI against the pre-refactor baseline. | `TBD` |
+| `TC-03` | `AC-02`, `AC-03` | `1.0.6` | [07a997e](https://github.com/conorheaney/quill/commit/07a997edf3a9f250ecd8159e50084bc9bfa36b3d) | `open` | Switch between the named themes and confirm theme switching remains functional, supported visual states are preserved, and any intentional visual differences are documented as in scope. | `TBD` |
 
 ## Next Step
 
-Promote this PRD to `Test` for formal desktop verification against the committed `1.0.6` candidate.
+Run `TC-01` through `TC-03` against product version `1.0.6` at commit `07a997edf3a9f250ecd8159e50084bc9bfa36b3d`, record evidence, and resolve any implementation failures before promoting to `Release`.
 
 ## History
 
@@ -62,6 +62,7 @@ Promote this PRD to `Test` for formal desktop verification against the committed
 | 2026-07-12T13:09:14.6398072Z | Backlog |
 | 2026-08-05T22:15:07.8033594Z | Plan |
 | 2026-08-05T22:55:59.1427488Z | Implement |
+| 2026-08-05T23:21:51.2152376Z | Test |
 
 ## Audit
 
@@ -73,6 +74,13 @@ Promote this PRD to `Test` for formal desktop verification against the committed
 | 2026-08-05T23:04:25.0581606Z | Implementation | Added separate `quill-theme-light.css` and `quill-theme-dark.css` files under `code/styles/themes/`, moved the color/font/theme rendering tokens out of `quill.css`, and added named stylesheet activation so exactly one theme stylesheet is enabled at a time. Structural CSS now consumes shared theme variables for theme transitions, surfaces, control radii, and overlay shadows. |
 | 2026-08-05T23:04:39.7247694Z | Verification | `node --check` passed for the modified application scripts. `npm run build` completed successfully and produced the Tauri release executable and NSIS installer. The root `quill.exe` was synchronized with the release executable and their SHA-256 hashes match. Formal visual verification remains for `Test`. |
 | 2026-08-05T23:17:56.1438235Z | Test candidate | Bumped the synchronized product version from `1.0.5` to `1.0.6`, built the Tauri release executable and NSIS installer, synchronized the root `quill.exe`, and confirmed matching SHA-256 hashes. JavaScript syntax checks passed. The candidate is ready for commit and explicit `prd-promote` validation; formal visual verification remains for `Test`. |
+| 2026-08-05T23:21:51.2152376Z | Promotion | Promoted to `Test` after confirming the committed `1.0.6` candidate at `07a997edf3a9f250ecd8159e50084bc9bfa36b3d`. Each planned test case now identifies the exact product version and Git commit under test. |
+| 2026-08-05T23:36:52.0521349Z | Test table formatting | Renamed the rendered section to `Verification / Test Cases` while retaining the required `Verification` heading, and shortened the displayed commit SHA to `07a997e` with a link to the exact full commit hash so the table remains readable. |
+| 2026-08-05T23:44:57.3921624Z | Test evidence | Recorded the supplied screenshot as partial `TC-01` evidence. It confirms the named light/dark theme files and stylesheet links, but does not by itself prove the shared theme contract or absence of duplicated theme definitions in `quill.css`; `TC-01` remains open. |
+| 2026-08-05T23:49:44.7080605Z | Test evidence | Added the supplied dark and light theme screenshots to the `TC-01` evidence record. They show matching custom-property names across both theme stylesheets and provide evidence of the shared theme contract definitions. `TC-01` remains open pending static verification of structural stylesheet consumption and the absence of duplicated theme definitions. |
+| 2026-08-05T23:54:30.6678285Z | Test evidence | Ran all three planned static inspections for `TC-01`. They passed: `quill.css` has no theme-token declarations or legacy theme blocks, the structural stylesheet consumes the shared theme variables, and the light and dark themes expose the same variable names. Marked `TC-01` complete. |
+| 2026-08-05T23:57:09.6326879Z | Test evidence formatting | Added figure labels and captions for the three screenshot artifacts and shortened the static-inspection headings while retaining their descriptions below each heading. |
+| 2026-08-05T23:58:43.6294501Z | Test evidence formatting | Changed the evidence-record result field to the binary value `Pass` and moved the explanatory observations below the corresponding screenshot artifacts. |
 
 ## Legacy Notes
 
