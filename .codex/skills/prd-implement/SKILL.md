@@ -29,6 +29,8 @@ description: Implement the code changes described by an existing Quill PRD only 
 
 Use the live repo text if it disagrees with this skill. For implementation gating, use the `Plan`, `Implement`, and `Test` phase contracts and the PRD structure defined by `WORKFLOW.md`.
 
+The minimum implementation context is `WORKFLOW.md`, `BACKLOG.md`, `.agents/local-agent.md`, and the target PRD. Load implementation files and test instructions only after the readiness review passes.
+
 ## Implementation Readiness Review
 
 Before touching code, verify that the target PRD satisfies the live workflow rules. Focus especially on whether the planning sections are genuinely strong enough to authorize implementation:

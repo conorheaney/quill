@@ -24,6 +24,8 @@ Use this skill to validate and promote an existing Quill PRD. This skill owns pr
 
 Use the live repo text if it disagrees with this skill.
 
+Load `.codex/skills/prd-grill-me/SKILL.md` only if the target PRD has a weak or missing gate-critical section. Load phase-specific evidence or product files only for the requested transition.
+
 ## Starter
 
 - Always ask for the PRD number if the user did not specify it clearly.
@@ -43,7 +45,7 @@ Use the live repo text if it disagrees with this skill.
 - For an `Implement` to `Test` promotion of a product-affecting item, verify that the candidate patch-version bump and product change are committed to `main` before moving the PRD.
 - For a `Test` to `Release` promotion, verify that each complete test record identifies both the exact product version and Git commit, and treat `Release` as PRD closure rather than an automatic product release.
 
-7. If any mandatory PRD section is missing or too light on information for the next workflow gate, use the repo-local `grill-me` skill to fill it in before promotion.
+7. If any mandatory PRD section is missing or too light on information for the next workflow gate, use the repo-local `prd-grill-me` skill to fill it in before promotion.
 8. Run `npm run check:workflow` before mutation. Treat checker errors as promotion blockers; legacy Release warnings remain non-blocking.
 9. Only after the PRD satisfies the workflow rules, carry out the promotion steps required by the repo workflow.
 
@@ -107,9 +109,9 @@ Only after validation succeeds and the user has confirmed continuation:
 
 The backlog update and PRD move are one logical operation. Do not create replacement PRDs, skip phases, or mutate files when blockers remain.
 
-## How To Use `grill-me`
+## How To Use `prd-grill-me`
 
-Use [$grill-me](../grill-me/SKILL.md) to strengthen mandatory PRD sections when they are absent, vague, or still written like placeholders.
+Use [$prd-grill-me](../prd-grill-me/SKILL.md) to strengthen mandatory PRD sections when they are absent, vague, or still written like placeholders.
 
 Focus the questioning on the specific weak section, such as:
 
@@ -121,18 +123,18 @@ Focus the questioning on the specific weak section, such as:
 - verification approach
 - next concrete step
 
-Keep the `grill-me` pass brief and targeted. Ask only enough to turn the weak section into a valid workflow-ready section.
+Keep the `prd-grill-me` pass brief and targeted. Ask only enough to turn the weak section into a valid workflow-ready section.
 
 ## Expected Result
 
 - follow the live workflow rules in `WORKFLOW.md`
 - use `BACKLOG.md` as the source of truth for current state
-- use `grill-me` only when a gate-critical section needs targeted strengthening
+- use `prd-grill-me` only when a gate-critical section needs targeted strengthening
 - promote the PRD only after it satisfies the repo workflow requirements
 - make whatever paired backlog, PRD move, `History`, and `Audit` updates the workflow explicitly requires
 
 ## Notes
 
 - Do not duplicate the workflow in this skill. The workflow files are the canonical source.
-- Prefer the smallest targeted `grill-me` pass that unblocks a valid promotion.
+- Prefer the smallest targeted `prd-grill-me` pass that unblocks a valid promotion.
 - Report results in this order: current state, requested next phase, blockers, exact edits if valid, and result after the move.

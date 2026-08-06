@@ -1,6 +1,6 @@
 ---
 name: prd-backlog
-description: Create a new Quill backlog item with a light grill-me pass, while conforming to the current repo workflow. Use this skill when the user wants to add a new work item to Quill's backlog.
+description: Create a new Quill backlog item with a light prd-grill-me pass, while conforming to the current repo workflow. Use this skill when the user wants to add a new work item to Quill's backlog.
 ---
 
 # PRD Backlog
@@ -14,10 +14,14 @@ This skill owns backlog-item creation: the light shaping pass, the initial PRD s
 - Do not create code-authorizing state. A new item remains `Proposed / Backlog`.
 - Use the templates in this skill instead of inventing a new PRD or backlog-row shape.
 
+## Context Loading
+
+Load only `WORKFLOW.md`, `BACKLOG.md`, `.agents/local-agent.md`, the local `prd-grill-me` skill, and the templates in this skill before creating an item. Load existing PRD examples only if the current template or records are ambiguous.
+
 ## How To Use It
 
-1. Read the current workflow contract, backlog, local agent contract, and `.codex/skills/grill-me/SKILL.md`.
-2. Run a light repo-local `grill-me` pass to surface the basics of the item.
+1. Read the current workflow contract, backlog, local agent contract, and `.codex/skills/prd-grill-me/SKILL.md`.
+2. Run a light repo-local `prd-grill-me` pass to surface the basics of the item.
 3. Allocate the next unused PRD ID and choose its class.
 4. Add one row to the appropriate `BACKLOG.md` table using `templates/BACKLOG-row.md`.
 5. Create the matching file in `docs/00 - Backlog/` from `templates/PRD-backlog.md`.
@@ -27,7 +31,7 @@ This skill owns backlog-item creation: the light shaping pass, the initial PRD s
 
 ## Lightweight Grill-Me Pass
 
-Use `grill-me` briefly to surface the minimum useful shape for the item:
+Use `prd-grill-me` briefly to surface the minimum useful shape for the item:
 
 - the problem or opportunity
 - who or what it affects

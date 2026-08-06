@@ -19,6 +19,8 @@ Read these files before changing anything:
 
 Use the live repository files as authoritative if they differ from this skill. `WORKFLOW.md` supplies the lifecycle and product-candidate contract; this skill supplies the candidate procedure.
 
+The minimum candidate context is `WORKFLOW.md`, `BACKLOG.md`, `.agents/local-agent.md`, the target PRD, `package.json`, `package-lock.json`, `src-tauri/Cargo.toml`, and `src-tauri/tauri.conf.json`. Load additional product or build files only when the target PRD requires them.
+
 ## Preconditions
 
 - Identify the PRD number. Ask for it if the user did not specify it clearly.
@@ -32,7 +34,20 @@ Use the live repository files as authoritative if they differ from this skill. `
 - Ask for a separate confirmation after the staged scope and commit message are shown, immediately before committing.
 - Ask for a separate confirmation immediately before pushing the approved commit to its configured remote branch.
 
-## Candidate Version
+## Internal stages and resume state
+
+Keep this as one skill, but report one of these states after each successful stage or checkpoint:
+
+- `READY`: preconditions passed; waiting for version-bump confirmation.
+- `VERSIONED`: patch version candidate created; version diff is ready for build confirmation.
+- `BUILT`: build and root executable synchronization completed; verification is ready.
+- `VERIFIED`: hashes, static checks, PRD record, and candidate diff are complete; staged scope and commit message are ready for confirmation.
+- `COMMITTED`: candidate commit exists on `main`; remote and exact commit are ready for push confirmation.
+- `PUSHED`: approved commit is confirmed on the configured remote branch; stop and hand off to `prd-promote`.
+
+When resuming after a declined confirmation or an interrupted command, first report the current state, completed checkpoints, remaining checkpoint, and any files already changed. Do not repeat a completed mutation unless its verification shows that it must be rerun.
+
+## Stage 1: Candidate Version
 
 - Read the current version from `package.json` and confirm it matches `package-lock.json` and `src-tauri/Cargo.toml`.
 - Unless the user specifies another valid version, propose the next patch version and wait for confirmation before running `npm run version:bump`.
@@ -40,7 +55,7 @@ Use the live repository files as authoritative if they differ from this skill. `
 - Do not change the minor version in this skill. A new release cycle must use the separately documented minor-version process.
 - Confirm `src-tauri/tauri.conf.json` still derives its version from `../package.json`.
 
-## Build And Synchronize
+## Stage 2: Build And Synchronize
 
 1. After confirmation, run the repository's version-bump command.
 2. Show the resulting version-file diff and ask for confirmation before building.
@@ -50,6 +65,8 @@ Use the live repository files as authoritative if they differ from this skill. `
 6. Run the relevant static checks, including `node --check` for modified JavaScript files.
 7. Do not claim formal visual acceptance. That belongs to the Test phase.
 
+At the end of this stage, report `BUILT` only after the release executable exists, the root copy is synchronized, and the build result is known.
+
 ## PRD Record
 
 - Keep the PRD in `Implement`; do not add a `Test` row to `History` and do not move the file.
@@ -57,7 +74,7 @@ Use the live repository files as authoritative if they differ from this skill. `
 - Record the candidate version, build result, executable synchronization, and any exceptions in the PRD `Audit` table using a fresh UTC timestamp.
 - If the candidate build exposes an implementation problem, stop and keep the PRD in `Implement`; record the blocker instead of promoting or silently expanding scope.
 
-## Commit And Push Checkpoints
+## Stage 3: Commit Checkpoint
 
 - Review the complete diff after candidate preparation.
 - Stage only the target PRD, the approved product implementation, synchronized version files, generated root `quill.exe`, and any other files explicitly required by the target PRD.
@@ -65,9 +82,15 @@ Use the live repository files as authoritative if they differ from this skill. `
 - The candidate and product changes must be committed to `main` before `prd-promote` can move the PRD to `Test`.
 - Show the complete candidate diff, exact staged paths, notable binary artifacts, and proposed commit message. Ask for explicit confirmation before staging and committing. Follow the `git-verified-commit` scope and approval rules.
 - After the commit succeeds, report the exact commit hash and candidate version, then ask whether to push it.
+
+After the approved commit succeeds, report `COMMITTED` with the exact commit hash, candidate version, and configured remote/branch.
+
+## Stage 4: Push Checkpoint
 - Before pushing, confirm the intended remote and branch from Git configuration and show the exact commit that will be pushed. Ask for explicit confirmation.
 - Push only the approved commit to the configured remote branch with a normal `git push`; never force-push, amend, or push tags from this skill.
 - After the push succeeds, verify that the local branch and remote-tracking branch point at the same commit and report the remote/branch.
+
+After remote verification succeeds, report `PUSHED` and stop. The next action is a separate explicit invocation of `prd-promote`.
 
 ## Stop Condition
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "PRD Backlog"
+  short_description: "Create shaped Quill backlog items safely."
+  default_prompt: "Use $prd-backlog to shape and create a valid Quill backlog item with its initial PRD."

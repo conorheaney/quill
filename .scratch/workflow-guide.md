@@ -272,7 +272,7 @@ This guide explains the workflow visually, but it does not own the operating rul
 
 Use the local skill that owns the operation:
 
-- [grill-me](../.codex/skills/grill-me/SKILL.md) for requirement shaping
+- [prd-grill-me](../.codex/skills/prd-grill-me/SKILL.md) for requirement shaping
 - [prd-backlog](../.codex/skills/prd-backlog/SKILL.md) for backlog creation and templates
 - [prd-promote](../.codex/skills/prd-promote/SKILL.md) for phase validation and paired moves
 - [prd-implement](../.codex/skills/prd-implement/SKILL.md) for implementation readiness and scoped code work

@@ -1,11 +1,11 @@
 ---
-name: grill-me
-description: Interrogate the user about a project, product idea, plan, repo, feature, or strategy until the goals, risks, assumptions, constraints, next actions, and open decisions are sharper. Use when the user asks to be grilled, pressure-tested, interrogated, challenged, questioned, or helped to think through a project.
+name: prd-grill-me
+description: Interrogate a Quill project, requirement, plan, or strategy until its goals, risks, assumptions, constraints, next actions, and open decisions are sharper. Use when shaping a Quill requirement before backlog creation or strengthening a weak PRD section during promotion.
 ---
 
-# Grill Me
+# PRD Grill Me
 
-Use this skill to run a focused project interrogation. Be direct, curious, and constructive. The goal is not to win an argument; the goal is to expose weak assumptions and turn vague intent into usable decisions.
+Use this skill to run a focused requirement interrogation. Be direct, curious, and constructive. The goal is to expose weak assumptions and turn vague intent into usable decisions.
 
 ## Operating Mode
 

@@ -43,7 +43,7 @@ Out:
 - `AC-02`: Switching between the named themes preserves the existing supported visual states and does not change editor, pane, dialog, or recent-files behavior.
 - `AC-03`: The refactored stylesheets pass the agreed desktop layout and visual regression checks without an unintended product redesign.
 
-## Verification / Test Cases
+## Verification
 
 | Test Case | Criteria | Product Version | Git Commit | Status | Description | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |

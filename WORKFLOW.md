@@ -94,4 +94,4 @@ Product-affecting changes include application code, Tauri configuration, runtime
 
 ## Requirement shaping
 
-New requirements must be shaped with the repo-local [grill-me](.codex/skills/grill-me/SKILL.md) skill before becoming PRD items. If that skill is unavailable or broken, do not create the requirement.
+New requirements must be shaped with the repo-local [prd-grill-me](.codex/skills/prd-grill-me/SKILL.md) skill before becoming PRD items. If that skill is unavailable or broken, do not create the requirement.

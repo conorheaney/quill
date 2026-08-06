@@ -1,3 +1,7 @@
+param(
+    [switch]$Detailed
+)
+
 $ErrorActionPreference = "Stop"
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
@@ -109,4 +113,13 @@ if ($errors.Count -gt 0) {
     exit 1
 }
 
-Write-Host "Workflow check passed: $($backlogEntries.Count) backlog entries, $($prdFiles.Count) phase PRDs, $($warnings.Count) warnings." -ForegroundColor Green
+$evidencePath = Join-Path $repoRoot "docs\90 - Evidence"
+$evidenceCount = if (Test-Path -LiteralPath $evidencePath) { @(Get-ChildItem -LiteralPath $evidencePath -Filter "PRD-*.md" -File).Count } else { 0 }
+$summary = "Workflow check passed: $($backlogEntries.Count) tracked items, $($prdFiles.Count) canonical phase PRDs, and $evidenceCount evidence records."
+if ($Detailed -or $warnings.Count -gt 0) {
+    $backlogPhaseSummary = @($backlogEntries.Values | Group-Object Phase | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ", "
+    $backlogStatusSummary = @($backlogEntries.Values | Group-Object Status | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ", "
+    $prdPhaseSummary = @($prdFiles | Group-Object { Split-Path (Split-Path $_.FullName -Parent) -Leaf } | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ", "
+    $summary += " Phases: $backlogPhaseSummary; statuses: $backlogStatusSummary; folders: $prdPhaseSummary; warnings: $($warnings.Count)."
+}
+Write-Host $summary -ForegroundColor Green
