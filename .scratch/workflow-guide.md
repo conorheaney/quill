@@ -1,5 +1,7 @@
 # Workflow Guide
 
+> Derived, human-facing documentation. This guide is not normative and is not part of default agent context. For current rules, follow `WORKFLOW.md`, `BACKLOG.md`, and the relevant local skill.
+
 ## Status
 
 Draft in progress. This document is being built incrementally from the live workflow rules in `WORKFLOW.md`, `BACKLOG.md`, and `.agents/local-agent.md`.
@@ -262,96 +264,32 @@ This workflow separates lifecycle movement from supporting evidence. `History` r
 
 All workflow timestamps must be recorded in UTC using `yyyy-MM-ddTHH:mm:ss.fffffffZ`, and both `History` and `Audit` should be updated when the event happens. `History` must remain chronologically true, so if a transition was missed it should not be reconstructed there later; instead, explain the gap in `Audit`, and use `Legacy Notes` when older non-standard carryover also needs to be preserved.
 
-## Global Guardrails
+## Operating Authority
 
-These are the key rules that govern day-to-day use of the workflow:
+This guide explains the workflow visually, but it does not own the operating rules. Follow `WORKFLOW.md` for lifecycle invariants, `BACKLOG.md` for current item state, and the relevant local skill for each operation.
 
-- `WORKFLOW.md` is the canonical workflow definition
-- `BACKLOG.md` is the canonical item-state definition
-- refuse work that does not conform to the workflow
-- never promote a requirement automatically
-- new requirements must be shaped with the repo-local `grill-me` skill before they become PRD items
-- if the repo-local `grill-me` skill is unavailable, new requirements should not be created
-- every item must pass through `Backlog`, `Plan`, `Implement`, `Test`, and `Release`
-- code changes are only allowed when the requirement is in `Implement`
-- the backlog entry and requirement record must move together
-- blocked items remain in `In Progress` until they can move again
+## Where To Operate
 
-## Relevant Skills
+Use the local skill that owns the operation:
 
-The workflow also depends on a small set of Codex skills that help enforce or support the process.
+- [grill-me](../.codex/skills/grill-me/SKILL.md) for requirement shaping
+- [prd-backlog](../.codex/skills/prd-backlog/SKILL.md) for backlog creation and templates
+- [prd-promote](../.codex/skills/prd-promote/SKILL.md) for phase validation and paired moves
+- [prd-implement](../.codex/skills/prd-implement/SKILL.md) for implementation readiness and scoped code work
+- [prd-patch](../.codex/skills/prd-patch/SKILL.md) for product test-candidate preparation
 
-![Workflow skills](./assets/workflow-skills.png)
-
-### `grill-me`
-
-The repo-local `grill-me` skill is used when shaping a new requirement before it becomes a tracked requirement item. Its role is to turn a loose request into a minimally grounded backlog item without adding heavy ceremony.
-
-Use it for:
-
-- clarifying the real problem
-- identifying scope boundaries
-- surfacing the first sensible planning step
-
-### `prd-backlog`
-
-The repo-local `prd-backlog` skill is used when creating a new backlog item. It is a lightweight helper that reads the live workflow rules, runs a short shaping pass, and then creates the backlog entry plus matching requirement record in the approved format.
-
-Use it for:
-
-- adding a new requirement item to the backlog
-- creating the matching requirement record in the backlog stage
-- keeping the new item aligned with the live workflow rules
-
-### `prd-promote`
-
-The repo-local `prd-promote` skill is used when moving a requirement to its next workflow phase. It validates the current item against the live repo rules and performs the paired backlog, stage, history, and audit updates needed for a valid promotion.
-
-Use it for:
-
-- promoting an item from `Backlog` to `Plan`
-- promoting an item from `Plan` onward once its gate is satisfied
-- repairing thin mandatory sections before promotion when needed
-
-### `prd-implement`
-
-The repo-local `prd-implement` skill is relevant once a requirement has legitimately reached `Implement`. It is the workflow-aware implementation helper for carrying out scoped code changes without bypassing the current repo rules.
-
-Use it for:
-
-- checking whether a requirement is really implementation-ready
-- carrying out code changes tied to an implementation-authorized requirement
-- surfacing workflow blockers before code work starts
-
-### `imagegen`
-
-The `imagegen` skill is not part of the core delivery workflow, but it is useful for supporting materials such as this guide. It can generate clean visual aids, diagrams, and documentation graphics when the workflow needs explanatory assets.
-
-Use it for:
-
-- workflow diagrams
-- role visuals
-- phase visuals
-- other documentation graphics
+`WORKFLOW.md` defines the lifecycle contract. `BACKLOG.md` defines current item state. The skills define the procedures and templates. This guide explains the ideas and visual model only; it does not restate their operating rules.
 
 ## How A New Item Starts
 
-The normal flow for a new work item is:
-
-1. Shape the requirement to a basic level using the repo-local `grill-me` skill.
-2. Add a backlog entry.
-3. Create the matching requirement record in the backlog folder.
-4. Record the `Backlog` entry in `History` when the file is created.
-5. Keep the backlog entry and requirement record aligned from that point onward.
-
-This prevents work from becoming real in only one place.
+For the current creation procedure, use [prd-backlog](../.codex/skills/prd-backlog/SKILL.md) and its templates. This guide keeps only the conceptual lifecycle explanation above.
 
 ## Handling Exceptions
 
-This section exists for the moments when work does not move neatly from one stage to the next. The rule of thumb is simple: do not hide the problem inside informal chat, undocumented changes, or silent state drift. Put the requirement back into the right stage, update the record, and make the situation explicit.
+Use [prd-promote](../.codex/skills/prd-promote/SKILL.md), [prd-implement](../.codex/skills/prd-implement/SKILL.md), and `WORKFLOW.md` for exception handling. This guide does not duplicate their blocker or return-to-phase procedures.
 
-If a requirement is still vague, shape it before treating it as real work. If planning is incomplete, keep it out of implementation. If testing finds more code work, move it back to `Implement` before coding resumes. If implementation uncovers materially new scope, create a new backlog item instead of stretching the current one beyond its approved intent. If the backlog entry, stage location, and `History` disagree, treat that as a workflow defect and correct it immediately.
+The guide's role is explanatory: show the lifecycle and visual model without becoming another operating source.
 
 ## Notes On Usage
 
-This guide is intentionally explanatory rather than normative. If anything in this guide ever conflicts with the repo rules, follow `WORKFLOW.md`, `BACKLOG.md`, and `.agents/local-agent.md`.
+Keep this guide in `.scratch` as derived human documentation. Do not load it as default agent context or use it as a source of truth.
