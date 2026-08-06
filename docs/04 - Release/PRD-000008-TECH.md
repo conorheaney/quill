@@ -53,7 +53,7 @@ Out:
 
 ## Next Step
 
-Run `TC-01` through `TC-03` against product version `1.0.6` at commit `07a997edf3a9f250ecd8159e50084bc9bfa36b3d`, record evidence, and resolve any implementation failures before promoting to `Release`.
+All planned test cases passed against product version `1.0.6` at commit `07a997edf3a9f250ecd8159e50084bc9bfa36b3d`; the PRD is accepted and closed in `Release`.
 
 ## History
 
@@ -63,6 +63,7 @@ Run `TC-01` through `TC-03` against product version `1.0.6` at commit `07a997edf
 | 2026-08-05T22:15:07.8033594Z | Plan |
 | 2026-08-05T22:55:59.1427488Z | Implement |
 | 2026-08-05T23:21:51.2152376Z | Test |
+| 2026-08-06T00:20:00.2821898Z | Release |
 
 ## Audit
 
@@ -85,7 +86,9 @@ Run `TC-01` through `TC-03` against product version `1.0.6` at commit `07a997edf
 | 2026-08-06T00:10:12.8370307Z | Test evidence | Added the supplied light and dark Markdown-display screenshots to `TC-02`. They show the two-column Markdown and Render panes displaying corresponding source and formatted content. `TC-02` remains open pending completion of its remaining layout/theme checks. |
 | 2026-08-06T00:11:57.0554296Z | Test scope refinement | Removed dialog checks from `TC-02` because dialogs are outside the theme-controlled surfaces for this item. Replaced the ambiguous editor-state wording with the concrete two-column Markdown and Render state and Render-only state. |
 | 2026-08-06T00:14:05.9469118Z | Test evidence | Added light and dark screenshots showing Markdown editing enabled, the formatting toolbar visible, and inline editing enabled. Combined with the existing layout and Recent Files evidence, this completes `TC-02`. |
-| 2026-08-06T00:20:00Z | Test evidence | Added light and dark screenshots showing theme switching with the Render-only layout, Acceptance Criteria content, Test Cases table, and inline editing control preserved. Marked `TC-03` complete with a passing result. |
+| 2026-08-06T00:19:29.7575566Z | Test evidence | Added light and dark screenshots showing theme switching with the Render-only layout, Acceptance Criteria content, Test Cases table, and inline editing control preserved. Marked `TC-03` complete with a passing result. |
+| 2026-08-06T00:19:29.7575566Z | Acceptance | Accepted the completed stylesheet refactor after TC-01, TC-02, and TC-03 passed against product version `1.0.6` at commit `07a997edf3a9f250ecd8159e50084bc9bfa36b3d`; the PRD is ready to close in `Release`. |
+| 2026-08-06T00:20:00.2821898Z | Promotion | Promoted the accepted PRD to `Release`, updated the evidence links to the released PRD location, and marked the corresponding backlog item `Done`. This closes the PRD workflow item; it does not create a product release tag. |
 
 ## Legacy Notes
 
