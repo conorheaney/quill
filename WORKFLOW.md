@@ -1,204 +1,97 @@
 # Quill Workflow
 
-## High-Level Description
+This file defines the repository workflow contract. Detailed creation, promotion, implementation, testing, and candidate-build procedures belong to the relevant local skills.
 
-Quill uses a single-file PRD workflow to move work from idea to shipped change with minimal overhead. Each work item is represented by one backlog row in `BACKLOG.md` and one same-named PRD file that moves through `docs/00 - Backlog/`, `docs/01 - Plan/`, `docs/02 - Implement/`, `docs/03 - Test/`, and `docs/04 - Release/`.
+## Authority
 
-## Global Workflow Guardrails
+- `WORKFLOW.md` is the lifecycle authority.
+- `BACKLOG.md` is the source of truth for each item's status and current phase.
+- The PRD is the durable record of scope, plan, acceptance, verification, history, and audit information.
+- If the backlog and PRD location disagree, the backlog phase is authoritative and the PRD must be brought back into alignment.
 
-### Authority and Gates
+## Lifecycle
 
-- `WORKFLOW.md` is the canonical workflow definition.
-- `BACKLOG.md` is the canonical source of truth for PRD items, their overall status, and their current workflow phase.
-- Refuse to do work that does not conform to this workflow, and explain the reason clearly.
-- Never promote a PRD automatically. Only promote a PRD when the user explicitly executes the repo-local `prd-promote` skill for that item.
-- Refuse to implement any code change unless the PRD is currently in `Implement`.
-- When adding a new requirement, use the repo-local [$grill-me](.codex/skills/grill-me/SKILL.md) skill to flesh it out to a basic level before turning it into a PRD item.
-- If the repo-local `grill-me` skill is missing or broken, refuse to create a new requirement and explain that the required workflow dependency is unavailable.
+Every item uses one PRD file and moves through these phases in order:
 
-### PRD Identity and Lifecycle
+`Backlog -> Plan -> Implement -> Test -> Release`
 
-- Use PRD IDs in the format `PRD-NNNNNN-{CLASS}` where `{CLASS}` can be values such as `BUG`, `CHANGE`, `TECH`, or `UI`.
-- Use one PRD file per item, named exactly after the PRD ID.
-- Move the same PRD file forward as the item advances. Do not create replacement PRD files for later phases.
-- Every item must pass through `Backlog`, `Plan`, `Implement`, `Test`, and `Release` before it is done.
-- Never skip a stage in a PRD file's `History`. Every item must record `Backlog`, `Plan`, `Implement`, `Test`, and `Release` in order as it reaches them.
-- If the backlog phase and folder location disagree, `BACKLOG.md` wins and the PRD file should be moved immediately.
-- `Blocked` items stay in `In Progress` until they can move again.
+Testing may return an item to `Implement` when additional code work is required. No other phase may be skipped. `Release` closes the PRD; it is not automatically a product release.
 
-### PRD Structure
+Each item must have:
 
-- Every PRD file must include `Short Name`, `Goal`, `Context`, `Scope`, `Plan`, `Acceptance Criteria`, `Verification`, `Next Step`, `History`, and `Audit`.
-- If any required PRD section is missing, the PRD is invalid and must not be promoted or used for code work until fixed.
-- PRD sections must appear in the same canonical order across all work items. Optional sections are only included when relevant, but when present they must keep the same relative order.
-- `History` and `Audit` must both be maintained as tables.
-- `Legacy Notes` is required whenever a PRD contains any backfill, chronology gap, or other non-standard historical carryover that should not live in the timestamped `Audit` table.
+- one row in `BACKLOG.md`
+- one PRD named `PRD-NNNNNN-{CLASS}`
+- one current phase folder under `docs/`
+- a `History` table containing its phase transitions
+- an `Audit` table containing other timestamped operational records
 
-### History and Audit
+## Safety invariants
 
-- Any timestamp field must be recorded in UTC using the canonical format `yyyy-MM-ddTHH:mm:ss.fffffffZ`.
-- Do not mix timestamp precisions across workflow docs. `History` and `Audit` entries must use the same canonical timestamp format in every PRD and related workflow document.
-- `History` and `Audit` entries must be recorded just in time, at the moment the event happens, not reconstructed later from memory.
-- `History` is only for stage transitions and must record the UTC timestamp and the end stage only, for example `2026-07-12T08:10:00.0000000Z | Plan`.
-- `Audit` is for other timestamped audit information such as decisions, evidence, risks, approvals, exceptions, and backfill notes.
-- Creating the initial PRD file counts as the move into `Backlog` and must be recorded in `History`.
-- `History` must remain chronologically true. If a missed stage transition is discovered later, do not insert a reconstructed `History` row. Record the gap, inferred sequence, and what is still unknown in `Audit` instead.
-- Do not assign the same timestamp to multiple stage transitions or audit events unless they genuinely occurred at that exact time.
+- Do not perform work that violates this contract.
+- Do not promote an item automatically; promotion requires explicit user intent through the local `prd-promote` skill.
+- Code changes are authorized only while the target PRD is in `Implement`.
+- The backlog row and PRD file must be updated as one workflow transition.
+- Material scope expansion becomes a separate backlog item.
+- Blocked items remain in `In Progress` until their phase can continue.
+- Preserve unrelated user changes.
 
-### Versioning and Releases
+## PRD identity and structure
 
-- Planning and development may run in parallel, but controlled integration, formal testing, version assignment, and release approval are serialized through `main`.
-- Treat changes to application code, Tauri configuration, runtime dependencies, build scripts, and packaged assets as product-affecting changes.
-- Product versioning is independent of the PRD lifecycle. Moving a PRD into `Test` or `Release` does not by itself create a product release or require a tag.
-- At the start of a product release cycle, manually increase the minor version and reset the patch number to zero, for example `1.0.5` to `1.1.0`, using `npm run version:bump -- 1.1.0`.
-- Before a product-affecting PRD leaves `Implement` for `Test`, create the first or next packaged test candidate by increasing the patch version, for example `1.1.0` to `1.1.1`, with `npm run version:bump`. Commit the product change and synchronized version files to `main` before the PRD enters `Test`.
-- Each subsequent product-affecting correction found during testing requires another patch candidate, such as `1.1.1` to `1.1.2`, before the PRD returns to `Test`.
-- Documentation-only, evidence-only, and PRD phase-transition commits do not increase the product version unless they change packaged content.
-- Intermediate test-candidate versions may remain unreleased and untagged.
-- Overwrite the root executable after builds.
-- Product tags are part of the separate product-release process. If a product build is formally shipped, create one annotated version tag from the approved `main` commit, for example `v1.1.1`; do not create a tag merely because a PRD enters `Release`.
-- Create or move no release tag until the exact product version has passed formal testing and product-release approval. Never move or reuse a release tag.
-- Create a dedicated release branch only when an older release line needs parallel maintenance while `main` continues toward a newer version.
+PRD IDs use `PRD-NNNNNN-{CLASS}`, with classes such as `BUG`, `CHANGE`, `TECH`, and `UI`. The same PRD file moves through:
 
-## Starter
+- `docs/00 - Backlog/`
+- `docs/01 - Plan/`
+- `docs/02 - Implement/`
+- `docs/03 - Test/`
+- `docs/04 - Release/`
 
-1. Add the item to `BACKLOG.md`.
-2. Create the matching PRD file in `docs/00 - Backlog/`.
-3. Record the `Backlog` history entry when that file is created.
-4. Keep the backlog row and PRD file aligned as the item moves forward.
-5. Expand the PRD during `Plan` until `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` are present and strong enough to authorize implementation.
-6. Move the same PRD file through `Implement`, `Test`, and `Release`.
+New and actively maintained PRDs must use the required structure defined in
+`.codex/workflow/prd-schema.md`.
 
-## PRD Section Order
+`History` and `Audit` are Markdown tables. `Legacy Notes` is used after the main record when a PRD contains backfill, chronology gaps, or other non-standard historical carryover.
 
-Use this section order for the mandatory PRD sections.
+## Records and time
 
-1. `Short Name`
-2. `Goal`
-3. `Context`
-4. `Scope`
-5. `Plan`
-6. `Acceptance Criteria`
-7. `Verification`
-8. `Next Step`
-9. `History`
-10. `Audit`
+- `History` records phase transitions only, with the end phase and its actual UTC timestamp.
+- `Audit` records decisions, evidence, risks, approvals, exceptions, clarifications, and backfill notes.
+- Record both at the moment the event occurs; do not reconstruct history later.
+- Use UTC timestamps in the canonical format `yyyy-MM-ddTHH:mm:ss.fffffffZ`.
+- Do not assign one timestamp to separate events unless they genuinely occurred at the same time.
 
-## Phase 00: Backlog
+## Phase contract
 
-### Intent
+### Backlog
 
-Capture a real item with enough shape to be tracked, prioritized, and promoted later without turning the backlog into a vague idea list.
+The item is captured as `Proposed / Backlog` with a matching PRD in `docs/00 - Backlog/`. Creating the PRD records the `Backlog` history entry. Backlog items do not authorize code changes.
 
-### Rules
+### Plan
 
-- Record every new item in `BACKLOG.md` first.
-- Create the matching PRD file in `docs/00 - Backlog/`.
-- The backlog row and PRD file must be created together.
-- The initial PRD file creation must add a `Backlog` row to `History`.
-- New requirements must be shaped with the repo-local `grill-me` skill before they become PRD items.
-- Backlog items are not authorized for code changes.
+The item is `Planned / Plan` with its PRD in `docs/01 - Plan/`. Before it can enter `Implement`, `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` must be present and detailed enough to guide execution and verification. Acceptance criteria use `AC-{NN}` identifiers and planned test cases use `TC-{NN}` identifiers.
 
-### Tracking
+### Implement
 
-- `BACKLOG.md` row, `Status = Proposed`, `Phase = Backlog`
-- PRD file location, `docs/00 - Backlog/`
-- Required PRD baseline, `Short Name`, `Goal`, `Context`, `Scope`, `Plan`, `Acceptance Criteria`, `Verification`, `Next Step`, `History`, `Audit`
+The item is `In Progress / Implement` with its PRD in `docs/02 - Implement/`. Implementation stays within the approved scope and keeps meaningful decisions, clarifications, risks, and exceptions in `Audit`.
 
-## Phase 01: Plan
+### Test
 
-### Intent
+The item is `In Progress / Test` with its PRD in `docs/03 - Test/`. Testing uses the committed packaged candidate from `main`. Each test case records its acceptance criterion, exact product version, Git commit, description, status, UTC timestamp, and evidence. Completed records use `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md` and link back to the PRD.
 
-Turn a backlog item into an implementation-ready work package with enough detail to build and verify it safely.
+If testing finds code work, return the PRD to `Implement`, update the backlog,  ecord the transition, and only then resume implementation. Product-affecting corrections require a new patch candidate and repeat testing of affected coverage.
 
-### Rules
+### Release
 
-- Move the existing PRD file into `docs/01 - Plan/` when active planning starts.
-- Update the matching backlog row to show the active planning state at the same time.
-- Add a `Plan` row to `History` at the moment the phase starts.
-- Build the detailed item plan in the PRD before any code implementation is allowed.
-- Keep planning decisions, constraints, evidence, risks, and clarifications in `Audit`.
-- Do not move to `Implement` until `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` are present.
-- Do not move to `Implement` until the PRD is detailed enough to guide execution and verification.
-- Number acceptance criteria as `AC-{NN}` and map planned test cases as `TC-{NN}` before implementation.
+The item is `Done / Release` with its PRD in `docs/04 - Release/`. Applicable test cases must be complete or have accepted exceptions recorded in `Audit`. Update test record links after the PRD moves. PRD closure does not by itself require a version bump, product tag, or release branch.
 
-### Tracking
+## Product candidate rules
 
-- `BACKLOG.md` row, `Status = Planned`, `Phase = Plan`
-- PRD file location, `docs/01 - Plan/`
-- Implementation gate, `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` must be present before promotion to `Implement`
+Product-affecting changes include application code, Tauri configuration, runtime dependencies, build scripts, and packaged assets.
 
-## Phase 02: Implement
+- Product versioning is independent of PRD closure.
+- A new product cycle increases the minor version and resets the patch to zero.
+- Before a product-affecting PRD enters `Test`, create the next patch candidate, commit the product change and synchronized version files to `main`,  rebuild, and overwrite the root executable as required by the repository.
+- Documentation-only, evidence-only, and phase-transition commits do not require a product version bump unless they change packaged content.
+- Product tags are created only through the separate approved product-release process after the exact version has passed formal testing.
 
-### Intent
+## Requirement shaping
 
-Carry out the approved plan while keeping the PRD as the live record of what was built, changed, and learned.
-
-### Rules
-
-- Move the existing PRD file into `docs/02 - Implement/` when code work starts.
-- Update the matching backlog row at the same time.
-- Add an `Implement` row to `History` at the moment implementation starts.
-- Only implement work that fits the approved PRD scope and approved planning sections.
-- Keep implementation changes in the PRD scope. The product version bump belongs in the commit that creates the packaged Test candidate, immediately before promotion to `Test`.
-- Include the product change and the synchronized `package.json`, `package-lock.json`, and `src-tauri/Cargo.toml` version updates in that same `main` commit.
-- Merge parallel implementations into `main` one at a time so each controlled product state receives its own version.
-- Record meaningful implementation decisions, scope clarifications, risks, and discovered exceptions in `Audit`.
-- If new work is discovered during implementation, capture it in the current PRD only if it stays within scope. If it changes scope materially, create a separate backlog item instead of silently expanding the current one.
-
-### Tracking
-
-- `BACKLOG.md` row, `Status = In Progress`, `Phase = Implement`
-- PRD file location, `docs/02 - Implement/`
-- PRD maintenance, keep `Next Step`, plan details, and audit trail current as the work evolves
-
-## Phase 03: Test
-
-### Intent
-
-Verify the implemented work explicitly before it is treated as release-ready.
-
-### Rules
-
-- Move the existing PRD file into `docs/03 - Test/` when implementation is ready for verification.
-- Update the matching backlog row at the same time.
-- Add a `Test` row to `History` at the moment the phase starts.
-- Perform formal testing against the packaged candidate built from the committed `main` state that introduced the Test phase.
-- Do not promote a product-affecting PRD from `Implement` to `Test` until the candidate version bump and product change are committed to `main`.
-- Record the verification approach, evidence, failures, and outcomes in the PRD.
-- Track each test case in the PRD with its ID, acceptance criterion, product version under test, Git commit, description, `open` or `complete` status, and evidence link.
-- Record the exact product version and Git commit for every test case. Update both if a later candidate is tested; do not use floating labels such as `current` or `latest`.
-- Store completed test records as uppercase `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md` files using `TESTCASE.md`.
-- Each test record must link to its PRD and include the criterion, product version tested, description, result, status, UTC timestamp, and embedded or linked artifacts.
-- If testing reveals more implementation work, move the PRD back to `Implement`, update the backlog row, record the new stage transition in `History`, and only then resume code changes.
-- Any product-affecting correction found during testing must return the PRD to `Implement`, increase the patch version again, commit the correction and synchronized version files to `main`, rebuild, supersede affected evidence, and repeat the affected tests and required regression coverage against the new candidate.
-- Do not move to `Release` until the planned verification is complete enough to support acceptance.
-
-### Tracking
-
-- `BACKLOG.md` row, `Status = In Progress`, `Phase = Test`
-- PRD file location, `docs/03 - Test/`
-- PRD maintenance, keep verification notes, evidence, and audit events current
-
-## Phase 04: Release
-
-### Intent
-
-Close the item as accepted work with the final workflow record preserved. This phase closes the PRD; it is not, by itself, a product release.
-
-### Rules
-
-- Move the existing PRD file into `docs/04 - Release/` only after the item is accepted.
-- Update the matching backlog row to its final state at the same time.
-- Add a `Release` row to `History` at the moment the phase starts.
-- Mark the backlog item `Done` when the PRD is accepted and its applicable test cases are complete; this closes the PRD and does not imply a product release.
-- Require applicable test cases to be `complete`; record accepted exceptions in `Audit`.
-- Update test-record PRD links after moving the PRD into `04 - Release`.
-- Record final acceptance notes, exceptions, closing evidence, and any product-release handoff in `Audit`.
-- Do not require a version bump or product tag solely for PRD closure. If a separate product release is approved, confirm that its stable version matches the tested package and follow the product-release process.
-
-### Tracking
-
-- `BACKLOG.md` row, `Status = Done`, `Phase = Release`
-- PRD file location, `docs/04 - Release/`
-- Final record, the released PRD remains the durable audit trail for the completed item
+New requirements must be shaped with the repo-local [grill-me](.codex/skills/grill-me/SKILL.md) skill before becoming PRD items. If that skill is unavailable or broken, do not create the requirement.

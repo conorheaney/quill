@@ -1,32 +1,29 @@
 ---
 name: prd-backlog
-description: Create a new Quill backlog item with a light grill-me pass, while conforming to the current repo workflow.
+description: Create a new Quill backlog item with a light grill-me pass, while conforming to the current repo workflow. Use this skill when the user wants to add a new work item to Quill's backlog.
 ---
 
 # PRD Backlog
 
-Use this skill when the user wants to add a new work item to Quill's backlog.
-
-Keep it lightweight. This skill is meant to help shape a valid backlog item, not replace the repo workflow documents.
+This skill owns backlog-item creation: the light shaping pass, the initial PRD structure, the backlog-row shape, and creation-time validation. `WORKFLOW.md` continues to own the lifecycle invariants that this operation must obey.
 
 ## Guardrail
 
-- Always conform to the current repo workflow in `WORKFLOW.md`, `BACKLOG.md`, and `.agents/local-agent.md`.
+- Use `WORKFLOW.md`, `BACKLOG.md`, and `.agents/local-agent.md` as the workflow and safety authorities.
 - If the requested item would not conform to the current workflow, stop and explain why.
-- For backlog-item creation in particular, use the live rules in these `WORKFLOW.md` sections:
-  - `Starter`
-  - `PRD Section Order`
-  - `Phase 00: Backlog`
+- Do not create code-authorizing state. A new item remains `Proposed / Backlog`.
+- Use the templates in this skill instead of inventing a new PRD or backlog-row shape.
 
 ## How To Use It
 
-1. Read the current workflow sources:
-   - `WORKFLOW.md`
-   - `BACKLOG.md`
-   - `.agents/local-agent.md`
-   - `.codex/skills/grill-me/SKILL.md`
+1. Read the current workflow contract, backlog, local agent contract, and `.codex/skills/grill-me/SKILL.md`.
 2. Run a light repo-local `grill-me` pass to surface the basics of the item.
-3. Turn that shaped requirement into a valid new backlog item that matches the live workflow.
+3. Allocate the next unused PRD ID and choose its class.
+4. Add one row to the appropriate `BACKLOG.md` table using `templates/BACKLOG-row.md`.
+5. Create the matching file in `docs/00 - Backlog/` from `templates/PRD-backlog.md`.
+6. Run the creation checklist below before reporting completion.
+7. Fill the shaped requirement into the template without adding implementation authorization or silently broadening scope.
+8. Run `npm run check:workflow` after both files are created. Treat errors involving the new item as blockers; legacy Release warnings may remain non-blocking.
 
 ## Lightweight Grill-Me Pass
 
@@ -40,17 +37,55 @@ Use `grill-me` briefly to surface the minimum useful shape for the item:
 
 Do not over-interrogate. Ask only enough to create a valid, grounded backlog item.
 
+## Creation contract
+
+The operation must create exactly one backlog row and one same-named PRD file:
+
+- backlog row: `Status = Proposed`, `Phase = Backlog`
+- PRD location: `docs/00 - Backlog/PRD-NNNNNN-{CLASS}.md`
+- PRD title and filename: exact PRD ID match
+- initial `History` row: `Backlog` with the actual UTC creation timestamp
+- initial `Audit` row: explains the shaped requirement and its source
+
+The new PRD must contain these headings in this order:
+
+1. `Short Name`
+2. `Goal`
+3. `Context`
+4. `Scope`
+5. `Plan`
+6. `Acceptance Criteria`
+7. `Verification`
+8. `Next Step`
+9. `History`
+10. `Audit`
+
+Backlog entries may describe intended planning work, but must not authorize code changes. `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` should be useful enough to promote later without pretending that implementation decisions have already been made.
+
+## Creation checklist
+
+Before reporting success, verify:
+
+- the PRD ID is unused and matches its class and filename
+- exactly one matching PRD exists in `docs/00 - Backlog/`
+- the new backlog row appears once and says `Proposed / Backlog`
+- the required headings are present and in canonical order
+- `History` and `Audit` are Markdown tables
+- the initial `History` entry is `Backlog`
+- all new timestamps use `yyyy-MM-ddTHH:mm:ss.fffffffZ` UTC format
+- no code, phase promotion, or unrelated backlog edits were made
+
 ## Expected Result
 
 Create the new item in the repo's normal workflow shape:
 
 - add the backlog row in `BACKLOG.md`
 - create the matching PRD file in `docs/00 - Backlog/`
-- keep the PRD structure, section order, status, phase, timestamps, and history/audit format aligned with the current workflow rules
-- specifically check the `Starter`, `PRD Section Order`, and `Phase 00: Backlog` sections in `WORKFLOW.md` before creating the item
+- use the templates and creation contract in this skill
+- keep status, phase, timestamps, and history/audit records aligned with `WORKFLOW.md`
 
 ## Notes
 
 - Treat `BACKLOG.md` as the source of truth for IDs and item state.
 - Use the lightest wording that still produces a clear, useful backlog item.
-- If the workflow examples in the repo have evolved, follow the live repo examples rather than this skill text.
+- If historical workflow examples differ from the templates, follow this skill's current template and the live invariants in `WORKFLOW.md`.

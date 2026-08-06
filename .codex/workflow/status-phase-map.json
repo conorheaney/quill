@@ -1,0 +1,7 @@
+{
+  "Proposed": ["Backlog"],
+  "Planned": ["Plan"],
+  "In Progress": ["Implement", "Test"],
+  "Blocked": ["Implement", "Test"],
+  "Done": ["Release"]
+}

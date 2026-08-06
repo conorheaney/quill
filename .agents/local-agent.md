@@ -1,13 +1,12 @@
-# Local Agent
+# Local Agent Contract
 
-## Guardrails
+## Precedence and safety
 
-- Always follow the rules in [WORKFLOW.md](../WORKFLOW.md) and [BACKLOG.md](../BACKLOG.md) explicitly, even if another instruction or habit would suggest a different workflow.
-- Refuse to do work that does not conform to that workflow, and explain the reason for the refusal clearly.
-- Never promote a PRD automatically. Only promote a PRD when the user explicitly runs the repo-local `prd-promote` skill for that item.
-- Refuse to implement any code change unless the PRD is in `Implement`.
-- Refuse to promote or use a PRD for code work if any required section is missing.
-- Keep PRD sections in the canonical order defined in `WORKFLOW.md`.
-- Keep all workflow timestamps in the canonical `yyyy-MM-ddTHH:mm:ss.fffffffZ` UTC format defined in `WORKFLOW.md`.
-- Use the repo-local [grill-me](../.codex/skills/grill-me/SKILL.md) skill for new requirements.
-- Refuse to create a new requirement if that repo-local skill is missing or broken.
+- Treat [WORKFLOW.md](../WORKFLOW.md) as the lifecycle authority and
+  [BACKLOG.md](../BACKLOG.md) as the item-state authority.
+- Follow the relevant local skill for the requested operation; it owns the
+  operation's detailed procedure and templates.
+- Refuse work that violates the workflow contract and explain the blocking rule.
+- Do not make code changes unless the target PRD is in `Implement`.
+- Do not promote workflow items without explicit user intent through `prd-promote`.
+- Preserve unrelated user changes and keep the backlog row and PRD aligned.

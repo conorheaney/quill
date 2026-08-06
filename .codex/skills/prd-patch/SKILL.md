@@ -5,7 +5,7 @@ description: Prepare a Quill product-affecting PRD for Test by creating the requ
 
 # PRD Patch
 
-Prepare the committed product candidate required before an Implement-phase Quill PRD can enter Test. This skill performs candidate preparation only; it must never move the PRD to `Test` or any later phase.
+Prepare the committed product candidate required before an Implement-phase PRD can enter Test. This skill owns candidate preparation only; it must never move the PRD to `Test` or any later phase.
 
 ## Read First
 
@@ -17,14 +17,14 @@ Read these files before changing anything:
 4. the target PRD in `docs/02 - Implement/`
 5. `package.json`, `package-lock.json`, `src-tauri/Cargo.toml`, and `src-tauri/tauri.conf.json`
 
-Use the live repository files as authoritative if they differ from this skill.
+Use the live repository files as authoritative if they differ from this skill. `WORKFLOW.md` supplies the lifecycle and product-candidate contract; this skill supplies the candidate procedure.
 
 ## Preconditions
 
 - Identify the PRD number. Ask for it if the user did not specify it clearly.
 - Confirm the backlog row says `In Progress` / `Implement` and the matching PRD is in `docs/02 - Implement/`.
 - Confirm the PRD contains the required sections and has a concrete `Next Step` for Test-candidate preparation.
-- Confirm the item is product-affecting under `WORKFLOW.md`; this skill is intended for code, runtime, build, dependency, configuration, or packaged-asset changes.
+- Confirm the item is product-affecting under the product-candidate rules in `WORKFLOW.md`; this skill is intended for code, runtime, build, dependency, configuration, or packaged-asset changes.
 - Inspect `git status` before changing anything. Preserve unrelated user changes and never stage them.
 - Give the user a concise summary of the candidate work and ask whether to continue before mutating files.
 - Ask for a separate confirmation immediately before the version bump.
