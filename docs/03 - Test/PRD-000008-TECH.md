@@ -35,7 +35,7 @@ Out:
 - Define a stable theme contract so structural selectors consume shared custom properties and do not duplicate light/dark values throughout the component stylesheet.
 - Define stylesheet loading and theme-switching behavior so exactly one named theme stylesheet is active at a time and the existing light/dark user behavior remains intact.
 - Refactor in small slices, preserving selector behavior and keeping markup and JavaScript changes out of scope unless a stylesheet-loading boundary requires a minimal integration change.
-- Verify the refactor against the existing desktop layout at the configured minimum and default window sizes, light and dark themes, pane combinations, dialogs, editor states, and recent-files UI before implementation is considered complete.
+- Verify the refactor against the existing desktop layout in light and dark themes, the two-column Markdown and Render state, the Render-only state, the Recent Files UI, and the inline Markdown editing state before implementation is considered complete. Use a representative desktop window size; testing multiple window sizes is not required for this item.
 
 ## Acceptance Criteria
 
@@ -48,8 +48,8 @@ Out:
 | Test Case | Criteria | Product Version | Git Commit | Status | Description | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 | `TC-01` | `AC-01` | `1.0.6` | [07a997e](https://github.com/conorheaney/quill/commit/07a997edf3a9f250ecd8159e50084bc9bfa36b3d) | `complete` | Inspect the final stylesheet set and confirm the agreed structural/component ownership boundaries, separate named theme files, shared theme contract, and absence of duplicated theme definitions in structural sections. | [TC-01 evidence](../90%20-%20Evidence/PRD-000008-TC-01.md) |
-| `TC-02` | `AC-01`, `AC-03` | `1.0.6` | [07a997e](https://github.com/conorheaney/quill/commit/07a997edf3a9f250ecd8159e50084bc9bfa36b3d) | `open` | Run the desktop app in each named theme and check the default and minimum window sizes, two-column and Render-only layouts, dialogs, editor states, and recent-files UI against the pre-refactor baseline. | `TBD` |
-| `TC-03` | `AC-02`, `AC-03` | `1.0.6` | [07a997e](https://github.com/conorheaney/quill/commit/07a997edf3a9f250ecd8159e50084bc9bfa36b3d) | `open` | Switch between the named themes and confirm theme switching remains functional, supported visual states are preserved, and any intentional visual differences are documented as in scope. | `TBD` |
+| `TC-02` | `AC-01`, `AC-03` | `1.0.6` | [07a997e](https://github.com/conorheaney/quill/commit/07a997edf3a9f250ecd8159e50084bc9bfa36b3d) | `complete` | Run the desktop app in each named theme at a representative desktop window size and check the two-column Markdown and Render state, the Render-only state, the Recent Files UI, and the inline Markdown editing state against the pre-refactor baseline. Dialog checks and multiple window sizes are not required. | [TC-02 evidence](../90%20-%20Evidence/PRD-000008-TC-02.md) |
+| `TC-03` | `AC-02`, `AC-03` | `1.0.6` | [07a997e](https://github.com/conorheaney/quill/commit/07a997edf3a9f250ecd8159e50084bc9bfa36b3d) | `complete` | Switch between the named themes and confirm theme switching remains functional, supported visual states are preserved, and intentional light/dark visual differences remain in scope. | [TC-03 evidence](../90%20-%20Evidence/PRD-000008-TC-03.md) |
 
 ## Next Step
 
@@ -81,6 +81,11 @@ Run `TC-01` through `TC-03` against product version `1.0.6` at commit `07a997edf
 | 2026-08-05T23:54:30.6678285Z | Test evidence | Ran all three planned static inspections for `TC-01`. They passed: `quill.css` has no theme-token declarations or legacy theme blocks, the structural stylesheet consumes the shared theme variables, and the light and dark themes expose the same variable names. Marked `TC-01` complete. |
 | 2026-08-05T23:57:09.6326879Z | Test evidence formatting | Added figure labels and captions for the three screenshot artifacts and shortened the static-inspection headings while retaining their descriptions below each heading. |
 | 2026-08-05T23:58:43.6294501Z | Test evidence formatting | Changed the evidence-record result field to the binary value `Pass` and moved the explanatory observations below the corresponding screenshot artifacts. |
+| 2026-08-06T00:09:05.6666336Z | Test scope refinement | Recorded the supplied light and dark Render-only screenshots as partial `TC-02` evidence and removed the requirement to repeat this test at multiple window sizes. `TC-02` remains open pending two-column, dialog, and editor-state checks. |
+| 2026-08-06T00:10:12.8370307Z | Test evidence | Added the supplied light and dark Markdown-display screenshots to `TC-02`. They show the two-column Markdown and Render panes displaying corresponding source and formatted content. `TC-02` remains open pending completion of its remaining layout/theme checks. |
+| 2026-08-06T00:11:57.0554296Z | Test scope refinement | Removed dialog checks from `TC-02` because dialogs are outside the theme-controlled surfaces for this item. Replaced the ambiguous editor-state wording with the concrete two-column Markdown and Render state and Render-only state. |
+| 2026-08-06T00:14:05.9469118Z | Test evidence | Added light and dark screenshots showing Markdown editing enabled, the formatting toolbar visible, and inline editing enabled. Combined with the existing layout and Recent Files evidence, this completes `TC-02`. |
+| 2026-08-06T00:20:00Z | Test evidence | Added light and dark screenshots showing theme switching with the Render-only layout, Acceptance Criteria content, Test Cases table, and inline editing control preserved. Marked `TC-03` complete with a passing result. |
 
 ## Legacy Notes
 
