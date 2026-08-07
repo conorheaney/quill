@@ -925,14 +925,19 @@
       min-width: 0;
       text-align: left;
       border-radius: 14px;
-      padding: 6px 0;
+      padding: 8px;
+      border-color: transparent;
       background: transparent;
       transform: none;
       overflow-wrap: anywhere;
     }
 
     .outline-item:hover,
-    .outline-item:focus-visible,
+    .outline-item:focus-visible {
+      background: rgba(212, 106, 58, 0.12);
+      border-color: transparent;
+    }
+
     .outline-item.is-active {
       background: rgba(212, 106, 58, 0.12);
       border-color: rgba(212, 106, 58, 0.4);
