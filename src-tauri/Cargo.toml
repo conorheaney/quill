@@ -1,6 +1,6 @@
 [package]
 name = "quill-tauri"
-version = "1.0.7"
+version = "1.0.8"
 description = "Quill desktop shell built with Tauri."
 authors = ["conor"]
 edition = "2021"
