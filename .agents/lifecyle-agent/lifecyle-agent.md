@@ -1,13 +1,13 @@
-# Quill Workflow
+# Product Lifecycle Workflow
 
 This file defines the repository workflow contract. Detailed creation, promotion, implementation, testing, and candidate-build procedures belong to the relevant local skills.
 
 ## Authority
 
-- `WORKFLOW.md` is the lifecycle authority.
+- `lifecyle-agent.md` is the lifecycle authority.
 - `BACKLOG.md` is the source of truth for each item's status and current phase.
 - The PRD is the durable record of scope, plan, acceptance, verification, history, and audit information.
-- The reusable test-case evidence template is maintained at `.codex/workflow/prd-testcase.md`.
+- The reusable test-case evidence template is maintained at `.agents/lifecyle-agent/prd-testcase.md`.
 - If the backlog and PRD location disagree, the backlog phase is authoritative and the PRD must be brought back into alignment.
 
 ## Lifecycle
@@ -47,7 +47,7 @@ PRD IDs use `PRD-NNNNNN-{CLASS}`, with classes such as `BUG`, `CHANGE`, `TECH`, 
 - `docs/25 - Closed/`
 
 New and actively maintained PRDs must use the required structure defined in
-`.codex/workflow/prd-schema.md`.
+`.agents/lifecyle-agent/prd-schema.md`.
 
 `History` and `Audit` are Markdown tables. `Legacy Notes` is used after the main record when a PRD contains backfill, chronology gaps, or other non-standard historical carryover.
 
@@ -79,7 +79,7 @@ The item is `In Progress / Test` with its PRD in `docs/20 - Test/`. Testing uses
 
 The PRD's `Verification` section must contain a Markdown tracking table with one row per planned test case and these columns: `Test Case`, `Criteria`, `Product Version`, `Status`, `Description`, and `Evidence`. Keep the row current while testing; the `Evidence` cell links to the corresponding record in `docs/90 - Evidence/` when evidence has been recorded. The exact Git commit belongs in the linked evidence record.
 
-Use `planned`, `open`, `in progress`, `complete`, `blocked`, or `exception` for the tracking-table `Status`. To generate a test evidence record, copy `.codex/workflow/prd-testcase.md` to `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md`, fill in the exact product version, Git commit, UTC timestamp, test, result, and supporting evidence, then link that file from the matching tracking-table row.
+Use `planned`, `open`, `in progress`, `complete`, `blocked`, or `exception` for the tracking-table `Status`. To generate a test evidence record, copy `.agents/lifecyle-agent/prd-testcase.md` to `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md`, fill in the exact product version, Git commit, UTC timestamp, test, result, and supporting evidence, then link that file from the matching tracking-table row.
 
 If testing finds code work, return the PRD to `Implement`, update the backlog, record the transition, and only then resume implementation. Product-affecting corrections require a new patch candidate and repeat testing of affected coverage.
 
@@ -99,4 +99,4 @@ Product-affecting changes include application code, Tauri configuration, runtime
 
 ## Requirement shaping
 
-New requirements must be shaped with the repo-local [prd-grill-me](.codex/skills/prd-grill-me/SKILL.md) skill before becoming PRD items. If that skill is unavailable or broken, do not create the requirement.
+New requirements must be shaped with the repo-local [prd-grill-me](../../.codex/skills/prd-grill-me/SKILL.md) skill before becoming PRD items. If that skill is unavailable or broken, do not create the requirement.

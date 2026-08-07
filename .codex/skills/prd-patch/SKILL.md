@@ -1,6 +1,6 @@
 ---
 name: prd-patch
-description: Prepare a Quill product-affecting PRD for Test by creating the required committed patch-version candidate, rebuilding the desktop artifacts, synchronizing the root executable, and stopping before PRD promotion.
+description: Prepare a product-affecting PRD for Test by creating the required committed patch-version candidate, rebuilding the desktop artifacts, synchronizing the root executable, and stopping before PRD promotion.
 ---
 
 # PRD Patch
@@ -11,22 +11,22 @@ Prepare the committed product candidate required before an Implement-phase PRD c
 
 Read these files before changing anything:
 
-1. `WORKFLOW.md`
+1. `.agents/lifecyle-agent/lifecyle-agent.md`
 2. `BACKLOG.md`
-3. `.agents/local-agent.md`
+3. `AGENTS.md`
 4. the target PRD in `docs/15 - Implement/`
 5. `package.json`, `package-lock.json`, `src-tauri/Cargo.toml`, and `src-tauri/tauri.conf.json`
 
-Use the live repository files as authoritative if they differ from this skill. `WORKFLOW.md` supplies the lifecycle and product-candidate contract; this skill supplies the candidate procedure.
+Use the live repository files as authoritative if they differ from this skill. `.agents/lifecyle-agent/lifecyle-agent.md` supplies the lifecycle and product-candidate contract; this skill supplies the candidate procedure.
 
-The minimum candidate context is `WORKFLOW.md`, `BACKLOG.md`, `.agents/local-agent.md`, the target PRD, `package.json`, `package-lock.json`, `src-tauri/Cargo.toml`, and `src-tauri/tauri.conf.json`. Load additional product or build files only when the target PRD requires them.
+The minimum candidate context is `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, `AGENTS.md`, the target PRD, `package.json`, `package-lock.json`, `src-tauri/Cargo.toml`, and `src-tauri/tauri.conf.json`. Load additional product or build files only when the target PRD requires them.
 
 ## Preconditions
 
 - Identify the PRD number. Ask for it if the user did not specify it clearly.
 - Confirm the backlog row says `In Progress` / `Implement` and the matching PRD is in `docs/15 - Implement/`.
 - Confirm the PRD contains the required sections and has a concrete `Next Step` for Test-candidate preparation.
-- Confirm the item is product-affecting under the product-candidate rules in `WORKFLOW.md`; this skill is intended for code, runtime, build, dependency, configuration, or packaged-asset changes.
+- Confirm the item is product-affecting under the product-candidate rules in `.agents/lifecyle-agent/lifecyle-agent.md`; this skill is intended for code, runtime, build, dependency, configuration, or packaged-asset changes.
 - Inspect `git status` before changing anything. Preserve unrelated user changes and never stage them.
 - Give the user a concise summary of the candidate work and ask whether to continue before mutating files.
 - Ask for a separate confirmation immediately before the version bump.
@@ -60,7 +60,7 @@ When resuming after a declined confirmation or an interrupted command, first rep
 1. After confirmation, run the repository's version-bump command.
 2. Show the resulting version-file diff and ask for confirmation before building.
 3. After confirmation, run `npm run build` and require a successful Tauri release build and NSIS bundle where the repository configuration produces them.
-4. Copy `src-tauri/target/release/quill-tauri.exe` to the repository-root `quill.exe`, because `WORKFLOW.md` requires the root executable to be overwritten after builds.
+4. Copy `src-tauri/target/release/<product>-tauri.exe` to the repository-root `product.exe`, because `.agents/lifecyle-agent/lifecyle-agent.md` requires the root executable to be overwritten after builds.
 5. Compare SHA-256 hashes of the root executable and the release executable; they must match.
 6. Run the relevant static checks, including `node --check` for modified JavaScript files.
 7. Do not claim formal visual acceptance. That belongs to the Test phase.
@@ -77,7 +77,7 @@ At the end of this stage, report `BUILT` only after the release executable exist
 ## Stage 3: Commit Checkpoint
 
 - Review the complete diff after candidate preparation.
-- Stage only the target PRD, the approved product implementation, synchronized version files, generated root `quill.exe`, and any other files explicitly required by the target PRD.
+- Stage only the target PRD, the approved product implementation, synchronized version files, generated root `product.exe`, and any other files explicitly required by the target PRD.
 - Never stage unrelated user changes, especially changes belonging to another PRD.
 - The candidate and product changes must be committed to `main` before `prd-promote` can move the PRD to `Test`.
 - Show the complete candidate diff, exact staged paths, notable binary artifacts, and proposed commit message. Ask for explicit confirmation before staging and committing. Follow the `git-verified-commit` scope and approval rules.

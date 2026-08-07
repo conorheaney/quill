@@ -1,4 +1,4 @@
 interface:
   display_name: "PRD Grill Me"
-  short_description: "Shape Quill requirements with focused questions."
-  default_prompt: "Use $prd-grill-me to pressure-test a Quill requirement before backlog creation or promotion."
+  short_description: "Shape project requirements with focused questions."
+  default_prompt: "Use $prd-grill-me to pressure-test a project requirement before backlog creation or promotion."

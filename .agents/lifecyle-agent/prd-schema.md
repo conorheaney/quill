@@ -34,4 +34,4 @@ New and actively maintained PRDs use these headings in this order:
 - `prd-backlog` validates the new-item shape it creates.
 - `prd-promote` validates the target item's phase gate and alignment before moving it.
 - `prd-implement` validates implementation readiness before code work.
-- `scripts/check-workflow.ps1` performs read-only repository-wide structural checks.
+- `.agents/lifecyle-agent/check-workflow.ps1` performs read-only repository-wide structural checks.

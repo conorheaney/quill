@@ -1,6 +1,6 @@
 ---
 name: prd-implement
-description: Implement the code changes described by an existing Quill PRD only when the repo workflow already authorizes code work. Use when the user wants to execute a planned PRD, check whether a PRD is genuinely implementation-ready, surface implementation blockers, or carry the approved item through scoped code changes without bypassing the local workflow rules.
+description: Implement the code changes described by an existing project PRD only when the repo workflow already authorizes code work. Use when the user wants to execute a planned PRD, check whether a PRD is genuinely implementation-ready, surface implementation blockers, or carry the approved item through scoped code changes without bypassing the local workflow rules.
 ---
 
 # PRD Implement
@@ -15,21 +15,21 @@ description: Implement the code changes described by an existing Quill PRD only 
 
 ## Guardrail
 
-- Use `WORKFLOW.md` as the lifecycle authority, `BACKLOG.md` as the item-state authority, and `.agents/local-agent.md` as the local safety contract.
+- Use `.agents/lifecyle-agent/lifecyle-agent.md` as the lifecycle authority, `BACKLOG.md` as the item-state authority, and `AGENTS.md` as the local safety contract.
 - Validate the target PRD against those sources instead of re-stating their general rules here.
 - Refuse to use a PRD for code work if its planning sections are still too weak to guide implementation and verification safely.
 - Do not silently broaden scope. If the requested work goes beyond the approved PRD, stop and explain the mismatch.
 
 ## Read First
 
-1. `WORKFLOW.md`
+1. `.agents/lifecyle-agent/lifecyle-agent.md`
 2. `BACKLOG.md`
-3. `.agents/local-agent.md`
+3. `AGENTS.md`
 4. the target PRD file
 
-Use the live repo text if it disagrees with this skill. For implementation gating, use the `Plan`, `Implement`, and `Test` phase contracts and the PRD structure defined by `WORKFLOW.md`.
+Use the live repo text if it disagrees with this skill. For implementation gating, use the `Plan`, `Implement`, and `Test` phase contracts and the PRD structure defined by `.agents/lifecyle-agent/lifecyle-agent.md`.
 
-The minimum implementation context is `WORKFLOW.md`, `BACKLOG.md`, `.agents/local-agent.md`, and the target PRD. Load implementation files and test instructions only after the readiness review passes.
+The minimum implementation context is `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, `AGENTS.md`, and the target PRD. Load implementation files and test instructions only after the readiness review passes.
 
 ## Implementation Readiness Review
 
@@ -70,9 +70,9 @@ Treat presence alone as insufficient. If any section still reads like a template
 
 ## Workflow record during execution
 
-- Use `WORKFLOW.md` for `Audit`, `History`, timestamp, and phase-transition rules.
+- Use `.agents/lifecyle-agent/lifecyle-agent.md` for `Audit`, `History`, timestamp, and phase-transition rules.
 - Keep implementation decisions, exceptions, and the current `Next Step` current while the work proceeds.
-- If the workflow state should change, stop and apply only the transition allowed by `WORKFLOW.md` and `prd-promote`.
+- If the workflow state should change, stop and apply only the transition allowed by `.agents/lifecyle-agent/lifecyle-agent.md` and `prd-promote`.
 
 ## Expected Result
 

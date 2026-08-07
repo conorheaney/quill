@@ -1,6 +1,6 @@
 # Quill Backlog
 
-`BACKLOG.md` is the canonical source of truth for PRD items, their overall status, and their current workflow phase. Promotion, structure, and code-authorization rules live in [WORKFLOW.md](WORKFLOW.md).
+`BACKLOG.md` is the canonical source of truth for PRD items, their overall status, and their current workflow phase. Promotion, structure, and code-authorization rules live in [.agents/lifecyle-agent/lifecyle-agent.md](.agents/lifecyle-agent/lifecyle-agent.md).
 
 ## Status
 

@@ -4,9 +4,9 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$repoRoot = Split-Path -Parent $PSScriptRoot
-$schemaPath = Join-Path $repoRoot ".codex\workflow\prd-schema.md"
-$statusMapPath = Join-Path $repoRoot ".codex\workflow\status-phase-map.json"
+$repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$schemaPath = Join-Path $repoRoot ".agents\lifecyle-agent\prd-schema.md"
+$statusMapPath = Join-Path $repoRoot ".agents\lifecyle-agent\status-phase-map.json"
 $backlogPath = Join-Path $repoRoot "BACKLOG.md"
 $errors = [System.Collections.Generic.List[string]]::new()
 $warnings = [System.Collections.Generic.List[string]]::new()
@@ -150,7 +150,7 @@ foreach ($id in $backlogEntries.Keys) {
     if (-not $filesById.ContainsKey($id)) { Add-Error "Backlog row has no PRD file in a phase folder: $id" }
 }
 
-$controlFiles = @("WORKFLOW.md", "BACKLOG.md", ".agents\local-agent.md") + @(Get-ChildItem -LiteralPath (Join-Path $repoRoot ".codex\skills") -Recurse -Filter "SKILL.md" -File | ForEach-Object { $_.FullName.Substring($repoRoot.Length + 1) })
+$controlFiles = @("AGENTS.md", ".agents\lifecyle-agent\lifecyle-agent.md", "BACKLOG.md") + @(Get-ChildItem -LiteralPath (Join-Path $repoRoot ".codex\skills") -Recurse -Filter "SKILL.md" -File | ForEach-Object { $_.FullName.Substring($repoRoot.Length + 1) })
 foreach ($relativePath in $controlFiles) {
     $fullPath = Join-Path $repoRoot $relativePath
     foreach ($line in Get-Content -LiteralPath $fullPath) {

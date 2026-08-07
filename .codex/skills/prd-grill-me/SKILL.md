@@ -1,6 +1,6 @@
 ---
 name: prd-grill-me
-description: Interrogate a Quill project, requirement, plan, or strategy until its goals, risks, assumptions, constraints, next actions, and open decisions are sharper. Use when shaping a Quill requirement before backlog creation or strengthening a weak PRD section during promotion.
+description: Interrogate a project, requirement, plan, or strategy until its goals, risks, assumptions, constraints, next actions, and open decisions are sharper. Use when shaping a project requirement before backlog creation or strengthening a weak PRD section during promotion.
 ---
 
 # PRD Grill Me

@@ -1,22 +1,22 @@
 ---
 name: prd-backlog
-description: Create a new Quill backlog item with a light prd-grill-me pass, while conforming to the current repo workflow. Use this skill when the user wants to add a new work item to Quill's backlog.
+description: Create a new project backlog item with a light prd-grill-me pass, while conforming to the current repo workflow. Use this skill when the user wants to add a new work item to project backlog.
 ---
 
 # PRD Backlog
 
-This skill owns backlog-item creation: the light shaping pass, the initial PRD structure, the backlog-row shape, and creation-time validation. `WORKFLOW.md` continues to own the lifecycle invariants that this operation must obey.
+This skill owns backlog-item creation: the light shaping pass, the initial PRD structure, the backlog-row shape, and creation-time validation. `.agents/lifecyle-agent/lifecyle-agent.md` continues to own the lifecycle invariants that this operation must obey.
 
 ## Guardrail
 
-- Use `WORKFLOW.md`, `BACKLOG.md`, and `.agents/local-agent.md` as the workflow and safety authorities.
+- Use `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, and `AGENTS.md` as the workflow and safety authorities.
 - If the requested item would not conform to the current workflow, stop and explain why.
 - Do not create code-authorizing state. A new item remains `Proposed / Backlog`.
 - Use the templates in this skill instead of inventing a new PRD or backlog-row shape.
 
 ## Context Loading
 
-Load only `WORKFLOW.md`, `BACKLOG.md`, `.agents/local-agent.md`, the local `prd-grill-me` skill, and the templates in this skill before creating an item. Load existing PRD examples only if the current template or records are ambiguous.
+Load only `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, `AGENTS.md`, the local `prd-grill-me` skill, and the templates in this skill before creating an item. Load existing PRD examples only if the current template or records are ambiguous.
 
 ## How To Use It
 
@@ -75,7 +75,7 @@ Before reporting success, verify:
 - the new backlog row appears once and says `Proposed / Backlog`
 - the required headings are present and in canonical order
 - `History` and `Audit` are Markdown tables
-- `Verification` contains the six-column test-case tracking table from `WORKFLOW.md`, with one row per planned test case
+- `Verification` contains the six-column test-case tracking table from `.agents/lifecyle-agent/lifecyle-agent.md`, with one row per planned test case
 - the initial `History` entry is `Backlog`
 - all new timestamps use `yyyy-MM-ddTHH:mm:ss.fffffffZ` UTC format
 - no code, phase promotion, or unrelated backlog edits were made
@@ -87,10 +87,10 @@ Create the new item in the repo's normal workflow shape:
 - add the backlog row in `BACKLOG.md`
 - create the matching PRD file in `docs/05 - Backlog/`
 - use the templates and creation contract in this skill
-- keep status, phase, timestamps, and history/audit records aligned with `WORKFLOW.md`
+- keep status, phase, timestamps, and history/audit records aligned with `.agents/lifecyle-agent/lifecyle-agent.md`
 
 ## Notes
 
 - Treat `BACKLOG.md` as the source of truth for IDs and item state.
 - Use the lightest wording that still produces a clear, useful backlog item.
-- If historical workflow examples differ from the templates, follow this skill's current template and the live invariants in `WORKFLOW.md`.
+- If historical workflow examples differ from the templates, follow this skill's current template and the live invariants in `.agents/lifecyle-agent/lifecyle-agent.md`.

@@ -6,8 +6,8 @@
   "scripts": {
     "start": "npm run tauri:dev",
     "smoke:dev": "node scripts/serve-quill.mjs",
-    "check:workflow": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-workflow.ps1",
-    "check:workflow:details": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-workflow.ps1 -Detailed",
+    "check:workflow": "powershell -NoProfile -ExecutionPolicy Bypass -File .agents/lifecyle-agent/check-workflow.ps1",
+    "check:workflow:details": "powershell -NoProfile -ExecutionPolicy Bypass -File .agents/lifecyle-agent/check-workflow.ps1 -Detailed",
     "tauri:info": "tauri info",
     "tauri:dev": "tauri dev",
     "version:bump": "node scripts/bump-version.mjs",

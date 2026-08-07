@@ -1,15 +1,15 @@
 ---
 name: prd-promote
-description: Validate and promote an existing Quill PRD to its next allowed workflow phase while conforming to the live repo rules. Use when the user wants to promote a PRD, check whether a PRD is ready for its next phase, repair promotion blockers, or carry out the paired backlog-plus-file move for `Backlog`, `Plan`, `Implement`, `Test`, or `Closed`.
+description: Validate and promote an existing project PRD to its next allowed workflow phase while conforming to the live repo rules. Use when the user wants to promote a PRD, check whether a PRD is ready for its next phase, repair promotion blockers, or carry out the paired backlog-plus-file move for `Backlog`, `Plan`, `Implement`, `Test`, or `Closed`.
 ---
 
 # PRD Promote
 
-Use this skill to validate and promote an existing Quill PRD. This skill owns promotion-time identity checks, phase-gate validation, paired backlog/PRD updates, and the user-facing blocker report. `WORKFLOW.md` remains the lifecycle contract. Keep it lightweight. Read the repo rules, inspect the target PRD, surface blockers first, and make workflow edits only after the promotion is valid.
+Use this skill to validate and promote an existing project PRD. This skill owns promotion-time identity checks, phase-gate validation, paired backlog/PRD updates, and the user-facing blocker report. `.agents/lifecyle-agent/lifecyle-agent.md` remains the lifecycle contract. Keep it lightweight. Read the repo rules, inspect the target PRD, surface blockers first, and make workflow edits only after the promotion is valid.
 
 ## Guardrail
 
-- Use `WORKFLOW.md`, `BACKLOG.md`, and `.agents/local-agent.md` as the workflow and safety authorities.
+- Use `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, and `AGENTS.md` as the workflow and safety authorities.
 - If the requested promotion would violate the workflow, stop and explain why.
 - Never skip phases.
 - Never implement code work from this skill unless the repo workflow separately authorizes it.
@@ -17,9 +17,9 @@ Use this skill to validate and promote an existing Quill PRD. This skill owns pr
 
 ## Read First
 
-1. `WORKFLOW.md`
+1. `.agents/lifecyle-agent/lifecyle-agent.md`
 2. `BACKLOG.md`
-3. `.agents/local-agent.md`
+3. `AGENTS.md`
 4. the target PRD file
 
 Use the live repo text if it disagrees with this skill.
@@ -39,8 +39,8 @@ Load `.codex/skills/prd-grill-me/SKILL.md` only if the target PRD has a weak or 
 2. Find the target PRD row in `BACKLOG.md`.
 3. Find the matching PRD file.
 4. Give the user a concise 3 to 4 line summary of the PRD and ask whether they want to continue.
-5. Only after the user confirms, determine the current phase and the next allowed phase by following `WORKFLOW.md` and the current `BACKLOG.md` row explicitly.
-6. Validate the PRD using the checks and phase gates below, applying `WORKFLOW.md` as the authority for any conflict.
+5. Only after the user confirms, determine the current phase and the next allowed phase by following `.agents/lifecyle-agent/lifecyle-agent.md` and the current `BACKLOG.md` row explicitly.
+6. Validate the PRD using the checks and phase gates below, applying `.agents/lifecyle-agent/lifecyle-agent.md` as the authority for any conflict.
 
 - For an `Implement` to `Test` promotion of a product-affecting item, verify that the candidate patch-version bump and product change are committed to `main` before moving the PRD.
 - For a `Test` to `Closed` promotion, verify that each complete test record identifies both the exact product version and Git commit, and treat `Closed` as PRD closure rather than an automatic product release.
@@ -65,7 +65,7 @@ Run these checks before every promotion attempt.
 
 ### Required structure
 
-- The PRD satisfies the required structure in `.codex/workflow/prd-schema.md`.
+- The PRD satisfies the required structure in `.agents/lifecyle-agent/prd-schema.md`.
 - `History` and `Audit` are Markdown tables.
 - `Legacy Notes`, when present, remains after the main workflow record.
 - Required sections are materially filled and are not placeholders for a later phase.
@@ -86,7 +86,7 @@ Allow only when `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` a
 
 ### Implement -> Test
 
-Allow only when implementation is complete enough to verify, `Verification` describes a real test approach, `Next Step` points to verification or acceptance, the backlog row says `In Progress / Implement` or `Blocked / Implement`, and the PRD is in `docs/15 - Implement/`. For product-affecting work, also verify the committed patch candidate and product change required by `WORKFLOW.md`. On success, change the row to `In Progress / Test`, move the PRD to `docs/20 - Test/`, and append `Test` to `History`.
+Allow only when implementation is complete enough to verify, `Verification` describes a real test approach, `Next Step` points to verification or acceptance, the backlog row says `In Progress / Implement` or `Blocked / Implement`, and the PRD is in `docs/15 - Implement/`. For product-affecting work, also verify the committed patch candidate and product change required by `.agents/lifecyle-agent/lifecyle-agent.md`. On success, change the row to `In Progress / Test`, move the PRD to `docs/20 - Test/`, and append `Test` to `History`.
 
 ### Test -> Closed
 
@@ -127,7 +127,7 @@ Keep the `prd-grill-me` pass brief and targeted. Ask only enough to turn the wea
 
 ## Expected Result
 
-- follow the live workflow rules in `WORKFLOW.md`
+- follow the live workflow rules in `.agents/lifecyle-agent/lifecyle-agent.md`
 - use `BACKLOG.md` as the source of truth for current state
 - use `prd-grill-me` only when a gate-critical section needs targeted strengthening
 - promote the PRD only after it satisfies the repo workflow requirements

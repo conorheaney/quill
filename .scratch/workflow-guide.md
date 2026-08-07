@@ -1,10 +1,10 @@
 # Workflow Guide
 
-> Derived, human-facing documentation. This guide is not normative and is not part of default agent context. For current rules, follow `WORKFLOW.md`, `BACKLOG.md`, and the relevant local skill.
+> Derived, human-facing documentation. This guide is not normative and is not part of default agent context. For current rules, follow `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, and the relevant local skill.
 
 ## Status
 
-Draft in progress. This document is being built incrementally from the live workflow rules in `WORKFLOW.md`, `BACKLOG.md`, and `.agents/local-agent.md`.
+Draft in progress. This document is being built incrementally from the live workflow rules in `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, and `AGENTS.md`.
 
 ## Audience
 
@@ -12,9 +12,9 @@ This guide is for software development contributors across product ownership, pr
 
 ## Source Of Truth
 
-- `WORKFLOW.md`
+- `.agents/lifecyle-agent/lifecyle-agent.md`
 - `BACKLOG.md`
-- `.agents/local-agent.md`
+- `AGENTS.md`
 
 ## Workflow Overview
 
@@ -266,7 +266,7 @@ All workflow timestamps must be recorded in UTC using `yyyy-MM-ddTHH:mm:ss.fffff
 
 ## Operating Authority
 
-This guide explains the workflow visually, but it does not own the operating rules. Follow `WORKFLOW.md` for lifecycle invariants, `BACKLOG.md` for current item state, and the relevant local skill for each operation.
+This guide explains the workflow visually, but it does not own the operating rules. Follow `.agents/lifecyle-agent/lifecyle-agent.md` for lifecycle invariants, `BACKLOG.md` for current item state, and the relevant local skill for each operation.
 
 ## Where To Operate
 
@@ -278,7 +278,7 @@ Use the local skill that owns the operation:
 - [prd-implement](../.codex/skills/prd-implement/SKILL.md) for implementation readiness and scoped code work
 - [prd-patch](../.codex/skills/prd-patch/SKILL.md) for product test-candidate preparation
 
-`WORKFLOW.md` defines the lifecycle contract. `BACKLOG.md` defines current item state. The skills define the procedures and templates. This guide explains the ideas and visual model only; it does not restate their operating rules.
+`.agents/lifecyle-agent/lifecyle-agent.md` defines the lifecycle contract. `BACKLOG.md` defines current item state. The skills define the procedures and templates. This guide explains the ideas and visual model only; it does not restate their operating rules.
 
 ## How A New Item Starts
 
@@ -286,7 +286,7 @@ For the current creation procedure, use [prd-backlog](../.codex/skills/prd-backl
 
 ## Handling Exceptions
 
-Use [prd-promote](../.codex/skills/prd-promote/SKILL.md), [prd-implement](../.codex/skills/prd-implement/SKILL.md), and `WORKFLOW.md` for exception handling. This guide does not duplicate their blocker or return-to-phase procedures.
+Use [prd-promote](../.codex/skills/prd-promote/SKILL.md), [prd-implement](../.codex/skills/prd-implement/SKILL.md), and `.agents/lifecyle-agent/lifecyle-agent.md` for exception handling. This guide does not duplicate their blocker or return-to-phase procedures.
 
 The guide's role is explanatory: show the lifecycle and visual model without becoming another operating source.
 
