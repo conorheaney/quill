@@ -10,6 +10,10 @@ This file defines the repository workflow contract. Detailed creation, promotion
 - The reusable test-case evidence template is maintained at `.agents/lifecyle-agent/prd-testcase.md`.
 - If the backlog and PRD location disagree, the backlog phase is authoritative and the PRD must be brought back into alignment.
 
+## Context loading
+
+Each skill owns its detailed context requirements. Before acting, load this lifecycle contract, `AGENTS.md`, `BACKLOG.md` for PRD operations, the target PRD, and the relevant skill procedure. Load phase-specific evidence and implementation files only when the operation requires them.
+
 ## Lifecycle
 
 Every item uses one PRD file and moves through these phases in order:
