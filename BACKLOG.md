@@ -24,6 +24,7 @@
 | PRD-000020-CHANGE | CHANGE | Remove Browser Mode Paths | Done | Closed | Remove broader browser-mode code paths so Quill is shaped around the packaged desktop runtime as its supported end-user experience. |
 | PRD-000021-TECH | TECH | TypeScript Migration For Frontend Runtime | Proposed | Backlog | Plan and execute a staged TypeScript migration for Quill's frontend runtime and desktop bridge so the editor gains stronger module contracts, safer state handling, and better refactor support. |
 | PRD-000023-CHANGE | CHANGE | Make AutoSave Persist Open Files | Proposed | Backlog | Make AutoSave write changes to the current file with clear status feedback and a tuned save interval. |
+| PRD-000024-UI | UI | Compact Outline Pane | In Progress | Implement | Remove the Outline header and non-essential spacing around Outline entries so more headings fit vertically while navigation and hierarchy remain clear. |
 | PRD-000017-TECH | TECH | Centralize Product Version Source | Done | Closed | Centralize Quill's product version in one shared source that both the UI and Tauri build configuration can consume so the displayed version and shipped build stay aligned. |
 
 ## In Progress

@@ -1,6 +1,6 @@
 {
   "name": "Quill",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Local-first Markdown editor with a Tauri desktop shell.",
   "private": true,
   "scripts": {
