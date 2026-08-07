@@ -167,13 +167,13 @@ Done
 | 2026-07-12T13:08:53.6398072Z | Plan |
 | 2026-07-12T13:08:54.6398072Z | Implement |
 | 2026-07-12T13:08:55.6398072Z | Test |
-| 2026-07-12T13:08:56.6398072Z | Release |
+| 2026-07-12T13:08:56.6398072Z | Closed |
 
 ## Audit
 
 | Timestamp | Type | Detail |
 | --- | --- | --- |
-| 2026-07-12T13:08:57.6398072Z | Backfill | Rebuilt the missing `Backlog`, `Plan`, `Implement`, `Test`, and `Release` history rows during the consistency sweep. These UTC timestamps record when the legacy gap was repaired; the original transition times were not captured. |
+| 2026-07-12T13:08:57.6398072Z | Backfill | Rebuilt the missing `Backlog`, `Plan`, `Implement`, `Test`, and `Closed` history rows during the consistency sweep. These UTC timestamps record when the legacy gap was repaired; the original transition times were not captured. |
 
 ## Legacy Notes
 

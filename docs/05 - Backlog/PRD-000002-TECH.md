@@ -1,4 +1,4 @@
-# PRD-000002-TECH
+﻿# PRD-000002-TECH
 
 ## Short Name
 
@@ -27,21 +27,21 @@ Out:
 
 ## Plan
 
-- Define the first test seams, initial harness choice, and smallest useful coverage slice during `01 - Plan`.
+- Define the first test seams, initial harness choice, and smallest useful coverage slice during `10 - Plan`.
 
 ## Acceptance Criteria
 
-- `AC-01`: Define the concrete coverage targets and pass conditions during `01 - Plan`.
+- `AC-01`: Define the concrete coverage targets and pass conditions during `10 - Plan`.
 
 ## Verification
 
 | Test Case | Criteria | Product Version | Status | Description | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| `TC-01` | `AC-01` | `pending` | `planned` | Define the verification approach and evidence format during `01 - Plan`. | Not yet recorded. |
+| `TC-01` | `AC-01` | `pending` | `planned` | Define the verification approach and evidence format during `10 - Plan`. | Not yet recorded. |
 
 ## Next Step
 
-Move this item to `01 - Plan` and define the first test targets and test approach.
+Move this item to `10 - Plan` and define the first test targets and test approach.
 
 ## History
 
@@ -53,8 +53,9 @@ Move this item to `01 - Plan` and define the first test targets and test approac
 
 | Timestamp | Type | Detail |
 | --- | --- | --- |
-| 2026-07-12T13:09:21.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `01 - Plan`. |
+| 2026-07-12T13:09:21.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `10 - Plan`. |
 
 ## Legacy Notes
 
 - This PRD includes a repaired `Backlog` capture from an earlier consistency sweep, so the original creation event was not recorded just in time.
+

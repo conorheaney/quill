@@ -73,14 +73,14 @@ Release record complete; commit and ship from `main` under the repository releas
 | 2026-07-24T23:29:36.9155757Z | Plan |
 | 2026-07-24T23:50:43.3501394Z | Implement |
 | 2026-07-25T14:50:23.3962029Z | Test |
-| 2026-07-25T23:19:49.0509438Z | Release |
+| 2026-07-25T23:19:49.0509438Z | Closed |
 
 ## Audit
 
 | Timestamp | Type | Detail |
 | --- | --- | --- |
 | 2026-07-16T23:32:16.5377845Z | Scope discovery | Added as a backlog item after deciding Quill should be treated as a packaged desktop app for end users and that the broader browser-mode code paths should be removed in a separate change. |
-| 2026-07-16T23:32:16.5377845Z | State | Current state: backlogged and waiting to move into `01 - Plan`. |
+| 2026-07-16T23:32:16.5377845Z | State | Current state: backlogged and waiting to move into `10 - Plan`. |
 | 2026-07-24T23:29:36.9444991Z | Promotion | Promoted to `Plan` with user approval. |
 | 2026-07-24T23:34:11.2705724Z | Planning | Defined bridge-only files, path-only Recent, mocked smoke testing, and verification. |
 | 2026-07-24T23:40:21.4110181Z | Decision | Keep no production browser file workflow; retain mocked browser tests and desktop-useful WebView APIs. |
@@ -108,9 +108,10 @@ Release record complete; commit and ship from `main` under the repository releas
 | 2026-07-25T23:13:10.1366285Z | Test evidence | Recorded inline editing and dirty-state behavior for `TC-06`; unsaved-change confirmation remains open. |
 | 2026-07-25T23:18:13.2663330Z | Test evidence | Marked `TC-06` complete after the Recent-file unsaved-change confirmation flow passed. |
 | 2026-07-25T20:53:18.8487993Z | Test metadata backfill | Added product version `1.0.4` to every planned test case and completed evidence record so the version under test is explicit. |
-| 2026-07-25T23:19:49.1009149Z | Promotion | Promoted to `Release` with user approval after all eight test cases completed. |
+| 2026-07-25T23:19:49.1009149Z | Promotion | Promoted to `Closed` with user approval after all eight test cases completed. |
 | 2026-07-25T23:35:48.5190238Z | Release build | Bumped the centralized version to `1.0.5`; the isolated production build and NSIS installer succeeded, and executable metadata reports version `1.0.5`. Release tag target: `v1.0.5`. |
 
 ## Legacy Notes
 
 - Product version `1.0.4` was added retrospectively to the existing test cases and evidence records on 2026-07-25. Original test timestamps and outcomes were not changed.
+

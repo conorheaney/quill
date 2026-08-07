@@ -20,7 +20,7 @@ This guide is for software development contributors across product ownership, pr
 
 This workflow gives each work item one backlog entry, one requirement record, and one visible lifecycle state. Work only becomes real when it is captured in both the backlog and the requirement record, then moved through the same fixed sequence:
 
-`Backlog -> Plan -> Implement -> Test -> Release`
+`Backlog -> Plan -> Implement -> Test -> Closed`
 
 The goal is to keep the process lightweight while preventing the most common delivery failures: vague requests, hidden scope growth, informal status changes, weak verification, and reconstructed audit history. The same requirement record moves through every stage and is never replaced with a later-phase copy.
 
@@ -79,7 +79,7 @@ Typical responsibilities:
 - use the `Verification` section as the test anchor
 - record important evidence and outcomes
 - send items back to `Implement` when more code changes are required
-- help determine whether an item is genuinely ready for `Release`
+- help determine whether an item is genuinely ready for `Closed`
 
 ## Core Workflow Objects
 
@@ -122,7 +122,7 @@ The phase folders are not copies or archives. They represent the current positio
 - the plan folder means the item is being prepared into an implementation-ready package
 - the implement folder means code work is currently authorized and under way
 - the test folder means implementation is complete enough to verify
-- the release folder means the item has been accepted and closed out
+- the closed folder means the item has been accepted and closed out
 
 ![Workflow tracking model](./assets/workflow-tracking-model.png)
 
@@ -130,7 +130,7 @@ This visual shows the four workflow surfaces that must remain aligned. The backl
 
 ## Lifecycle Walkthrough
 
-### 00 - Backlog
+### 05 - Backlog
 
 ![Backlog phase visual](./assets/lifecycle/backlog.png)
 
@@ -155,7 +155,7 @@ What this phase is not for:
 - implicit planning by chat alone
 - vague idea parking without a PRD record
 
-### 01 - Plan
+### 10 - Plan
 
 ![Plan phase visual](./assets/lifecycle/plan.png)
 
@@ -181,7 +181,7 @@ The workflow explicitly blocks promotion into `Implement` unless the PRD include
 - `Verification`
 - `Next Step`
 
-### 02 - Implement
+### 15 - Implement
 
 ![Implement phase visual](./assets/lifecycle/implement.png)
 
@@ -200,7 +200,7 @@ If additional work is discovered:
 - keep it in the current requirement only if it remains within scope
 - create a separate backlog item if the discovery materially changes the original ask
 
-### 03 - Test
+### 20 - Test
 
 ![Test phase visual](./assets/lifecycle/test.png)
 
@@ -223,21 +223,21 @@ If testing uncovers more implementation work:
 
 The workflow deliberately separates testing from coding so that quality gates remain visible.
 
-### 04 - Release
+### 25 - Closed
 
-![Release phase visual](./assets/lifecycle/release.png)
+![Closed phase visual](./assets/lifecycle/release.png)
 
 This is the closeout phase.
 
-When an item enters `Release`:
+When an item enters `Closed`:
 
-- the requirement moves into the release folder
+- the requirement moves into the closed folder
 - the backlog entry moves to `Done`
-- a `Release` row is added to `History`
+- a `Closed` row is added to `History`
 
 At this point the item is treated as shipped, accepted, or otherwise complete enough to close.
 
-The released requirement record remains the durable final record for that item.
+The closed requirement record remains the durable final record for that item.
 
 ## PRD Structure
 

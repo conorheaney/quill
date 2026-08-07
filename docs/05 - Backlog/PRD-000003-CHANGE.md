@@ -1,4 +1,4 @@
-# PRD-000003-CHANGE
+﻿# PRD-000003-CHANGE
 
 ## Short Name
 
@@ -26,21 +26,21 @@ Out:
 
 ## Plan
 
-- Define the final asset-loading assumptions, release boundary, and safe removal sequence during `01 - Plan`.
+- Define the final asset-loading assumptions, release boundary, and safe removal sequence during `10 - Plan`.
 
 ## Acceptance Criteria
 
-- `AC-01`: Define the safe cache-busting removal outcomes and non-regression checks during `01 - Plan`.
+- `AC-01`: Define the safe cache-busting removal outcomes and non-regression checks during `10 - Plan`.
 
 ## Verification
 
 | Test Case | Criteria | Product Version | Status | Description | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| `TC-01` | `AC-01` | `pending` | `planned` | Define the verification approach and evidence format during `01 - Plan`. | Not yet recorded. |
+| `TC-01` | `AC-01` | `pending` | `planned` | Define the verification approach and evidence format during `10 - Plan`. | Not yet recorded. |
 
 ## Next Step
 
-Move this item to `01 - Plan` once the release approach is clear enough to define the change safely.
+Move this item to `10 - Plan` once the release approach is clear enough to define the change safely.
 
 ## History
 
@@ -52,8 +52,9 @@ Move this item to `01 - Plan` once the release approach is clear enough to defin
 
 | Timestamp | Type | Detail |
 | --- | --- | --- |
-| 2026-07-12T13:09:22.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `01 - Plan`. |
+| 2026-07-12T13:09:22.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `10 - Plan`. |
 
 ## Legacy Notes
 
 - This PRD includes a repaired `Backlog` capture from an earlier consistency sweep, so the original creation event was not recorded just in time.
+

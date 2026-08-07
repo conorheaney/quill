@@ -1,4 +1,4 @@
-# PRD-000023-CHANGE
+﻿# PRD-000023-CHANGE
 
 ## Short Name
 
@@ -45,7 +45,7 @@ Out:
 
 ## Next Step
 
-Move to `01 - Plan` and choose the interval, state transitions, and failure behavior.
+Move to `10 - Plan` and choose the interval, state transitions, and failure behavior.
 
 ## History
 
@@ -58,3 +58,4 @@ Move to `01 - Plan` and choose the interval, state transitions, and failure beha
 | Timestamp | Type | Detail |
 | --- | --- | --- |
 | 2026-07-25T23:01:39.6295209Z | Requirement shaping | Defined AutoSave as direct desktop-file persistence with visible status, tuned timing, and no automatic path choice for untitled documents. |
+

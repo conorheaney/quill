@@ -53,7 +53,7 @@ Out:
 
 ## Next Step
 
-All planned test cases passed against product version `1.0.6` at commit `07a997edf3a9f250ecd8159e50084bc9bfa36b3d`; the PRD is accepted and closed in `Release`.
+All planned test cases passed against product version `1.0.6` at commit `07a997edf3a9f250ecd8159e50084bc9bfa36b3d`; the PRD is accepted and closed in `Closed`.
 
 ## History
 
@@ -63,13 +63,13 @@ All planned test cases passed against product version `1.0.6` at commit `07a997e
 | 2026-08-05T22:15:07.8033594Z | Plan |
 | 2026-08-05T22:55:59.1427488Z | Implement |
 | 2026-08-05T23:21:51.2152376Z | Test |
-| 2026-08-06T00:20:00.2821898Z | Release |
+| 2026-08-06T00:20:00.2821898Z | Closed |
 
 ## Audit
 
 | Timestamp | Type | Detail |
 | --- | --- | --- |
-| 2026-07-12T13:09:25.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep and preserved the original item intent: track technical CSS refactoring separately from UI redesign or accessibility work. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `01 - Plan`. |
+| 2026-07-12T13:09:25.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep and preserved the original item intent: track technical CSS refactoring separately from UI redesign or accessibility work. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `10 - Plan`. |
 | 2026-08-05T22:15:07.8033594Z | Promotion | Promoted to `Plan` after user confirmation. Planning was narrowed to stylesheet ownership, separate named light and dark theme stylesheets, a shared theme contract covering colors, fonts, and rendering styles, and minimum visual regression checks. |
 | 2026-08-05T22:55:59.1427488Z | Promotion | Promoted to `Implement` after user confirmation. The PRD has passed the planning gate with a defined implementation plan, minimum acceptance criteria, and table-formatted verification cases. |
 | 2026-08-05T23:04:25.0581606Z | Implementation | Added separate `quill-theme-light.css` and `quill-theme-dark.css` files under `code/styles/themes/`, moved the color/font/theme rendering tokens out of `quill.css`, and added named stylesheet activation so exactly one theme stylesheet is enabled at a time. Structural CSS now consumes shared theme variables for theme transitions, surfaces, control radii, and overlay shadows. |
@@ -87,9 +87,10 @@ All planned test cases passed against product version `1.0.6` at commit `07a997e
 | 2026-08-06T00:11:57.0554296Z | Test scope refinement | Removed dialog checks from `TC-02` because dialogs are outside the theme-controlled surfaces for this item. Replaced the ambiguous editor-state wording with the concrete two-column Markdown and Render state and Render-only state. |
 | 2026-08-06T00:14:05.9469118Z | Test evidence | Added light and dark screenshots showing Markdown editing enabled, the formatting toolbar visible, and inline editing enabled. Combined with the existing layout and Recent Files evidence, this completes `TC-02`. |
 | 2026-08-06T00:19:29.7575566Z | Test evidence | Added light and dark screenshots showing theme switching with the Render-only layout, Acceptance Criteria content, Test Cases table, and inline editing control preserved. Marked `TC-03` complete with a passing result. |
-| 2026-08-06T00:19:29.7575566Z | Acceptance | Accepted the completed stylesheet refactor after TC-01, TC-02, and TC-03 passed against product version `1.0.6` at commit `07a997edf3a9f250ecd8159e50084bc9bfa36b3d`; the PRD is ready to close in `Release`. |
-| 2026-08-06T00:20:00.2821898Z | Promotion | Promoted the accepted PRD to `Release`, updated the evidence links to the released PRD location, and marked the corresponding backlog item `Done`. This closes the PRD workflow item; it does not create a product release tag. |
+| 2026-08-06T00:19:29.7575566Z | Acceptance | Accepted the completed stylesheet refactor after TC-01, TC-02, and TC-03 passed against product version `1.0.6` at commit `07a997edf3a9f250ecd8159e50084bc9bfa36b3d`; the PRD is ready to close in `Closed`. |
+| 2026-08-06T00:20:00.2821898Z | Promotion | Promoted the accepted PRD to `Closed`, updated the evidence links to the released PRD location, and marked the corresponding backlog item `Done`. This closes the PRD workflow item; it does not create a product release tag. |
 
 ## Legacy Notes
 
 - This PRD includes a repaired `Backlog` capture from an earlier consistency sweep, so the original creation event was not recorded just in time.
+

@@ -1,4 +1,4 @@
-# PRD-000019-CHANGE
+﻿# PRD-000019-CHANGE
 
 ## Short Name
 
@@ -47,7 +47,7 @@ Out:
 
 ## Next Step
 
-After `PRD-000020-CHANGE`, move this item to `01 - Plan` and define the path and loading contract.
+After `PRD-000020-CHANGE`, move this item to `10 - Plan` and define the path and loading contract.
 
 ## History
 
@@ -60,5 +60,6 @@ After `PRD-000020-CHANGE`, move this item to `01 - Plan` and define the path and
 | Timestamp | Type | Detail |
 | --- | --- | --- |
 | 2026-07-16T20:45:01.4039955Z | Scope discovery | Added as a backlog item to externalize the default getting-started guide into a deployed markdown document for the desktop app while keeping browser-mode startup content resilient. |
-| 2026-07-16T20:45:01.4349938Z | State | Current state: backlogged and waiting to move into `01 - Plan`. |
+| 2026-07-16T20:45:01.4349938Z | State | Current state: backlogged and waiting to move into `10 - Plan`. |
 | 2026-07-24T23:40:21.5074095Z | Scope alignment | Aligned with the desktop-only runtime: use Tauri loading with no browser fallback. |
+

@@ -65,7 +65,7 @@ No further implementation work is required for this item.
 | 2026-07-16T00:50:24.5978020Z | Plan |
 | 2026-07-16T00:55:27.4402153Z | Implement |
 | 2026-07-16T10:11:52.0000000Z | Test |
-| 2026-07-16T11:26:36.3958778Z | Release |
+| 2026-07-16T11:26:36.3958778Z | Closed |
 
 ## Audit
 
@@ -79,4 +79,4 @@ No further implementation work is required for this item.
 | 2026-07-16T09:47:00.0000000Z | Implementation | Updated the Recent Files popup renderer to short-circuit on `window.QuillDesktop`: Tauri keeps the existing recent-file list, while the standard browser path now shows the planned unavailable message and hides the interactive recent-file content. |
 | 2026-07-16T10:11:52.0000000Z | Verification | User reported manual checks in both a standard web-browser path and a built Tauri binary. Reported result: the browser path shows the planned unavailable state, while the built Tauri binary preserves the expected Recent Files behavior. |
 | 2026-07-16T10:11:52.0000000Z | Promotion | Promoted this item to `Test` after the reported manual verification covered the planned browser-path and Tauri-path checks. |
-| 2026-07-16T11:26:50.0096292Z | Release | Promoted this item to `Release` after the recorded manual verification results were reviewed and accepted as sufficient to support the runtime-gating change. |
+| 2026-07-16T11:26:50.0096292Z | Closed | Promoted this item to `Closed` after the recorded manual verification results were reviewed and accepted as sufficient to support the runtime-gating change. |

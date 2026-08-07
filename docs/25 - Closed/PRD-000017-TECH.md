@@ -147,7 +147,7 @@ Treat the shared Quill versioning flow as the released baseline and use the manu
 | 2026-07-16T11:38:05.2277604Z | Plan |
 | 2026-07-16T12:11:59.7383815Z | Implement |
 | 2026-07-16T15:03:07.2629744Z | Test |
-| 2026-07-16T15:51:37.0274104Z | Release |
+| 2026-07-16T15:51:37.0274104Z | Closed |
 
 ## Audit
 
@@ -155,7 +155,7 @@ Treat the shared Quill versioning flow as the released baseline and use the manu
 | --- | --- | --- |
 | 2026-07-16T11:08:01.2257499Z | Requirement shaping | Added from a lightweight `grill-me` pass based on the request to show the current product number near the sidebar header. Decision: use the existing version number as the single source of truth instead of creating a separate product-number concept. |
 | 2026-07-16T11:08:01.2257499Z | Reference note | Current version references identified during backlog shaping: `package.json`, `src-tauri/tauri.conf.json`, and `src-tauri/Cargo.toml`. |
-| 2026-07-16T11:08:01.2257499Z | State | Current state: backlogged and waiting to move into `01 - Plan`. |
+| 2026-07-16T11:08:01.2257499Z | State | Current state: backlogged and waiting to move into `10 - Plan`. |
 | 2026-07-16T11:10:05.9339623Z | Scope refinement | Reframed this item from a UI-first version-display change into a technical source-of-truth change. The central requirement is now to make both the Quill UI and the Tauri build-facing configuration consume one shared version value, with the sidebar display treated as one consumer of that shared source. |
 | 2026-07-16T11:38:05.2733574Z | Promotion | Promoted from `Backlog` to `Plan` and expanded the planning sections with concrete source-of-truth options covering a `package.json`-first path, a dedicated version-file path, and a derived shared-artifact path. |
 | 2026-07-16T11:38:05.3075940Z | Planning note | Current recommendation is to evaluate `package.json` as the likely canonical source first because it already carries the shipped product version in the repo's existing Node workflow, while confirming that Tauri-facing config can be generated or synchronized from it cleanly. |
@@ -170,10 +170,11 @@ Treat the shared Quill versioning flow as the released baseline and use the manu
 | 2026-07-16T14:38:54.5148850Z | Verification refinement | Added a concrete manual verification checklist covering explicit and no-argument version bumps, invalid-input rejection, Tauri desktop UI version display, and built-artifact property checks, including the known local lock caveat for `src-tauri/target/release/quill-tauri.exe`. |
 | 2026-07-16T15:03:07.2629744Z | Promotion | Promoted from `Implement` to `Test` after rebuilding Quill successfully at product version `1.0.4` and confirming the rebuilt release executable and NSIS installer both report product version `1.0.4`. The remaining verification focus is the live Tauri desktop UI check for the sidebar version label. |
 | 2026-07-16T15:51:36.9914018Z | Verification | Verified the remaining live Tauri desktop UI check with screenshot evidence in `docs/90 - Evidence/prd-000017-version-ui-test-evidence.png`, showing the sidebar label renders `VERSION 1.0.4` in the running Quill desktop app. Paired artifact evidence in `docs/90 - Evidence/prd-000017-exe-version-test-evidence.png` shows the rebuilt `quill-tauri.exe` properties report file version and product version `1.0.4`. |
-| 2026-07-16T15:51:37.0274104Z | Promotion | Promoted from `Test` to `Release` after the live Tauri UI version-label check and executable-property evidence closed the remaining verification gap for `1.0.4`. |
+| 2026-07-16T15:51:37.0274104Z | Promotion | Promoted from `Test` to `Closed` after the live Tauri UI version-label check and executable-property evidence closed the remaining verification gap for `1.0.4`. |
 | 2026-07-16T15:56:08.6664436Z | Documentation refinement | Updated the release PRD test case formatting so each case now uses a separate title row, `{PRD}-{TC}` numbering, and canonical UTC timestamp formatting in the `Date` field. |
 | 2026-07-25T20:53:18.8487993Z | Test metadata backfill | Added product version `1.0.4` to each existing test case so the version tested is explicit. |
 
 ## Legacy Notes
 
 - Product version `1.0.4` was added retrospectively to the existing test cases on 2026-07-25. Original test timestamps and outcomes were not changed.
+

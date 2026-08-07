@@ -14,7 +14,7 @@ Read these files before changing anything:
 1. `WORKFLOW.md`
 2. `BACKLOG.md`
 3. `.agents/local-agent.md`
-4. the target PRD in `docs/02 - Implement/`
+4. the target PRD in `docs/15 - Implement/`
 5. `package.json`, `package-lock.json`, `src-tauri/Cargo.toml`, and `src-tauri/tauri.conf.json`
 
 Use the live repository files as authoritative if they differ from this skill. `WORKFLOW.md` supplies the lifecycle and product-candidate contract; this skill supplies the candidate procedure.
@@ -24,7 +24,7 @@ The minimum candidate context is `WORKFLOW.md`, `BACKLOG.md`, `.agents/local-age
 ## Preconditions
 
 - Identify the PRD number. Ask for it if the user did not specify it clearly.
-- Confirm the backlog row says `In Progress` / `Implement` and the matching PRD is in `docs/02 - Implement/`.
+- Confirm the backlog row says `In Progress` / `Implement` and the matching PRD is in `docs/15 - Implement/`.
 - Confirm the PRD contains the required sections and has a concrete `Next Step` for Test-candidate preparation.
 - Confirm the item is product-affecting under the product-candidate rules in `WORKFLOW.md`; this skill is intended for code, runtime, build, dependency, configuration, or packaged-asset changes.
 - Inspect `git status` before changing anything. Preserve unrelated user changes and never stage them.
@@ -94,7 +94,7 @@ After remote verification succeeds, report `PUSHED` and stop. The next action is
 
 ## Stop Condition
 
-Stop after the candidate commit is successfully pushed or the user declines the push. Do not edit `BACKLOG.md` to change the phase, do not move the PRD into `docs/03 - Test/`, and do not add a `Test` history entry. The next action is a separate explicit invocation of `prd-promote`.
+Stop after the candidate commit is successfully pushed or the user declines the push. Do not edit `BACKLOG.md` to change the phase, do not move the PRD into `docs/20 - Test/`, and do not add a `Test` history entry. The next action is a separate explicit invocation of `prd-promote`.
 
 ## Failure Handling
 

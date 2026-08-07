@@ -373,13 +373,13 @@ Done
 | 2026-07-14T08:55:39.0213870Z | Plan |
 | 2026-07-14T19:39:19.1700461Z | Implement |
 | 2026-07-14T21:57:18.6079417Z | Test |
-| 2026-07-14T21:57:18.7142589Z | Release |
+| 2026-07-14T21:57:18.7142589Z | Closed |
 
 ## Audit
 
 | Timestamp | Type | Detail |
 | --- | --- | --- |
-| 2026-07-12T13:09:24.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep and preserved the original item intent: track full Electron removal from both code and project-managed filesystem surfaces. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `01 - Plan`. |
+| 2026-07-12T13:09:24.2378048Z | Backfill | Replaced the placeholder `Backlog` timestamp during the consistency sweep and preserved the original item intent: track full Electron removal from both code and project-managed filesystem surfaces. The original PRD creation time was not captured; the item remains in `Backlog` and is waiting to move into `10 - Plan`. |
 | 2026-07-14T08:55:39.0531359Z | Promotion | Promoted this item to `Plan`. The PRD is now the active planning record for defining the replacement runtime, the migration order, and the project-managed cleanup boundary before any Electron removal work begins. |
 | 2026-07-14T19:27:26.6414154Z | Analysis | Expanded the plan using the current repo state. Verified that Electron is currently concentrated in `package.json`, `code/main.js`, `code/preload.js`, and the desktop file-open/save branches inside `code/scripts/quill-app.js`, while the renderer already has browser File System Access and download fallbacks that can anchor a migration. |
 | 2026-07-14T19:38:23.3212871Z | Decision | Locked the replacement runtime to Tauri and recorded the implementation workflow, packaging target, and manual setup requirements needed to begin implementation safely. |
@@ -392,3 +392,4 @@ Done
 ## Legacy Notes
 
 - This PRD includes a repaired `Backlog` capture from an earlier consistency sweep, so the original creation event was not recorded just in time.
+

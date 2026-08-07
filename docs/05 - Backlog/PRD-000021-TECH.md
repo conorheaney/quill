@@ -1,4 +1,4 @@
-# PRD-000021-TECH
+﻿# PRD-000021-TECH
 
 ## Short Name
 
@@ -40,21 +40,21 @@ Out:
 
 ## Plan
 
-- Move this item to `01 - Plan` and define the migration target architecture, first-pass tooling choice, typed domain model, lowest-risk file migration order, and the first implementation slice.
+- Move this item to `10 - Plan` and define the migration target architecture, first-pass tooling choice, typed domain model, lowest-risk file migration order, and the first implementation slice.
 
 ## Acceptance Criteria
 
-- `AC-01`: Define the migration scope, sequencing rules, and completion criteria during `01 - Plan`.
+- `AC-01`: Define the migration scope, sequencing rules, and completion criteria during `10 - Plan`.
 
 ## Verification
 
 | Test Case | Criteria | Product Version | Status | Description | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| `TC-01` | `AC-01` | `pending` | `planned` | Define the migration verification approach, build checks, and regression evidence format during `01 - Plan`. | Not yet recorded. |
+| `TC-01` | `AC-01` | `pending` | `planned` | Define the migration verification approach, build checks, and regression evidence format during `10 - Plan`. | Not yet recorded. |
 
 ## Next Step
 
-Move this item to `01 - Plan` and decide whether Quill should start with a minimal compile-to-JavaScript TypeScript pass or a deeper module-and-build-pipeline migration, then lock the first slice around shared types and one or two leaf modules.
+Move this item to `10 - Plan` and decide whether Quill should start with a minimal compile-to-JavaScript TypeScript pass or a deeper module-and-build-pipeline migration, then lock the first slice around shared types and one or two leaf modules.
 
 ## History
 
@@ -69,3 +69,4 @@ Move this item to `01 - Plan` and decide whether Quill should start with a minim
 | 2026-07-17T18:28:11.8890877Z | Requirement shaping | Added as a backlog item from a lightweight shaping pass around converting Quill to TypeScript as a technical refactor change. |
 | 2026-07-17T18:28:11.8890877Z | Exploration | Initial exploration suggests the migration is moderate overall: feasible because the frontend is already file-split, but complicated by browser-global wiring, implicit shared object shapes, and the large shell coordinator. |
 | 2026-07-17T18:28:11.8890877Z | First planning target | The first planning pass should decide between a low-risk compile-to-JavaScript migration and a deeper ES module plus bundler transition before implementation work starts. |
+

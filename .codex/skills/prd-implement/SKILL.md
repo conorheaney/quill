@@ -40,7 +40,7 @@ Before touching code, verify that the target PRD satisfies the live workflow rul
 - `Verification` should describe how the change will be checked, not just that it should be tested later.
 - `Next Step` should point at real implementation work, not a planning task or workflow move.
 
-Run `npm run check:workflow` before touching code. Treat checker errors involving the target PRD, its backlog row, or workflow controls as implementation blockers. Legacy Release warnings may remain non-blocking when they do not involve the target item.
+Run `npm run check:workflow` before touching code. Treat checker errors involving the target PRD, its backlog row, or workflow controls as implementation blockers. Legacy Closed warnings may remain non-blocking when they do not involve the target item.
 
 Treat presence alone as insufficient. If any section still reads like a template, a placeholder, or a vague note that could fit multiple implementations, the implementation gate is not satisfied.
 

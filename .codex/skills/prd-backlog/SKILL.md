@@ -24,10 +24,10 @@ Load only `WORKFLOW.md`, `BACKLOG.md`, `.agents/local-agent.md`, the local `prd-
 2. Run a light repo-local `prd-grill-me` pass to surface the basics of the item.
 3. Allocate the next unused PRD ID and choose its class.
 4. Add one row to the appropriate `BACKLOG.md` table using `templates/BACKLOG-row.md`.
-5. Create the matching file in `docs/00 - Backlog/` from `templates/PRD-backlog.md`.
+5. Create the matching file in `docs/05 - Backlog/` from `templates/PRD-backlog.md`.
 6. Run the creation checklist below before reporting completion.
 7. Fill the shaped requirement into the template without adding implementation authorization or silently broadening scope.
-8. Run `npm run check:workflow` after both files are created. Treat errors involving the new item as blockers; legacy Release warnings may remain non-blocking.
+8. Run `npm run check:workflow` after both files are created. Treat errors involving the new item as blockers; legacy Closed warnings may remain non-blocking.
 
 ## Lightweight Grill-Me Pass
 
@@ -46,7 +46,7 @@ Do not over-interrogate. Ask only enough to create a valid, grounded backlog ite
 The operation must create exactly one backlog row and one same-named PRD file:
 
 - backlog row: `Status = Proposed`, `Phase = Backlog`
-- PRD location: `docs/00 - Backlog/PRD-NNNNNN-{CLASS}.md`
+- PRD location: `docs/05 - Backlog/PRD-NNNNNN-{CLASS}.md`
 - PRD title and filename: exact PRD ID match
 - initial `History` row: `Backlog` with the actual UTC creation timestamp
 - initial `Audit` row: explains the shaped requirement and its source
@@ -71,7 +71,7 @@ Backlog entries may describe intended planning work, but must not authorize code
 Before reporting success, verify:
 
 - the PRD ID is unused and matches its class and filename
-- exactly one matching PRD exists in `docs/00 - Backlog/`
+- exactly one matching PRD exists in `docs/05 - Backlog/`
 - the new backlog row appears once and says `Proposed / Backlog`
 - the required headings are present and in canonical order
 - `History` and `Audit` are Markdown tables
@@ -85,7 +85,7 @@ Before reporting success, verify:
 Create the new item in the repo's normal workflow shape:
 
 - add the backlog row in `BACKLOG.md`
-- create the matching PRD file in `docs/00 - Backlog/`
+- create the matching PRD file in `docs/05 - Backlog/`
 - use the templates and creation contract in this skill
 - keep status, phase, timestamps, and history/audit records aligned with `WORKFLOW.md`
 

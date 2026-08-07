@@ -1,4 +1,4 @@
-# PRD-000010-TECH
+﻿# PRD-000010-TECH
 
 ## Short Name
 
@@ -30,21 +30,21 @@ Out:
 
 ## Plan
 
-- Define the review criteria, evidence format, prioritization rules, and first refactoring slice during `01 - Plan`.
+- Define the review criteria, evidence format, prioritization rules, and first refactoring slice during `10 - Plan`.
 
 ## Acceptance Criteria
 
-- `AC-01`: Define the review outputs, refactoring boundary, and pass conditions during `01 - Plan`.
+- `AC-01`: Define the review outputs, refactoring boundary, and pass conditions during `10 - Plan`.
 
 ## Verification
 
 | Test Case | Criteria | Product Version | Status | Description | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| `TC-01` | `AC-01` | `pending` | `planned` | Define the verification approach and evidence format during `01 - Plan`. | Not yet recorded. |
+| `TC-01` | `AC-01` | `pending` | `planned` | Define the verification approach and evidence format during `10 - Plan`. | Not yet recorded. |
 
 ## Next Step
 
-Move this item to `01 - Plan` and define the review criteria, evidence format, decision rules for what should be refactored, and the first refactoring slice.
+Move this item to `10 - Plan` and define the review criteria, evidence format, decision rules for what should be refactored, and the first refactoring slice.
 
 ## History
 
@@ -57,5 +57,6 @@ Move this item to `01 - Plan` and define the review criteria, evidence format, d
 | Timestamp | Type | Detail |
 | --- | --- | --- |
 | 2026-07-12T02:48:08.7003374Z | Scope discovery | Added as a backlog item for a critical codebase review followed by targeted refactoring driven by documented findings. |
-| 2026-07-12T02:48:08.7003374Z | State | Current state: backlogged and waiting to move into `01 - Plan`. |
+| 2026-07-12T02:48:08.7003374Z | State | Current state: backlogged and waiting to move into `10 - Plan`. |
 | 2026-07-12T13:09:27.2378048Z | Consistency review | Reviewed during the workflow consistency sweep. No history backfill was required because this item has only reached `Backlog` and already had a captured UTC timestamp. |
+

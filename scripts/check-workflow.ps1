@@ -14,7 +14,7 @@ $requiredHeadings = @("Short Name", "Goal", "Context", "Scope", "Plan", "Accepta
 $verificationColumns = @("Test Case", "Criteria", "Product Version", "Status", "Description", "Evidence")
 $allowedTestStatuses = @("planned", "open", "in progress", "complete", "blocked", "exception")
 $statusPhaseMap = Get-Content -LiteralPath $statusMapPath -Raw | ConvertFrom-Json
-$phaseDirectories = @("00 - Backlog", "01 - Plan", "02 - Implement", "03 - Test", "04 - Release")
+$phaseDirectories = @("05 - Backlog", "10 - Plan", "15 - Implement", "20 - Test", "25 - Closed")
 $phaseByDirectory = @{}
 foreach ($directory in $phaseDirectories) {
     $phaseByDirectory[$directory] = $directory.Substring(5)
@@ -73,7 +73,7 @@ foreach ($file in $prdFiles) {
     foreach ($heading in $requiredHeadings) {
         $matchesForHeading = @($headings | Where-Object { $_ -eq $heading })
         if ($matchesForHeading.Count -eq 0) {
-            if ($expectedPhase -eq "Release") { Add-Warning "$id is a legacy Release PRD missing exact heading: $heading" } else { Add-Error "$id is missing required heading: $heading" }
+            if ($expectedPhase -eq "Closed") { Add-Warning "$id is a legacy Closed PRD missing exact heading: $heading" } else { Add-Error "$id is missing required heading: $heading" }
         } else { $positions[$heading] = [array]::IndexOf($headings, $heading) }
     }
     $lastPosition = -1
@@ -86,7 +86,7 @@ foreach ($file in $prdFiles) {
     $auditIndex = [array]::IndexOf($headings, "Audit")
     if ($historyIndex -ge 0 -and $auditIndex -ge 0 -and $auditIndex -lt $historyIndex) { Add-Error "$id places Audit before History" }
 
-    if ($expectedPhase -ne "Release") {
+    if ($expectedPhase -ne "Closed") {
         $lines = @(Get-Content -LiteralPath $file.FullName)
         $verificationHeadingIndex = [array]::IndexOf($lines, "## Verification")
         if ($verificationHeadingIndex -lt 0) {

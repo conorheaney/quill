@@ -1,6 +1,6 @@
 ---
 name: prd-promote
-description: Validate and promote an existing Quill PRD to its next allowed workflow phase while conforming to the live repo rules. Use when the user wants to promote a PRD, check whether a PRD is ready for its next phase, repair promotion blockers, or carry out the paired backlog-plus-file move for `Backlog`, `Plan`, `Implement`, `Test`, or `Release`.
+description: Validate and promote an existing Quill PRD to its next allowed workflow phase while conforming to the live repo rules. Use when the user wants to promote a PRD, check whether a PRD is ready for its next phase, repair promotion blockers, or carry out the paired backlog-plus-file move for `Backlog`, `Plan`, `Implement`, `Test`, or `Closed`.
 ---
 
 # PRD Promote
@@ -43,7 +43,7 @@ Load `.codex/skills/prd-grill-me/SKILL.md` only if the target PRD has a weak or 
 6. Validate the PRD using the checks and phase gates below, applying `WORKFLOW.md` as the authority for any conflict.
 
 - For an `Implement` to `Test` promotion of a product-affecting item, verify that the candidate patch-version bump and product change are committed to `main` before moving the PRD.
-- For a `Test` to `Release` promotion, verify that each complete test record identifies both the exact product version and Git commit, and treat `Release` as PRD closure rather than an automatic product release.
+- For a `Test` to `Closed` promotion, verify that each complete test record identifies both the exact product version and Git commit, and treat `Closed` as PRD closure rather than an automatic product release.
 
 7. If any mandatory PRD section is missing or too light on information for the next workflow gate, use the repo-local `prd-grill-me` skill to fill it in before promotion.
 8. Run `npm run check:workflow` before mutation. Treat checker errors as promotion blockers; legacy Release warnings remain non-blocking.
@@ -58,8 +58,8 @@ Run these checks before every promotion attempt.
 - A backlog row exists for the target PRD.
 - Exactly one matching PRD file exists in the phase folders.
 - The PRD ID, filename, and backlog ID match exactly.
-- The backlog phase is one of `Backlog`, `Plan`, `Implement`, `Test`, or `Release`.
-- The backlog status/phase pairing is valid: `Proposed / Backlog`, `Planned / Plan`, `In Progress / Implement`, `In Progress / Test`, `Blocked / Implement`, `Blocked / Test`, or `Done / Release`.
+- The backlog phase is one of `Backlog`, `Plan`, `Implement`, `Test`, or `Closed`.
+- The backlog state is one of `Proposed`, `Planned`, `In Progress`, `Blocked`, or `Done`, and the phase matches it: `Proposed / Backlog`, `Planned / Plan`, `In Progress / Implement`, `In Progress / Test`, `Blocked / Implement`, `Blocked / Test`, or `Done / Closed`.
 - The backlog phase, PRD folder, and latest `History` stage agree before promotion.
 - A mismatch is a blocker; repair alignment before evaluating the next gate.
 
@@ -78,23 +78,23 @@ Flag a blocker when a required section is empty, `Next Step` points to the curre
 
 ### Backlog -> Plan
 
-Allow only when the baseline PRD is valid, the backlog row says `Proposed / Backlog`, the file is in `docs/00 - Backlog/`, and `History` contains the `Backlog` entry. On success, change the row to `Planned / Plan`, move the PRD to `docs/01 - Plan/`, and append `Plan` to `History`.
+Allow only when the baseline PRD is valid, the backlog row says `Proposed / Backlog`, the file is in `docs/05 - Backlog/`, and `History` contains the `Backlog` entry. On success, change the row to `Planned / Plan`, move the PRD to `docs/10 - Plan/`, and append `Plan` to `History`.
 
 ### Plan -> Implement
 
-Allow only when `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` are concrete enough to guide implementation and verification, the backlog row says `Planned / Plan`, and the PRD is in `docs/01 - Plan/`. On success, change the row to `In Progress / Implement`, move the PRD to `docs/02 - Implement/`, and append `Implement` to `History`.
+Allow only when `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` are concrete enough to guide implementation and verification, the backlog row says `Planned / Plan`, and the PRD is in `docs/10 - Plan/`. On success, change the row to `In Progress / Implement`, move the PRD to `docs/15 - Implement/`, and append `Implement` to `History`.
 
 ### Implement -> Test
 
-Allow only when implementation is complete enough to verify, `Verification` describes a real test approach, `Next Step` points to verification or acceptance, the backlog row says `In Progress / Implement` or `Blocked / Implement`, and the PRD is in `docs/02 - Implement/`. For product-affecting work, also verify the committed patch candidate and product change required by `WORKFLOW.md`. On success, change the row to `In Progress / Test`, move the PRD to `docs/03 - Test/`, and append `Test` to `History`.
+Allow only when implementation is complete enough to verify, `Verification` describes a real test approach, `Next Step` points to verification or acceptance, the backlog row says `In Progress / Implement` or `Blocked / Implement`, and the PRD is in `docs/15 - Implement/`. For product-affecting work, also verify the committed patch candidate and product change required by `WORKFLOW.md`. On success, change the row to `In Progress / Test`, move the PRD to `docs/20 - Test/`, and append `Test` to `History`.
 
-### Test -> Release
+### Test -> Closed
 
-Allow only when planned verification is complete enough to support acceptance, the PRD records outcomes and evidence, no unresolved implementation or retest signal remains, the backlog row says `In Progress / Test` or `Blocked / Test`, and the PRD is in `docs/03 - Test/`. Verify that each complete test record identifies the exact product version and Git commit. On success, change the row to `Done / Release`, move the PRD to `docs/04 - Release/`, and append `Release` to `History`.
+Allow only when planned verification is complete enough to support acceptance, the PRD records outcomes and evidence, no unresolved implementation or retest signal remains, the backlog row says `In Progress / Test` or `Blocked / Test`, and the PRD is in `docs/20 - Test/`. Verify that each complete test record identifies the exact product version and Git commit. On success, change the row to `Done / Closed`, move the PRD to `docs/25 - Closed/`, and append `Closed` to `History`.
 
 ### Test -> Implement return
 
-When testing finds code work, do not continue testing or editing in place. Move the PRD back to `docs/02 - Implement/`, change the backlog row to `In Progress / Implement`, append the return stage to `History`, and record the reason in `Audit` before implementation resumes.
+When testing finds code work, do not continue testing or editing in place. Move the PRD back to `docs/15 - Implement/`, change the backlog row to `In Progress / Implement`, append the return stage to `History`, and record the reason in `Audit` before implementation resumes.
 
 ## Promotion mutation contract
 
