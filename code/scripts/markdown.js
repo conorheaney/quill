@@ -158,12 +158,22 @@ window.QuillMarkdown = (() => {
         return html.replace(/\{\{CODEBLOCK:(\d+)}}/g, (_, index) => codeBlocks[Number(index)] || "");
       }
 
-      function renderParagraphHtml(text) {
-        return `<p>${parseInline(text || "").replace(/\n/g, "<br>")}</p>`;
+      function renderParagraphHtml(text, options) {
+        const settings = options || {};
+        const inlineHtml = settings.escapeText ? parseInlineEscaped(text || "") : parseInline(text || "");
+        return `<p>${inlineHtml.replace(/\n/g, "<br>")}</p>`;
       }
 
-      function parseInline(text) {
-        return parseInlineTokens(text || "", { useFencedCodeSpans: false });
+      function parseInline(text, options) {
+        const settings = options || {};
+        return parseInlineTokens(text || "", {
+          inputAlreadyEscaped: Boolean(settings.inputAlreadyEscaped),
+          useFencedCodeSpans: false
+        });
+      }
+
+      function parseInlineEscaped(text) {
+        return parseInline(escapeHtml(text || ""), { inputAlreadyEscaped: true });
       }
 
       function parseTableCellInline(text, options) {
@@ -186,7 +196,7 @@ window.QuillMarkdown = (() => {
         } else {
           output = output.replace(/`([^`]+)`/g, (_, code) => {
             const token = createToken("INLINECODE", inlineTokens.INLINECODE.length);
-            inlineTokens.INLINECODE.push(`<code>${escapeHtml(code)}</code>`);
+            inlineTokens.INLINECODE.push(`<code>${settings.inputAlreadyEscaped ? code : escapeHtml(code)}</code>`);
             return token;
           });
         }
@@ -692,22 +702,22 @@ window.QuillMarkdown = (() => {
       function renderBlockContent(block) {
         switch (block.type) {
           case "heading":
-            return `<h${block.level}>${parseInline(block.content)}</h${block.level}>`;
+            return `<h${block.level}>${parseInlineEscaped(block.content)}</h${block.level}>`;
           case "blockquote":
-            return `<blockquote>${(block.lines || []).map((line) => `<p>${parseInline(line)}</p>`).join("")}</blockquote>`;
+            return `<blockquote>${(block.lines || []).map((line) => `<p>${parseInlineEscaped(line)}</p>`).join("")}</blockquote>`;
           case "code": {
             const language = block.language && block.language !== "text" ? ` class="language-${escapeAttribute(block.language)}"` : "";
             return `<pre><code${language}>${escapeHtml(block.content)}</code></pre>`;
           }
           case "ul":
-            return `<ul>${(block.items || []).map((item) => `<li>${parseInline(item)}</li>`).join("")}</ul>`;
+            return `<ul>${(block.items || []).map((item) => `<li>${parseInlineEscaped(item)}</li>`).join("")}</ul>`;
           case "ol":
-            return `<ol>${(block.items || []).map((item) => `<li>${parseInline(item)}</li>`).join("")}</ol>`;
+            return `<ol>${(block.items || []).map((item) => `<li>${parseInlineEscaped(item)}</li>`).join("")}</ol>`;
           case "table":
             return renderTableFromRows(block.rows || []);
           case "paragraph":
           default:
-            return renderParagraphHtml(block.content || "");
+            return renderParagraphHtml(block.content || "", { escapeText: true });
         }
       }
 

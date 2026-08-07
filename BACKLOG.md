@@ -22,6 +22,7 @@
 | PRD-000019-CHANGE | CHANGE | Externalize Default Getting Started Guide | Proposed | Backlog | Store the default getting-started guide in a deployed Markdown document and load it through Quill's supported desktop runtime. |
 | PRD-000021-TECH | TECH | TypeScript Migration For Frontend Runtime | Proposed | Backlog | Plan and execute a staged TypeScript migration for Quill's frontend runtime and desktop bridge so the editor gains stronger module contracts, safer state handling, and better refactor support. |
 | PRD-000023-CHANGE | CHANGE | Make AutoSave Persist Open Files | Proposed | Backlog | Make AutoSave write changes to the current file with clear status feedback and a tuned save interval. |
+| PRD-000025-BUG | BUG | Fix Angle Bracket Rendering | In Progress | Implement | Preserve literal angle-bracket text such as `<TEST>` when it appears in a normal rendered Markdown paragraph. |
 | PRD-000024-UI | UI | Compact Outline Pane | Done | Closed | Remove the Outline header and non-essential spacing around Outline entries so more headings fit vertically while navigation and hierarchy remain clear. |
 
 ## In Progress
