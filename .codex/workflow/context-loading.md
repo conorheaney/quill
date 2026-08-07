@@ -1,7 +1,6 @@
 # Skill Context Loading
 
-This guide defines the minimum context each local skill should load before acting.
-It is an optimization guide, not an additional workflow authority.
+This guide defines the minimum context each local skill should load before acting. It is an optimization guide, not an additional workflow authority.
 
 | Skill | Minimum context | Conditional context |
 | --- | --- | --- |
@@ -11,6 +10,4 @@ It is an optimization guide, not an additional workflow authority.
 | `prd-implement` | `WORKFLOW.md`, `BACKLOG.md`, `.agents/local-agent.md`, and the target PRD | Relevant implementation files and test instructions only after readiness passes |
 | `prd-patch` | `WORKFLOW.md`, `BACKLOG.md`, `.agents/local-agent.md`, the target PRD, and version/build files | Additional build or product files only when the target PRD requires them |
 
-All skills should run `npm run check:workflow` at the checkpoints defined by their
-own procedure. The checker is the shared structural validation layer; it does not
-replace reading the target PRD or the relevant skill procedure.
+All skills should run `npm run check:workflow` at the checkpoints defined by their own procedure. The checker is the shared structural validation layer; it does not replace reading the target PRD or the relevant skill procedure.

@@ -75,6 +75,7 @@ Before reporting success, verify:
 - the new backlog row appears once and says `Proposed / Backlog`
 - the required headings are present and in canonical order
 - `History` and `Audit` are Markdown tables
+- `Verification` contains the six-column test-case tracking table from `WORKFLOW.md`, with one row per planned test case
 - the initial `History` entry is `Backlog`
 - all new timestamps use `yyyy-MM-ddTHH:mm:ss.fffffffZ` UTC format
 - no code, phase promotion, or unrelated backlog edits were made

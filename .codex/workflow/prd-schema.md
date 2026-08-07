@@ -24,6 +24,9 @@ New and actively maintained PRDs use these headings in this order:
 
 - `History` is a Markdown table containing phase transitions.
 - `Audit` is a Markdown table containing other timestamped operational records.
+- `Verification` contains a Markdown test-case tracking table with the columns
+  `Test Case`, `Criteria`, `Product Version`, `Status`, `Description`, and
+  `Evidence`.
 - Workflow timestamps use `yyyy-MM-ddTHH:mm:ss.fffffffZ` in UTC.
 
 ## Validation ownership

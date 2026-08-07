@@ -32,14 +32,16 @@ Out:
 
 ## Acceptance Criteria
 
-- AutoSave reliably updates an open file after a clear, usable delay.
-- Untitled documents wait for Save As.
-- Users can distinguish saving, saved, and failed states.
-- Failed saves preserve the dirty state and report the problem.
+- `AC-01`: AutoSave reliably updates an open file after a clear, usable delay.
+- `AC-02`: Untitled documents wait for Save As.
+- `AC-03`: Users can distinguish saving, saved, and failed states.
+- `AC-04`: Failed saves preserve the dirty state and report the problem.
 
 ## Verification
 
-- Define desktop tests for saved files, untitled documents, rapid edits, status feedback, and write failures during Plan.
+| Test Case | Criteria | Product Version | Status | Description | Evidence |
+| --- | --- | --- | --- | --- | --- |
+| `TC-01` | `AC-01` | `pending` | `planned` | Define desktop tests for saved files, untitled documents, rapid edits, status feedback, and write failures during Plan. | Not yet recorded. |
 
 ## Next Step
 

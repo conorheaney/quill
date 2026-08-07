@@ -44,11 +44,13 @@ Out:
 
 ## Acceptance Criteria
 
-- Define the migration scope, sequencing rules, and completion criteria during `01 - Plan`.
+- `AC-01`: Define the migration scope, sequencing rules, and completion criteria during `01 - Plan`.
 
 ## Verification
 
-- Define the migration verification approach, build checks, and regression evidence format during `01 - Plan`.
+| Test Case | Criteria | Product Version | Status | Description | Evidence |
+| --- | --- | --- | --- | --- | --- |
+| `TC-01` | `AC-01` | `pending` | `planned` | Define the migration verification approach, build checks, and regression evidence format during `01 - Plan`. | Not yet recorded. |
 
 ## Next Step
 

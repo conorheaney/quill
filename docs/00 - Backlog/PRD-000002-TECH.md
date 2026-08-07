@@ -31,11 +31,13 @@ Out:
 
 ## Acceptance Criteria
 
-- Define the concrete coverage targets and pass conditions during `01 - Plan`.
+- `AC-01`: Define the concrete coverage targets and pass conditions during `01 - Plan`.
 
 ## Verification
 
-- Define the verification approach and evidence format during `01 - Plan`.
+| Test Case | Criteria | Product Version | Status | Description | Evidence |
+| --- | --- | --- | --- | --- | --- |
+| `TC-01` | `AC-01` | `pending` | `planned` | Define the verification approach and evidence format during `01 - Plan`. | Not yet recorded. |
 
 ## Next Step
 

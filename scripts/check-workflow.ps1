@@ -11,6 +11,8 @@ $backlogPath = Join-Path $repoRoot "BACKLOG.md"
 $errors = [System.Collections.Generic.List[string]]::new()
 $warnings = [System.Collections.Generic.List[string]]::new()
 $requiredHeadings = @("Short Name", "Goal", "Context", "Scope", "Plan", "Acceptance Criteria", "Verification", "Next Step", "History", "Audit")
+$verificationColumns = @("Test Case", "Criteria", "Product Version", "Status", "Description", "Evidence")
+$allowedTestStatuses = @("planned", "open", "in progress", "complete", "blocked", "exception")
 $statusPhaseMap = Get-Content -LiteralPath $statusMapPath -Raw | ConvertFrom-Json
 $phaseDirectories = @("00 - Backlog", "01 - Plan", "02 - Implement", "03 - Test", "04 - Release")
 $phaseByDirectory = @{}
@@ -83,6 +85,65 @@ foreach ($file in $prdFiles) {
     $historyIndex = [array]::IndexOf($headings, "History")
     $auditIndex = [array]::IndexOf($headings, "Audit")
     if ($historyIndex -ge 0 -and $auditIndex -ge 0 -and $auditIndex -lt $historyIndex) { Add-Error "$id places Audit before History" }
+
+    if ($expectedPhase -ne "Release") {
+        $lines = @(Get-Content -LiteralPath $file.FullName)
+        $verificationHeadingIndex = [array]::IndexOf($lines, "## Verification")
+        if ($verificationHeadingIndex -lt 0) {
+            Add-Error "$id is missing its Verification section"
+        } else {
+            $verificationEndIndex = $lines.Count
+            for ($lineIndex = $verificationHeadingIndex + 1; $lineIndex -lt $lines.Count; $lineIndex++) {
+                if ($lines[$lineIndex] -match '^##\s+') { $verificationEndIndex = $lineIndex; break }
+            }
+            $verificationLines = @($lines[($verificationHeadingIndex + 1)..($verificationEndIndex - 1)])
+            $headerIndex = -1
+            for ($lineIndex = 0; $lineIndex -lt $verificationLines.Count; $lineIndex++) {
+                if ($verificationLines[$lineIndex] -match '^\|\s*Test Case\s*\|\s*Criteria\s*\|\s*Product Version\s*\|\s*Status\s*\|\s*Description\s*\|\s*Evidence\s*\|\s*$') {
+                    $headerIndex = $lineIndex
+                    break
+                }
+            }
+            if ($headerIndex -lt 0) {
+                Add-Error "$id Verification is missing the required test-case tracking table"
+            } else {
+                $acceptanceText = (($lines -join [Environment]::NewLine) -split '## Acceptance Criteria', 2)[1]
+                if ($null -ne $acceptanceText) { $acceptanceText = ($acceptanceText -split '## Verification', 2)[0] }
+                $separatorIndex = $headerIndex + 1
+                if ($separatorIndex -ge $verificationLines.Count -or $verificationLines[$separatorIndex] -notmatch '^\|\s*:?-{3,}:?\s*\|') {
+                    Add-Error "$id Verification tracking table is missing its separator row"
+                }
+                $testCaseIds = @{}
+                $testRowCount = 0
+                for ($lineIndex = $separatorIndex + 1; $lineIndex -lt $verificationLines.Count; $lineIndex++) {
+                    $line = $verificationLines[$lineIndex].Trim()
+                    if ([string]::IsNullOrWhiteSpace($line) -or $line -notmatch '^\|') { continue }
+                    $cells = Get-TableCells $line
+                    if ($cells.Count -ne $verificationColumns.Count) {
+                        Add-Error "$id Verification tracking row has $($cells.Count) columns; expected $($verificationColumns.Count): $line"
+                        continue
+                    }
+                    $testCase = $cells[0].Trim().Trim('`')
+                    if ($testCase -notmatch '^TC-\d{2}$') { Add-Error "$id has invalid test-case ID in Verification: $($cells[0])" }
+                    if ($testCaseIds.ContainsKey($testCase)) { Add-Error "$id has duplicate test-case ID in Verification: $testCase" } else { $testCaseIds[$testCase] = $true }
+                    if ([string]::IsNullOrWhiteSpace($cells[1])) {
+                        Add-Error "$id $testCase is missing its acceptance-criteria mapping"
+                    } else {
+                        $criteriaIds = @($cells[1] -split ',' | ForEach-Object { $_.Trim().Trim('`') } | Where-Object { $_ })
+                        foreach ($criteriaId in $criteriaIds) {
+                            if ($criteriaId -notmatch '^AC-\d{2}$') { Add-Error "$id $testCase has invalid acceptance-criteria ID: $criteriaId"; continue }
+                            if ($null -eq $acceptanceText -or $acceptanceText -notmatch [regex]::Escape($criteriaId)) { Add-Error "$id $testCase maps to missing acceptance criterion: $criteriaId" }
+                        }
+                    }
+                    $status = $cells[3].Trim().Trim('`').ToLowerInvariant()
+                    if ($allowedTestStatuses -notcontains $status) { Add-Error "$id $testCase has invalid test status: $($cells[3])" }
+                    if ($status -eq "complete" -and $cells[5] -notmatch "PRD-\d{6}-[A-Z]+-TC-\d{2}") { Add-Error "$id $testCase is complete but has no linked evidence record" }
+                    $testRowCount++
+                }
+                if ($testRowCount -eq 0) { Add-Error "$id Verification tracking table must contain at least one test-case row" }
+            }
+        }
+    }
 }
 
 foreach ($id in $backlogEntries.Keys) {

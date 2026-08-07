@@ -32,7 +32,9 @@ Out:
 
 ## Verification
 
-- TC-01: <initial verification approach to refine during planning>
+| Test Case | Criteria | Product Version | Status | Description | Evidence |
+| --- | --- | --- | --- | --- | --- |
+| `TC-01` | `AC-01` | `pending` | `planned` | <Initial verification approach to refine during planning.> | Not yet recorded. |
 
 ## Next Step
 

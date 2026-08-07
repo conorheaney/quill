@@ -33,15 +33,17 @@ Out:
 
 ## Acceptance Criteria
 
-- The packaged app loads the shipped Markdown guide.
-- No duplicate script or browser fallback content remains.
-- A missing guide produces the defined desktop error.
+- `AC-01`: The packaged app loads the shipped Markdown guide.
+- `AC-02`: No duplicate script or browser fallback content remains.
+- `AC-03`: A missing guide produces the defined desktop error.
 
 ## Verification
 
-- Verify normal and missing-guide startup behavior.
-- Search for duplicate or browser fallback content.
-- Review affected docs.
+| Test Case | Criteria | Product Version | Status | Description | Evidence |
+| --- | --- | --- | --- | --- | --- |
+| `TC-01` | `AC-01` | `pending` | `planned` | Verify normal startup loads the packaged Markdown guide. | Not yet recorded. |
+| `TC-02` | `AC-02` | `pending` | `planned` | Search for duplicate script or browser fallback content. | Not yet recorded. |
+| `TC-03` | `AC-03` | `pending` | `planned` | Verify missing-guide startup produces the defined desktop error and review affected documentation. | Not yet recorded. |
 
 ## Next Step
 
