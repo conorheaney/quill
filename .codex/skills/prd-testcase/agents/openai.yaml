@@ -1,0 +1,4 @@
+interface:
+  display_name: "PRD Test Case"
+  short_description: "Generate structured PRD test evidence records."
+  default_prompt: "Use $prd-testcase with TC-NN to generate the matching PRD test case evidence record."
