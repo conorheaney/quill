@@ -1,0 +1,211 @@
+.recent-files-menu {
+  position: relative;
+  isolation: isolate;
+}
+
+.recent-files-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(460px, calc(100vw - 48px));
+  max-height: min(420px, 60vh);
+  overflow: hidden;
+  border: 3px solid rgba(212, 106, 58, 0.42);
+  border-radius: 20px;
+  background: var(--panel-solid);
+  box-shadow:
+    var(--shadow-overlay),
+    0 0 0 1px var(--surface-highlight);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  z-index: 5000;
+  pointer-events: auto;
+}
+
+.recent-files-panel-header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel-solid);
+  color: var(--accent);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.recent-files-panel-title {
+  margin: 0;
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.recent-files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--panel-solid);
+  max-height: calc(min(420px, 60vh) - 58px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.recent-file-empty {
+  padding: 16px 14px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  background: var(--panel-solid);
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.recent-file-entry {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+  border-radius: 16px;
+  background: var(--panel-solid);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 1px 0 rgba(15, 23, 34, 0.04);
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.recent-file-entry[data-current="true"] {
+  box-shadow:
+    inset 0 0 0 2px rgba(212, 106, 58, 0.45),
+    0 10px 22px rgba(212, 106, 58, 0.16);
+  background: color-mix(in srgb, var(--panel-solid) 90%, var(--accent) 10%);
+}
+
+.recent-file-entry:hover,
+.recent-file-entry:focus-within {
+  background: color-mix(in srgb, var(--panel-solid) 86%, var(--accent) 14%);
+  box-shadow:
+    inset 0 0 0 1px rgba(212, 106, 58, 0.22),
+    0 12px 20px rgba(15, 23, 34, 0.12);
+}
+
+.recent-file-open {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding: 14px 8px 14px 16px;
+  border: 0;
+  border-radius: 16px;
+  text-align: left;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.recent-file-open:hover,
+.recent-file-open:focus-visible {
+  transform: none;
+  background: transparent;
+  border-color: transparent;
+}
+
+.recent-file-entry-main {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  min-width: 0;
+  width: 100%;
+}
+
+.recent-file-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.recent-file-name {
+  display: block;
+  max-width: 100%;
+  font-weight: 700;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-file-current-indicator {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(212, 106, 58, 0.16);
+  color: var(--accent-strong);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.recent-file-path {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.83rem;
+  line-height: 1.45;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-file-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  padding: 0 8px 0 0;
+}
+
+.recent-file-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1;
+  box-shadow: none;
+}
+
+.recent-file-action:hover,
+.recent-file-action:focus-visible {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--panel-solid) 80%, var(--accent) 20%);
+  color: var(--accent-strong);
+  transform: none;
+}
+
+.recent-file-remove:hover,
+.recent-file-remove:focus-visible {
+  color: var(--danger, #b94a48);
+}

@@ -50,8 +50,7 @@ window.QuillStorage = (() => {
 
         return {
           filePath,
-          fileName: typeof entry.fileName === "string" ? entry.fileName.trim() : "",
-          isAvailable: entry.isAvailable !== false
+          fileName: typeof entry.fileName === "string" ? entry.fileName.trim() : ""
         };
       })
       .filter(Boolean)
@@ -62,8 +61,7 @@ window.QuillStorage = (() => {
     const metadata = (Array.isArray(entries) ? entries : [])
       .map((entry) => ({
         filePath: entry && typeof entry.filePath === "string" ? entry.filePath.trim() : "",
-        fileName: entry && typeof entry.fileName === "string" ? entry.fileName.trim() : "",
-        isAvailable: !entry || entry.isAvailable !== false
+        fileName: entry && typeof entry.fileName === "string" ? entry.fileName.trim() : ""
       }))
       .filter((entry) => entry.filePath)
       .slice(0, RECENT_FILES_LIMIT);

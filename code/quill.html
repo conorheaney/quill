@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="./styles/themes/quill-theme-sepia.css?v=1" data-quill-theme="sepia" disabled>
   <link rel="stylesheet" href="./styles/themes/quill-theme-nord.css?v=1" data-quill-theme="nord" disabled>
   <link rel="stylesheet" href="./styles/themes/theme-selector.css?v=1">
-  <link rel="stylesheet" href="./styles/quill.css?v=17">
+  <link rel="stylesheet" href="./styles/quill.css?v=18">
+  <link rel="stylesheet" href="./styles/recent-files.css?v=1">
 </head>
 <body class="dark">
   <main class="shell">
@@ -63,25 +64,7 @@
             <div class="pane-header-buttons">
               <button type="button" id="createDocumentButton" class="header-button" data-variant="secondary">NEW</button>
               <button type="button" id="loadDocumentButton" class="header-button" data-variant="secondary">LOAD</button>
-              <div class="recent-files-menu">
-                <button
-                  type="button"
-                  id="recentFilesButton"
-                  class="header-button"
-                  data-variant="secondary"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  aria-controls="recentFilesPanel"
-                >
-                  RECENT
-                </button>
-                <div id="recentFilesPanel" class="recent-files-panel" hidden>
-                  <div class="recent-files-panel-header">
-                    <h2 class="recent-files-panel-title">Recent files</h2>
-                  </div>
-                  <div id="recentFilesList" class="recent-files-list" role="list"></div>
-                </div>
-              </div>
+              <div id="recentFilesMount"></div>
               <button type="button" id="saveDocumentButton" class="header-button" data-accent="true">SAVE</button>
               <button type="button" id="saveDocumentAsButton" class="header-button">SAVE AS</button>
             </div>
@@ -207,8 +190,9 @@
   <script src="./scripts/outline-pane.js?v=3"></script>
   <script src="./scripts/markdown-pane.js?v=3"></script>
   <script src="./scripts/preview-pane.js?v=4"></script>
-  <script src="./scripts/desktop-bridge.js?v=1"></script>
+  <script src="./scripts/desktop-bridge.js?v=2"></script>
+  <script src="./scripts/recent-files.js?v=1"></script>
   <script src="./scripts/themes/theme-selector.js?v=1"></script>
-  <script src="./scripts/quill-app.js?v=10"></script>
+  <script src="./scripts/quill-app.js?v=11"></script>
 </body>
 </html>

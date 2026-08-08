@@ -52,6 +52,9 @@
             filePath
           };
         },
+        async revealInExplorer(filePath) {
+          bridgeLog.push(`revealInExplorer:${filePath}`);
+        },
         async saveMarkdownFile(payload) {
           bridgeLog.push(`saveMarkdownFile:${payload.saveAs ? "saveAs" : "save"}`);
           saveLog.push(payload.content);
@@ -86,7 +89,7 @@
       <\/script>`;
       frame.srcdoc = appHtml
         .replace("<head>", "<head><base href=\"./\">")
-        .replace('<script src="./scripts/markdown.js?v=9"><\/script>', `${bootstrap}<script src="./scripts/markdown.js?v=9"><\/script>`);
+        .replace('<script src="./scripts/markdown.js?v=10"><\/script>', `${bootstrap}<script src="./scripts/markdown.js?v=10"><\/script>`);
 
       const loaded = new Promise((resolve, reject) => {
         frame.addEventListener("load", resolve, { once: true });
@@ -156,6 +159,12 @@
       };
 
       doc.getElementById("recentFilesButton").click();
+      const recentRows = [...doc.querySelectorAll(".recent-file-entry")];
+      const recentActions = {
+        rowCount: recentRows.length,
+        actionCounts: recentRows.map((row) => row.querySelectorAll(".recent-file-action").length),
+        currentHasRemove: Boolean(doc.querySelector('.recent-file-entry[data-current="true"] .recent-file-remove'))
+      };
       doc.querySelector(".recent-file-open")?.click();
       await wait(350);
       const afterRecent = {
@@ -177,6 +186,7 @@
         afterSave,
         afterSaveAs,
         afterLoad,
+        recentActions,
         afterRecent,
         previewEditing
       }, null, 2);

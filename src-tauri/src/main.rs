@@ -1,9 +1,12 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use serde::{Deserialize, Serialize};
 use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, Engine as _};
+use serde::{Deserialize, Serialize};
 use std::fs;
+#[cfg(windows)]
+use std::os::windows::process::CommandExt;
 use std::path::{Path, PathBuf};
+use std::process::Command;
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -91,12 +94,27 @@ fn read_image_data_url(file_path: String) -> Result<String, String> {
     Ok(format!("data:{mime_type};base64,{encoded}"))
 }
 
+#[tauri::command]
+fn reveal_in_explorer(file_path: String) -> Result<(), String> {
+    let normalized_path = file_path.trim();
+    if normalized_path.is_empty() {
+        return Err("A file path is required to open Explorer.".to_string());
+    }
+
+    Command::new("explorer.exe")
+        .raw_arg(format!("/select,\"{normalized_path}\""))
+        .spawn()
+        .map(|_| ())
+        .map_err(|error| error.to_string())
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             read_markdown_file,
             read_image_data_url,
+            reveal_in_explorer,
             write_markdown_file
         ])
         .run(tauri::generate_context!())

@@ -18,7 +18,7 @@ These behaviors make stale entries harder to understand, make the current-file i
 
 In:
 
-- surface missing or inaccessible recent files before the user selects them
+- handle missing or inaccessible recent files when the user selects them
 - reduce or remove the jarring list reordering associated with the current file
 - place the remove action as an overlaid control on the right side of the file item panel
 - provide an action to copy a recent file's full path to the clipboard
@@ -30,7 +30,7 @@ Out:
 - changing the 10-entry limit or local persistence model
 - redesigning the broader file-open, save, or autosave workflows
 - adding file pinning, favorites, cloud sync, or full file-history management
-- authorizing implementation before this PRD reaches `Implement`
+- changing Recent Files behavior outside the acceptance criteria and verification cases
 
 ## Plan
 
@@ -58,7 +58,7 @@ Implement the Recent Files UI and state changes in `code/scripts/quill-app.js` a
 
 ## Next Step
 
-Review the consolidated acceptance criteria and verification cases, then promote this item to `Implement` when explicitly approved. Implementation must remain within the defined frontend, stylesheet, Tauri bridge, and smoke-test scope.
+The committed `1.0.12` candidate is ready for explicit `prd-promote` validation to `Test`; execute the planned verification cases against the packaged candidate.
 
 ## History
 
@@ -87,3 +87,9 @@ Review the consolidated acceptance criteria and verification cases, then promote
 | 2026-08-08T13:38:03.0998330Z | Decision | Selected no persistent or transient failure marker after a failed reopen is kept. The failure message and explicit `Remove`/`Keep` dialog provide the immediate feedback, while `Keep` leaves the row visually unchanged for later retry. |
 | 2026-08-08T13:39:36.4917469Z | Evidence | Recorded the planning rounds and final decision baseline in [PRD-000026 Planning](../90%20-%20Evidence/PRD-000026%20Planning.md). |
 | 2026-08-08T13:44:54.5301814Z | Promotion | Promoted from `Plan` to `Implement` after user confirmation. The approved scope now authorizes implementation of the Recent Files frontend, stylesheet, Tauri bridge, and verification changes defined by the acceptance criteria. |
+| 2026-08-08T13:50:26.6269605Z | Clarification | Reconciled the Implement record with the final Plan decisions: missing-file handling occurs on selection rather than proactively, and the requested extraction of Recent Files into dedicated HTML, CSS, and JavaScript surfaces is an in-scope structural implementation detail that preserves the approved behavior. |
+| 2026-08-08T14:00:06.7150621Z | Implementation | Extracted the Recent Files panel markup, styling, and controller into dedicated HTML, CSS, and JavaScript files. Added action-time failed-reopen confirmation, Copy Path, Explorer reveal support, recency movement animation, and Tauri bridge coverage while preserving the existing document-flow callbacks. Updated the smoke fixture's versioned bootstrap injection so the desktop scenario exercises the current app scripts. |
+| 2026-08-08T16:20:12.4733769Z | Clarification | Reset the Recent Files list scroll position whenever the panel opens so the most recent entry is always visible first. Quoted the Explorer `/select` target path before launching `explorer.exe` to prevent valid paths from falling back to the default My Documents location. |
+| 2026-08-08T16:30:09.7008036Z | Correction | Corrected the Explorer launch argument construction to use the Windows raw command-line form `/select,"path"`, avoiding Rust's automatic quoting of the complete switch and preserving paths containing spaces. |
+| 2026-08-08T16:36:01.8772995Z | Evidence | Recorded the concise implementation summary in [PRD-000026 Implementation](../90%20-%20Evidence/PRD-000026%20Implementation.md). |
+| 2026-08-08T16:41:57.8272789Z | Candidate | Created product candidate `1.0.12`. The Tauri release build and NSIS bundle succeeded, the root `quill.exe` was synchronized from `src-tauri/target/release/quill-tauri.exe`, SHA-256 hashes matched (`2CD14E9A616AB36FDEF807DA6214E578E0A2FD952ACEDB84BF36F53C58F4D83D`), and modified JavaScript files passed `node --check`. |

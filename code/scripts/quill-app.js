@@ -15,6 +15,7 @@ const {
 const { createOutlinePane } = window.QuillOutlinePane;
 const { createMarkdownPane } = window.QuillMarkdownPane;
 const { createPreviewPane } = window.QuillPreviewPane;
+const { createRecentFilesController } = window.QuillRecentFiles;
 
 (async function () {
   function mountPaneTemplate(mountId, templateId) {
@@ -27,9 +28,24 @@ const { createPreviewPane } = window.QuillPreviewPane;
     mountElement.replaceChildren(templateElement.content.cloneNode(true));
   }
 
+  async function mountHtmlFragment(mountId, path) {
+    const mountElement = document.getElementById(mountId);
+    if (!mountElement) {
+      throw new Error(`Unable to mount ${path}`);
+    }
+
+    const response = await fetch(path);
+    if (!response.ok) {
+      throw new Error(`Unable to load ${path} (${response.status})`);
+    }
+
+    mountElement.innerHTML = await response.text();
+  }
+
   mountPaneTemplate("outlinePaneMount", "outlinePaneTemplate");
   mountPaneTemplate("markdownPaneMount", "markdownPaneTemplate");
   mountPaneTemplate("previewPaneMount", "previewPaneTemplate");
+  await mountHtmlFragment("recentFilesMount", "./html/recent-files.html");
   await window.QuillThemeSelector.mount(document.getElementById("themeSelectorMount"));
 
   const workspace = document.querySelector(".workspace");
@@ -68,6 +84,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
     "openMarkdownFile",
     "readImageDataUrl",
     "reopenMarkdownFile",
+    "revealInExplorer",
     "saveMarkdownFile"
   ];
   const missingDesktopMethods = requiredDesktopMethods.filter((methodName) => !desktopBridge || typeof desktopBridge[methodName] !== "function");
@@ -85,16 +102,12 @@ const { createPreviewPane } = window.QuillPreviewPane;
     confirmResolver: null,
     currentFileName: "",
     currentFilePath: "",
-    currentRecentFileKey: "",
     dialogSelection: { start: 0, end: 0 },
     isAutoSaveEnabled: true,
     isDirty: false,
     isMarkdownPaneCollapsed: false,
     isPreviewEditingEnabled: false,
-    isRecentFilesMenuOpen: false,
-    isRecentFilesHydrated: false,
     isSyncingScroll: false,
-    recentFiles: [],
     saveTimer: null
   };
 
@@ -102,144 +115,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
     if (!filePath) return "";
     const pathSegments = String(filePath).split(/[\\/]+/).filter(Boolean);
     return pathSegments.length ? pathSegments[pathSegments.length - 1] : filePath;
-  }
-
-  function normaliseRecentEntry(entry) {
-    if (!entry) {
-      return null;
-    }
-
-    const filePath = entry.filePath ? String(entry.filePath).trim() : "";
-    if (!filePath) {
-      return null;
-    }
-
-    return {
-      filePath,
-      fileName: entry.fileName ? String(entry.fileName).trim() : getFileNameFromPath(filePath),
-      isAvailable: entry.isAvailable !== false
-    };
-  }
-
-  function setRecentFiles(entries) {
-    shellState.recentFiles = (entries || []).map(normaliseRecentEntry).filter(Boolean).slice(0, 10);
-    saveRecentFiles(shellState.recentFiles).catch((error) => {
-      console.error("Unable to persist recent files", error);
-    });
-    renderRecentFiles();
-  }
-
-  function getRecentEntryKey(entry) {
-    return entry && entry.filePath ? entry.filePath : "";
-  }
-
-  function setCurrentRecentFile(entry) {
-    shellState.currentRecentFileKey = getRecentEntryKey(entry);
-  }
-
-  function isCurrentRecentFile(entry) {
-    return Boolean(shellState.currentRecentFileKey) && shellState.currentRecentFileKey === getRecentEntryKey(entry);
-  }
-
-  function recordRecentFile(filePath, fileName) {
-    if (!filePath) {
-      return null;
-    }
-
-    const nextEntry = normaliseRecentEntry({
-      filePath,
-      fileName,
-      isAvailable: true
-    });
-    const nextRecentFiles = [nextEntry].concat(shellState.recentFiles.filter((entry) => entry.filePath !== nextEntry.filePath));
-    setRecentFiles(nextRecentFiles);
-    return nextEntry;
-  }
-
-  function updateRecentFileAvailability(entryToUpdate, isAvailable) {
-    setRecentFiles(shellState.recentFiles.map((entry) => {
-      if (entry.filePath === entryToUpdate.filePath) {
-        return {
-          ...entry,
-          isAvailable
-        };
-      }
-      return entry;
-    }));
-  }
-
-  function setRecentFilesMenuOpen(isOpen) {
-    shellState.isRecentFilesMenuOpen = isOpen;
-    recentFilesButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    recentFilesPanel.hidden = !isOpen;
-  }
-
-  function renderRecentFiles() {
-    recentFilesList.replaceChildren();
-
-    if (!shellState.recentFiles.length) {
-      const emptyState = document.createElement("div");
-      emptyState.className = "recent-file-empty";
-      emptyState.textContent = "No recent files yet. Open a Markdown file from disk to populate this list.";
-      recentFilesList.appendChild(emptyState);
-      return;
-    }
-
-    shellState.recentFiles.forEach((entry) => {
-      const item = document.createElement("div");
-      const isCurrent = isCurrentRecentFile(entry);
-      item.className = "recent-file-entry";
-      item.dataset.available = entry.isAvailable ? "true" : "false";
-      item.dataset.current = isCurrent ? "true" : "false";
-
-      const itemMain = document.createElement("button");
-      itemMain.type = "button";
-      itemMain.className = "recent-file-open";
-      itemMain.title = entry.filePath;
-      itemMain.innerHTML = `
-        <span class="recent-file-entry-main">
-          <span class="recent-file-title-group">
-            <span class="recent-file-name">${escapeHtml(entry.fileName || getFileNameFromPath(entry.filePath))}</span>
-            ${isCurrent ? '<span class="recent-file-current-indicator">Current</span>' : ""}
-          </span>
-          ${entry.isAvailable ? "" : '<span class="recent-file-status">Unavailable</span>'}
-        </span>
-        <span class="recent-file-path">${escapeHtml(entry.filePath)}</span>
-      `;
-      itemMain.addEventListener("click", () => {
-        handleRecentFileOpen(entry).catch((error) => {
-          console.error("Unable to reopen recent file", error);
-        });
-      });
-
-      item.appendChild(itemMain);
-
-        if (!isCurrent) {
-          const removeButton = document.createElement("button");
-          removeButton.type = "button";
-          removeButton.className = "recent-file-remove";
-          removeButton.setAttribute("aria-label", `Remove ${entry.fileName || "recent file"} from recent files`);
-          removeButton.title = "Remove from recent files";
-          removeButton.textContent = "X";
-          removeButton.addEventListener("click", (event) => {
-            event.stopPropagation();
-            removeRecentFile(entry);
-          });
-          item.appendChild(removeButton);
-      }
-
-      recentFilesList.appendChild(item);
-    });
-  }
-
-  function removeRecentFile(entryToRemove) {
-    const keyToRemove = getRecentEntryKey(entryToRemove);
-    if (!keyToRemove || keyToRemove === shellState.currentRecentFileKey) {
-      return;
-    }
-
-    setRecentFiles(shellState.recentFiles.filter((entry) => getRecentEntryKey(entry) !== keyToRemove));
-    showToast("Removed from Recent", `${entryToRemove.fileName || "File"} was removed from the list.`, { duration: 1800 });
   }
 
   function syncWorkspaceHeight() {
@@ -385,6 +260,21 @@ const { createPreviewPane } = window.QuillPreviewPane;
     if (!shellState.isDirty) return true;
     return openConfirmDialog(title, message, acceptLabel);
   }
+
+  const recentFilesController = createRecentFilesController({
+    button: recentFilesButton,
+    panel: recentFilesPanel,
+    list: recentFilesList,
+    desktopBridge,
+    escapeHtml,
+    getFileNameFromPath,
+    getRecentFiles,
+    saveRecentFiles,
+    confirmIfDirty,
+    confirmAction: openConfirmDialog,
+    loadRecentResult: (result) => loadMarkdownFromDesktopResult(result, { showLoadedToast: false }),
+    showToast
+  });
 
   function updateAutoSaveUi() {
     toggleAutoSaveButton.setAttribute("aria-checked", shellState.isAutoSaveEnabled ? "true" : "false");
@@ -792,16 +682,15 @@ const { createPreviewPane } = window.QuillPreviewPane;
     });
 
     if (result.filePath) {
-      recentEntry = recordRecentFile(result.filePath, result.fileName);
+      recentEntry = recentFilesController.recordRecentFile(result.filePath, result.fileName);
     } else if (settings.showPathWarning !== false) {
       showToast("Recent file not tracked", "This file was opened without a reusable full path, so it cannot appear in Recent.");
     }
 
     if (recentEntry) {
-      setCurrentRecentFile(recentEntry);
+      recentFilesController.setCurrentRecentFile(recentEntry);
     } else {
-      shellState.currentRecentFileKey = "";
-      renderRecentFiles();
+      recentFilesController.clearCurrentRecentFile();
     }
 
     if (settings.showLoadedToast !== false) {
@@ -853,8 +742,8 @@ const { createPreviewPane } = window.QuillPreviewPane;
       shellState.currentFileName = result.fileName || shellState.currentFileName;
 
       if (shellState.currentFilePath) {
-        const recentEntry = recordRecentFile(shellState.currentFilePath, shellState.currentFileName);
-        setCurrentRecentFile(recentEntry);
+        const recentEntry = recentFilesController.recordRecentFile(shellState.currentFilePath, shellState.currentFileName);
+        recentFilesController.setCurrentRecentFile(recentEntry);
       } else {
         showToast("Recent file not tracked", "This save target did not provide a reusable full path, so it cannot appear in Recent.");
       }
@@ -879,7 +768,7 @@ const { createPreviewPane } = window.QuillPreviewPane;
 
     shellState.currentFileName = "";
     shellState.currentFilePath = "";
-    shellState.currentRecentFileKey = "";
+    recentFilesController.clearCurrentRecentFile();
     setDocumentContent(NEW_DOCUMENT_CONTENT, {
       fileName: "",
       filePath: "",
@@ -887,7 +776,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
       showStatusToast: false
     });
     showToast("New document", "Started a fresh Markdown document.");
-    renderRecentFiles();
   }
 
   async function handleDroppedFiles(files) {
@@ -902,32 +790,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
     })));
     markdownPane.replaceSelection(`\n${markdownSnippets.join("\n")}\n`, "end");
     handleMarkdownInput(false);
-  }
-
-  async function handleRecentFileOpen(entry) {
-    if (!entry) {
-      return;
-    }
-
-    const canContinue = await confirmIfDirty(
-      "Open recent file?",
-      "You have unsaved changes in the current document. Opening a recent file will replace the editor contents.",
-      "Open file"
-    );
-    if (!canContinue) return;
-
-    try {
-      const result = await desktopBridge.reopenMarkdownFile(entry.filePath);
-      if (!result) return;
-      await loadMarkdownFromDesktopResult(result, { showLoadedToast: false });
-      updateRecentFileAvailability(entry, true);
-      showToast("Recent file opened", `${result.fileName || "Document"} is now open.`);
-      setRecentFilesMenuOpen(false);
-    } catch (error) {
-      console.error("Unable to reopen recent file", error);
-      updateRecentFileAvailability(entry, false);
-      showToast("Recent file unavailable", "Quill could not reopen that file. It will remain listed until it becomes available again.");
-    }
   }
 
   function handleMarkdownPaneAction(action) {
@@ -1042,9 +904,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
       console.error("Unable to save the document as a new file", error);
     });
   });
-  recentFilesButton.addEventListener("click", () => {
-    setRecentFilesMenuOpen(!shellState.isRecentFilesMenuOpen);
-  });
   toggleMarkdownPaneButton.addEventListener("click", toggleMarkdownPaneCollapsed);
   toggleAutoSaveButton.addEventListener("click", toggleAutoSave);
   togglePreviewEditingButton.addEventListener("click", togglePreviewEditingEnabled);
@@ -1063,17 +922,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
     event.preventDefault();
     closeConfirmDialog(false);
   });
-  document.addEventListener("click", (event) => {
-    if (!shellState.isRecentFilesMenuOpen) return;
-    if (recentFilesPanel.contains(event.target) || recentFilesButton.contains(event.target)) return;
-    setRecentFilesMenuOpen(false);
-  });
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && shellState.isRecentFilesMenuOpen) {
-      setRecentFilesMenuOpen(false);
-    }
-  });
-
   window.addEventListener("resize", syncWorkspaceHeight);
   window.addEventListener("beforeunload", (event) => {
     if (!shellState.isDirty) return;
@@ -1085,20 +933,8 @@ const { createPreviewPane } = window.QuillPreviewPane;
 
   setAutoSave(savedAutoSave !== "false");
   configureDesktopFileControls();
-  renderRecentFiles();
-  getRecentFiles()
-    .then((entries) => {
-      if (shellState.isRecentFilesHydrated || shellState.recentFiles.length) {
-        return;
-      }
-      shellState.recentFiles = (entries || []).map(normaliseRecentEntry).filter(Boolean).slice(0, 10);
-      shellState.isRecentFilesHydrated = true;
-      renderRecentFiles();
-    })
-    .catch((error) => {
-      console.error("Unable to load recent files", error);
-      shellState.isRecentFilesHydrated = true;
-    });
+  recentFilesController.render();
+  recentFilesController.hydrate();
   setDocumentContent(DEFAULT_CONTENT, {
     fileName: "quill.md",
     filePath: "",

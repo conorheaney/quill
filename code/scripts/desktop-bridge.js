@@ -81,6 +81,12 @@
       return readMarkdownFile(filePath);
     },
 
+    async revealInExplorer(filePath) {
+      return coreApi.invoke("reveal_in_explorer", {
+        filePath
+      });
+    },
+
     async readImageDataUrl(filePath) {
       return readImageDataUrl(filePath);
     },
