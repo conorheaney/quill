@@ -24,6 +24,7 @@
 | PRD-000023-CHANGE | CHANGE | Make AutoSave Persist Open Files | Proposed | Backlog | Make AutoSave write changes to the current file with clear status feedback and a tuned save interval. |
 | PRD-000025-BUG | BUG | Fix Angle Bracket Rendering | Done | Closed | Preserve literal angle-bracket text such as `<TEST>` when it appears in a normal rendered Markdown paragraph. |
 | PRD-000024-UI | UI | Compact Outline Pane | Done | Closed | Remove the Outline header and non-essential spacing around Outline entries so more headings fit vertically while navigation and hierarchy remain clear. |
+| PRD-000026-CHANGE | CHANGE | Improve Recent Files Usability | In Progress | Implement | Make stale entries visible earlier, keep the current file from unexpectedly reordering the list, overlay row removal controls, and add copy-path and Explorer actions. |
 
 ## In Progress
 
