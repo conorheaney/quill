@@ -54,7 +54,7 @@ Quill also supports local draft saving through `AUTOSAVE`. The save status appea
 
 - Select an item in the Outline to jump to that heading.
 - Use `SHOW MARKDOWN` to collapse or restore the source pane.
-- Use `CYCLE THEME` to switch between available visual themes.
+- Use the `THEME` selector to choose Light, Dark, Sepia, or Nord.
 - Use the Markdown header buttons to apply formatting to the current selection or line.
 
 ## A Few Things To Know

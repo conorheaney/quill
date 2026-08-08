@@ -1,0 +1,27 @@
+:root {
+  --bg: linear-gradient(135deg, #f3e3c3 0%, #d8b982 100%);
+  --panel: rgba(255, 248, 231, 0.9);
+  --panel-strong: rgba(255, 250, 238, 0.97);
+  --panel-solid: #fff4d9;
+  --border: rgba(91, 61, 31, 0.2);
+  --text: #3f2d1f;
+  --muted: #795f48;
+  --accent: #a85b2a;
+  --accent-strong: #7d3e18;
+  --toolbar: rgba(255, 244, 213, 0.76);
+  --shadow: 0 20px 45px rgba(92, 57, 24, 0.18);
+  --code-bg: #ead7b4;
+  --preview-bg: rgba(255, 246, 222, 0.72);
+  --success: #4f7540;
+  --font-ui: "Segoe UI", "Trebuchet MS", sans-serif;
+  --font-display: Georgia, "Palatino Linotype", serif;
+  --font-render: Georgia, "Palatino Linotype", serif;
+  --font-mono: "Cascadia Code", Consolas, monospace;
+  --surface-highlight: rgba(255, 255, 255, 0.22);
+  --surface-highlight-strong: rgba(255, 255, 255, 0.72);
+  --surface-muted: rgba(121, 95, 72, 0.14);
+  --border-accent: rgba(168, 91, 42, 0.44);
+  --shadow-overlay: 0 28px 60px rgba(72, 42, 17, 0.3), 0 10px 24px rgba(72, 42, 17, 0.18);
+  --radius-control: 10px;
+  --transition-theme: background 0.25s ease, color 0.25s ease;
+}

@@ -7,18 +7,16 @@ const { DEFAULT_CONTENT, LANGUAGE_META, NEW_DOCUMENT_CONTENT } = window.QuillCon
 const {
   getAutosavePreference,
   getRecentFiles,
-  getTheme,
   saveAutosavePreference,
   saveDraft,
-  saveRecentFiles,
-  saveTheme
+  saveRecentFiles
 } = window.QuillStorage;
 
 const { createOutlinePane } = window.QuillOutlinePane;
 const { createMarkdownPane } = window.QuillMarkdownPane;
 const { createPreviewPane } = window.QuillPreviewPane;
 
-(function () {
+(async function () {
   function mountPaneTemplate(mountId, templateId) {
     const mountElement = document.getElementById(mountId);
     const templateElement = document.getElementById(templateId);
@@ -32,13 +30,12 @@ const { createPreviewPane } = window.QuillPreviewPane;
   mountPaneTemplate("outlinePaneMount", "outlinePaneTemplate");
   mountPaneTemplate("markdownPaneMount", "markdownPaneTemplate");
   mountPaneTemplate("previewPaneMount", "previewPaneTemplate");
+  await window.QuillThemeSelector.mount(document.getElementById("themeSelectorMount"));
 
   const workspace = document.querySelector(".workspace");
   const contentArea = document.querySelector(".content-area");
   const contentHeader = document.querySelector(".content-header");
   const contentFooter = document.querySelector(".content-area > .shell-footer");
-  const cycleThemeButton = document.getElementById("cycleThemeButton");
-  const themeStylesheets = Array.from(document.querySelectorAll("[data-quill-theme]"));
   const toggleMarkdownPaneButton = document.getElementById("toggleMarkdownPaneButton");
   const toggleAutoSaveButton = document.getElementById("toggleAutoSaveButton");
   const togglePreviewEditingButton = document.getElementById("togglePreviewEditingButton");
@@ -417,19 +414,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
       nextEnabled ? "Autosave on" : "Autosave off",
       nextEnabled ? "Local draft saving has resumed." : "Local draft saving is paused until you turn it back on."
     );
-  }
-
-  function setTheme(theme) {
-    const nextTheme = theme === "light" ? "light" : "dark";
-    themeStylesheets.forEach((stylesheet) => {
-      stylesheet.disabled = stylesheet.dataset.quillTheme !== nextTheme;
-    });
-    document.body.classList.toggle("dark", nextTheme === "dark");
-    saveTheme(nextTheme);
-  }
-
-  function cycleTheme() {
-    setTheme(document.body.classList.contains("dark") ? "light" : "dark");
   }
 
   function setMarkdownPaneCollapsed(collapsed) {
@@ -1038,7 +1022,6 @@ const { createPreviewPane } = window.QuillPreviewPane;
     tableRowsToMarkdown: window.QuillMarkdown.tableRowsToMarkdown
   });
 
-  cycleThemeButton.addEventListener("click", cycleTheme);
   createDocumentButton.addEventListener("click", () => {
     handleNewDocument().catch((error) => {
       console.error("Unable to create a new document", error);
@@ -1098,10 +1081,8 @@ const { createPreviewPane } = window.QuillPreviewPane;
     event.returnValue = "";
   });
 
-  const savedTheme = getTheme();
   const savedAutoSave = getAutosavePreference();
 
-  setTheme(savedTheme);
   setAutoSave(savedAutoSave !== "false");
   configureDesktopFileControls();
   renderRecentFiles();

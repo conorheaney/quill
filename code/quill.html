@@ -6,6 +6,9 @@
   <title>Quill</title>
   <link rel="stylesheet" href="./styles/themes/quill-theme-light.css?v=1" data-quill-theme="light" disabled>
   <link rel="stylesheet" href="./styles/themes/quill-theme-dark.css?v=1" data-quill-theme="dark">
+  <link rel="stylesheet" href="./styles/themes/quill-theme-sepia.css?v=1" data-quill-theme="sepia" disabled>
+  <link rel="stylesheet" href="./styles/themes/quill-theme-nord.css?v=1" data-quill-theme="nord" disabled>
+  <link rel="stylesheet" href="./styles/themes/theme-selector.css?v=1">
   <link rel="stylesheet" href="./styles/quill.css?v=17">
 </head>
 <body class="dark">
@@ -26,7 +29,7 @@
       <header class="content-header">
         <div class="content-header-main">
           <div class="toolbar-group" role="group" aria-label="Document actions">
-            <button type="button" id="cycleThemeButton" class="header-button">CYCLE THEME</button>
+            <div id="themeSelectorMount"></div>
             <button
               type="button"
               id="toggleMarkdownPaneButton"
@@ -205,6 +208,7 @@
   <script src="./scripts/markdown-pane.js?v=3"></script>
   <script src="./scripts/preview-pane.js?v=4"></script>
   <script src="./scripts/desktop-bridge.js?v=1"></script>
+  <script src="./scripts/themes/theme-selector.js?v=1"></script>
   <script src="./scripts/quill-app.js?v=10"></script>
 </body>
 </html>
