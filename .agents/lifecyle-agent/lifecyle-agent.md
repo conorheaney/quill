@@ -9,6 +9,7 @@ This file defines the repository workflow contract. Detailed creation, promotion
 - The PRD is the durable record of scope, plan, acceptance, verification, history, and audit information.
 - The reusable test-case evidence template is maintained at `.agents/lifecyle-agent/prd-testcase.md`.
 - If the backlog and PRD location disagree, the backlog phase is authoritative and the PRD must be brought back into alignment.
+- All user actions and important agent actions on behalf of the user must be audited with a clear concise description.
 
 ## Context loading
 

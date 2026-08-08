@@ -1,7 +1,6 @@
 # PRD Structural Schema
 
-This file defines the shared structural facts used by local workflow skills. It
-does not define phase procedures; those belong to the relevant skill.
+This file defines the shared structural facts used by local workflow skills. It does not define phase procedures; those belong to the relevant skill. Language should be clear and concise.
 
 ## Required headings
 
@@ -24,12 +23,8 @@ New and actively maintained PRDs use these headings in this order:
 
 - `History` is a Markdown table containing phase transitions.
 - `Audit` is a Markdown table containing other timestamped operational records.
-- `Verification` contains a Markdown test-case tracking table with the columns
-  `Test Case`, `Criteria`, `Product Version`, `Status`, `Description`, and
-  `Evidence`.
-- New evidence records copied from `.agents/lifecyle-agent/prd-testcase.md`
-  contain `Preconditions`, `Steps to Reproduce`, and `Expected Results` in
-  that order between the metadata table and the `Evidence` section.
+- `Verification` contains a Markdown test-case tracking table with the columns `Test Case`, `Criteria`, `Product Version`, `Status`, `Description`, and `Evidence`.
+- New evidence records copied from `.agents/lifecyle-agent/prd-testcase.md` contain `Preconditions`, `Steps to Reproduce`, and `Expected Results` in that order between the metadata table and the `Evidence` section.
 - Workflow timestamps use `yyyy-MM-ddTHH:mm:ss.fffffffZ` in UTC.
 
 ## Validation ownership

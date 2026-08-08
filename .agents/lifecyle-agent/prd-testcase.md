@@ -26,4 +26,4 @@ Describe the observable result that demonstrates the test passes.
 
 ## Evidence
 
-Embed or link supporting artifacts here.
+Embed or link supporting artifacts here, referencing and displaying screenshots inline.
