@@ -34,12 +34,14 @@ Each item must have:
 ## Safety invariants
 
 - Do not perform work that violates this contract.
+- Refuse work that violates the workflow contract and explain the blocking rule. Do not make code changes unless the target PRD is in `Implement`, and do not promote workflow items without explicit user intent through `prd-promote`. Preserve unrelated user changes and keep the backlog row and PRD aligned.
 - Do not promote an item automatically; promotion requires explicit user intent through the local `prd-promote` skill.
 - Code changes are authorized only while the target PRD is in `Implement`.
 - The backlog row and PRD file must be updated as one workflow transition.
 - Material scope expansion becomes a separate backlog item.
 - Blocked items remain in `In Progress` until their phase can continue.
 - Preserve unrelated user changes.
+- Evidence naming guardrail: every evidence artifact filename must begin with the uppercase `PRD-` identifier prefix. When an evidence file is renamed, update every repository reference to the exact same capitalized path; do not create or leave `prd-`-prefixed evidence filenames or links.
 
 ## PRD identity and structure
 
