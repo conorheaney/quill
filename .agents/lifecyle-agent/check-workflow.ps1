@@ -6,6 +6,7 @@ $ErrorActionPreference = "Stop"
 
 $repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $schemaPath = Join-Path $repoRoot ".agents\lifecyle-agent\prd-schema.md"
+$testCaseTemplatePath = Join-Path $repoRoot ".agents\lifecyle-agent\prd-testcase.md"
 $statusMapPath = Join-Path $repoRoot ".agents\lifecyle-agent\status-phase-map.json"
 $backlogPath = Join-Path $repoRoot "BACKLOG.md"
 $errors = [System.Collections.Generic.List[string]]::new()
@@ -33,8 +34,35 @@ function Get-TableCells([string]$line) {
 }
 
 if (-not (Test-Path -LiteralPath $schemaPath)) { Add-Error "Missing shared schema: $schemaPath" }
+if (-not (Test-Path -LiteralPath $testCaseTemplatePath)) { Add-Error "Missing test-case evidence template: $testCaseTemplatePath" }
 if (-not (Test-Path -LiteralPath $statusMapPath)) { Add-Error "Missing status/phase map: $statusMapPath" }
 if (-not (Test-Path -LiteralPath $backlogPath)) { Add-Error "Missing backlog: $backlogPath" }
+
+if (Test-Path -LiteralPath $testCaseTemplatePath) {
+    $templateLines = @(Get-Content -LiteralPath $testCaseTemplatePath)
+    $templateHeadings = @(0..($templateLines.Count - 1) | ForEach-Object {
+        if ($templateLines[$_] -match '^##\s+(.+?)\s*$') { $matches[1].Trim() }
+    })
+    $requiredTestCaseHeadings = @("Preconditions", "Steps to Reproduce", "Expected Results", "Evidence")
+    $templatePositions = @{}
+    foreach ($heading in $requiredTestCaseHeadings) {
+        $headingIndex = [array]::IndexOf($templateHeadings, $heading)
+        if ($headingIndex -lt 0) {
+            Add-Error "Test-case evidence template is missing required heading: $heading"
+        } else {
+            $templatePositions[$heading] = $headingIndex
+        }
+    }
+    $lastTemplatePosition = -1
+    foreach ($heading in $requiredTestCaseHeadings) {
+        if (-not $templatePositions.ContainsKey($heading)) { continue }
+        if ($templatePositions[$heading] -lt $lastTemplatePosition) {
+            Add-Error "Test-case evidence template headings are out of order near: $heading"
+            break
+        }
+        $lastTemplatePosition = $templatePositions[$heading]
+    }
+}
 
 $backlogEntries = @{}
 if (Test-Path -LiteralPath $backlogPath) {

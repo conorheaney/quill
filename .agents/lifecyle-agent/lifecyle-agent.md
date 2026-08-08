@@ -79,11 +79,11 @@ The item is `In Progress / Implement` with its PRD in `docs/15 - Implement/`. Im
 
 ### Test
 
-The item is `In Progress / Test` with its PRD in `docs/20 - Test/`. Testing uses the committed packaged candidate from `main`. Each test case records its acceptance criterion, exact product version, Git commit, description, status, UTC timestamp, and evidence. Completed records use `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md` and link back to the PRD.
+The item is `In Progress / Test` with its PRD in `docs/20 - Test/`. Testing uses the committed packaged candidate from `main`. Each test case records its acceptance criterion, exact product version, Git commit, description, status, UTC timestamp, preconditions, reproducible steps, expected results, and evidence. Completed records use `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md` and link back to the PRD.
 
 The PRD's `Verification` section must contain a Markdown tracking table with one row per planned test case and these columns: `Test Case`, `Criteria`, `Product Version`, `Status`, `Description`, and `Evidence`. Keep the row current while testing; the `Evidence` cell links to the corresponding record in `docs/90 - Evidence/` when evidence has been recorded. The exact Git commit belongs in the linked evidence record.
 
-Use `planned`, `open`, `in progress`, `complete`, `blocked`, or `exception` for the tracking-table `Status`. To generate a test evidence record, copy `.agents/lifecyle-agent/prd-testcase.md` to `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md`, fill in the exact product version, Git commit, UTC timestamp, test, result, and supporting evidence, then link that file from the matching tracking-table row.
+Use `planned`, `open`, `in progress`, `complete`, `blocked`, or `exception` for the tracking-table `Status`. To generate a test evidence record, copy `.agents/lifecyle-agent/prd-testcase.md` to `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md`, fill in the exact product version, Git commit, UTC timestamp, test, result, preconditions, numbered steps to reproduce, expected results, and supporting evidence, then link that file from the matching tracking-table row. Keep the `Preconditions`, `Steps to Reproduce`, and `Expected Results` sections between the metadata table and `Evidence` section in every new record.
 
 If testing finds code work, return the PRD to `Implement`, update the backlog, record the transition, and only then resume implementation. Product-affecting corrections require a new patch candidate and repeat testing of affected coverage.
 
