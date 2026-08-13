@@ -23,6 +23,10 @@ Every item uses one PRD file and moves through these phases in order:
 
 Testing may return an item to `Implement` when additional code work is required. No other phase may be skipped. `Closed` closes the PRD; it is not automatically a product release.
 
+Status and phase are separate dimensions. The canonical status/phase combinations are defined in `.agents/lifecyle-agent/status-phase-map.json`; skills and validators must use that file rather than maintaining parallel mappings.
+
+`Blocked` is a first-class overall status, not an `In Progress` subtype. A blocked item retains its current phase until the blocking condition is resolved; it must not advance phases while blocked.
+
 Each item must have:
 
 - one row in `BACKLOG.md`
@@ -36,10 +40,11 @@ Each item must have:
 - Do not perform work that violates this contract.
 - Refuse work that violates the workflow contract and explain the blocking rule. Do not make code changes unless the target PRD is in `Implement`, and do not promote workflow items without explicit user intent through `prd-promote`. Preserve unrelated user changes and keep the backlog row and PRD aligned.
 - Do not promote an item automatically; promotion requires explicit user intent through the local `prd-promote` skill.
-- Code changes are authorized only while the target PRD is in `Implement`.
+- Product code changes are authorized only while the target PRD is in `Implement`.
+- Explicitly approved workflow-tooling changes may be made outside a product PRD when they are limited to lifecycle contracts, agent instructions, workflow skills, templates, status maps, validators, or related process documentation; they must not change Quill product behavior, must preserve unrelated changes, and must be recorded durably in Git through the commit message and diff.
 - The backlog row and PRD file must be updated as one workflow transition.
 - Material scope expansion becomes a separate backlog item.
-- Blocked items remain in `In Progress` until their phase can continue.
+- Blocked items retain their current `Implement` or `Test` phase and use `Blocked` status until the blocking condition is resolved; they must not advance phases while blocked.
 - Preserve unrelated user changes.
 - Evidence naming guardrail: every evidence artifact filename must begin with the uppercase `PRD-` identifier prefix. When an evidence file is renamed, update every repository reference to the exact same capitalized path; do not create or leave `prd-`-prefixed evidence filenames or links.
 

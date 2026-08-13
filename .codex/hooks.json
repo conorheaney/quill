@@ -1,0 +1,18 @@
+{
+  "description": "Report token and context usage when a Codex turn stops.",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/track_tokens.py\"",
+            "commandWindows": "python \"$(git rev-parse --show-toplevel)/.codex/hooks/track_tokens.py\"",
+            "timeout": 10,
+            "statusMessage": "Calculating token usage"
+          }
+        ]
+      }
+    ]
+  }
+}
