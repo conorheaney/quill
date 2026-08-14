@@ -51,6 +51,7 @@ Move this item to `10 - Plan` and define the review criteria, evidence format, d
 | Timestamp | Stage |
 | --- | --- |
 | 2026-07-12T02:48:08.7003374Z | Backlog |
+| 2026-08-13T23:57:10.5835820Z | Plan |
 
 ## Audit
 
@@ -59,4 +60,7 @@ Move this item to `10 - Plan` and define the review criteria, evidence format, d
 | 2026-07-12T02:48:08.7003374Z | Scope discovery | Added as a backlog item for a critical codebase review followed by targeted refactoring driven by documented findings. |
 | 2026-07-12T02:48:08.7003374Z | State | Current state: backlogged and waiting to move into `10 - Plan`. |
 | 2026-07-12T13:09:27.2378048Z | Consistency review | Reviewed during the workflow consistency sweep. No history backfill was required because this item has only reached `Backlog` and already had a captured UTC timestamp. |
+| 2026-08-13T23:57:10.6730371Z | Promotion | User approved promotion from `Backlog` to `Plan`; the workflow gate and pre-promotion validator passed without errors. |
+| 2026-08-14T00:03:47.3018614Z | Review evidence | Completed the requested detailed code review and recorded 13 prioritized, decision-ready findings in [PRD-000010-TECH-Code-Review.md](../90%20-%20Evidence/PRD-000010-TECH-Code-Review.md). |
+| 2026-08-14T18:18:16.4654439Z | Review triage | User assigned `REV-004` to the strengthened `PRD-000002-TECH` rather than creating a duplicate backlog item; the review decision was set to `DEFER` from this PRD. |
 

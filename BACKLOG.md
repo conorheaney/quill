@@ -14,22 +14,19 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
-| PRD-000002-TECH | TECH | Add Core Tests | Proposed | Backlog | Add automated coverage for Markdown parsing, block conversion, and persistence behaviour. |
 | PRD-000003-CHANGE | CHANGE | Remove Cache Busting | Proposed | Backlog | Remove static asset query-string cache busting once the app's loading and release approach is settled. |
 | PRD-000004-UI | UI | Accessibility Pass | Proposed | Backlog | Review keyboard behaviour, focus handling, labels, and error feedback across the editor and preview flows. |
-| PRD-000009-UI | UI | Expanded Theme Selector | Done | Closed | Add more built-in themes and replace the cycle-only theme control with a named dropdown selector that persists the user's choice. |
-| PRD-000010-TECH | TECH | Critical Codebase Review And Refactor | Proposed | Backlog | Review the current codebase critically, document the highest-value structural issues, and carry out follow-on refactoring to improve maintainability. |
+| PRD-000010-TECH | TECH | Critical Codebase Review And Refactor | Planned | Plan | Review the current codebase critically, document the highest-value structural issues, and carry out follow-on refactoring to improve maintainability. |
 | PRD-000019-CHANGE | CHANGE | Externalize Default Getting Started Guide | Proposed | Backlog | Store the default getting-started guide in a deployed Markdown document and load it through Quill's supported desktop runtime. |
 | PRD-000021-TECH | TECH | TypeScript Migration For Frontend Runtime | Proposed | Backlog | Plan and execute a staged TypeScript migration for Quill's frontend runtime and desktop bridge so the editor gains stronger module contracts, safer state handling, and better refactor support. |
 | PRD-000023-CHANGE | CHANGE | Make AutoSave Persist Open Files | Proposed | Backlog | Make AutoSave write changes to the current file with clear status feedback and a tuned save interval. |
-| PRD-000025-BUG | BUG | Fix Angle Bracket Rendering | Done | Closed | Preserve literal angle-bracket text such as `<TEST>` when it appears in a normal rendered Markdown paragraph. |
-| PRD-000024-UI | UI | Compact Outline Pane | Done | Closed | Remove the Outline header and non-essential spacing around Outline entries so more headings fit vertically while navigation and hierarchy remain clear. |
-| PRD-000026-CHANGE | CHANGE | Improve Recent Files Usability | Done | Closed | Make stale entries visible earlier, keep the current file from unexpectedly reordering the list, overlay row removal controls, and add copy-path and Explorer actions. |
+| PRD-000027-CHANGE | CHANGE | Detect External File Changes | Proposed | Backlog | Detect when the open file changes outside Quill and prompt the user with safe choices when Quill regains focus. |
 
 ## In Progress
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000002-TECH | TECH | Establish Automated Test Suite | In Progress | Implement | Establish repeatable automated coverage for Markdown integrity, document persistence, controller workflows, desktop commands, and CI-ready regression checks. |
 
 ## Done
 
@@ -50,3 +47,7 @@
 | PRD-000018-BUG | BUG | Fix Relative Image Rendering | Done | Closed | Render valid Markdown images in the application render view, including fully specified local image paths as well as relative and online image sources. |
 | PRD-000020-CHANGE | CHANGE | Remove Browser Mode Paths | Done | Closed | Remove broader browser-mode code paths so Quill is shaped around the packaged desktop runtime as its supported end-user experience. |
 | PRD-000022-BUG | BUG | Fix Minimal Document Render Layout | Done | Closed | Keep the Render pane full-height and top-aligned when a new or minimal document is displayed. |
+| PRD-000009-UI | UI | Expanded Theme Selector | Done | Closed | Add more built-in themes and replace the cycle-only theme control with a named dropdown selector that persists the user's choice. |
+| PRD-000024-UI | UI | Compact Outline Pane | Done | Closed | Remove the Outline header and non-essential spacing around Outline entries so more headings fit vertically while navigation and hierarchy remain clear. |
+| PRD-000025-BUG | BUG | Fix Angle Bracket Rendering | Done | Closed | Preserve literal angle-bracket text such as `<TEST>` when it appears in a normal rendered Markdown paragraph. |
+| PRD-000026-CHANGE | CHANGE | Improve Recent Files Usability | Done | Closed | Make stale entries visible earlier, keep the current file from unexpectedly reordering the list, overlay row removal controls, and add copy-path and Explorer actions. |
