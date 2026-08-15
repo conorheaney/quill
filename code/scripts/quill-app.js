@@ -16,6 +16,7 @@ const { createOutlinePane } = window.QuillOutlinePane;
 const { createMarkdownPane } = window.QuillMarkdownPane;
 const { createPreviewPane } = window.QuillPreviewPane;
 const { createRecentFilesController } = window.QuillRecentFiles;
+const { createDocumentController } = window.QuillDocumentController;
 
 (async function () {
   function mountPaneTemplate(mountId, templateId) {
@@ -107,8 +108,7 @@ const { createRecentFilesController } = window.QuillRecentFiles;
     isDirty: false,
     isMarkdownPaneCollapsed: false,
     isPreviewEditingEnabled: false,
-    isSyncingScroll: false,
-    saveTimer: null
+    isSyncingScroll: false
   };
 
   function getFileNameFromPath(filePath) {
@@ -207,25 +207,11 @@ const { createRecentFilesController } = window.QuillRecentFiles;
   }
 
   function persistDraft(showStatusToast) {
-    const showToastStatus = showStatusToast !== false;
-    saveDraft(markdownPane.getValue());
-    if (showToastStatus) {
-      showToast("SAVED LOCALLY", "", { id: "save-status", duration: 1600 });
-    }
+    return documentController.persistDraft(showStatusToast);
   }
 
   function scheduleSave(showStatusToast) {
-    if (!shellState.isAutoSaveEnabled) {
-      window.clearTimeout(shellState.saveTimer);
-      return;
-    }
-
-    if (showStatusToast) {
-      showToast("SAVING...", "", { id: "save-status", duration: 0 });
-    }
-
-    window.clearTimeout(shellState.saveTimer);
-    shellState.saveTimer = window.setTimeout(() => persistDraft(showStatusToast), 220);
+    return documentController.scheduleDraftSave(showStatusToast);
   }
 
   function openConfirmDialog(title, message, acceptLabel) {
@@ -288,7 +274,7 @@ const { createRecentFilesController } = window.QuillRecentFiles;
     updateAutoSaveUi();
 
     if (!enabled) {
-      window.clearTimeout(shellState.saveTimer);
+      documentController.cancelDraftSave();
       return;
     }
 
@@ -698,84 +684,74 @@ const { createRecentFilesController } = window.QuillRecentFiles;
     }
   }
 
+  const documentController = createDocumentController({
+    clock: {
+      clearTimeout: (timer) => window.clearTimeout(timer),
+      setTimeout: (callback, delay) => window.setTimeout(callback, delay)
+    },
+    desktopBridge: isDesktopBridgeReady ? desktopBridge : null,
+    dialogs: { confirmIfDirty },
+    document: {
+      getContent: () => markdownPane.getValue(),
+      getFileIdentity: () => ({
+        fileName: getSuggestedMarkdownFilename(),
+        filePath: shellState.currentFilePath
+      })
+    },
+    events: {
+      onError: (operation, error) => {
+        const labels = {
+          createNewDocument: "Unable to create a new document",
+          loadDocument: "Unable to load markdown file",
+          persistDraft: "Unable to persist the local draft",
+          saveDocument: "Unable to save markdown file"
+        };
+        console.error(labels[operation] || `Document operation failed: ${operation}`, error);
+      },
+      onLoaded: (result) => loadMarkdownFromDesktopResult(result),
+      onNewDocument: () => {
+        shellState.currentFileName = "";
+        shellState.currentFilePath = "";
+        recentFilesController.clearCurrentRecentFile();
+        setDocumentContent(NEW_DOCUMENT_CONTENT, {
+          fileName: "",
+          filePath: "",
+          dirty: false,
+          showStatusToast: false
+        });
+        showToast("New document", "Started a fresh Markdown document.");
+      },
+      onSaved: (result, context) => {
+        shellState.currentFilePath = result.filePath || "";
+        shellState.currentFileName = result.fileName || shellState.currentFileName;
+
+        if (shellState.currentFilePath) {
+          const recentEntry = recentFilesController.recordRecentFile(shellState.currentFilePath, shellState.currentFileName);
+          recentFilesController.setCurrentRecentFile(recentEntry);
+        } else {
+          showToast("Recent file not tracked", "This save target did not provide a reusable full path, so it cannot appear in Recent.");
+        }
+
+        markDirty(false);
+        showToast("SAVED TO FILE", "", { id: "save-status", duration: 1600 });
+        showToast(context.saveAs ? "Saved as" : "Saved", `${shellState.currentFileName || "Document"} was written to disk.`);
+      },
+      showToast
+    },
+    isAutosaveEnabled: () => shellState.isAutoSaveEnabled,
+    storage: { saveDraft }
+  });
+
   async function handleLoadDocument() {
-    if (!isDesktopBridgeReady) {
-      return;
-    }
-
-    try {
-      const canContinue = await confirmIfDirty(
-        "Load another file?",
-        "You have unsaved changes in the current document. Loading a file will replace the editor contents.",
-        "Load file"
-      );
-      if (!canContinue) return;
-
-      const result = await desktopBridge.openMarkdownFile();
-      if (!result) return;
-      await loadMarkdownFromDesktopResult(result);
-    } catch (error) {
-      if (error && error.name === "AbortError") return;
-      console.error("Unable to load markdown file", error);
-      showToast("Load failed", "The selected file could not be opened.");
-    }
+    return documentController.loadDocument();
   }
 
   async function handleSaveDocument(saveAs) {
-    if (!isDesktopBridgeReady) {
-      return;
-    }
-
-    const useSaveAs = Boolean(saveAs);
-    const content = markdownPane.getValue();
-
-    try {
-      const result = await desktopBridge.saveMarkdownFile({
-        content,
-        filePath: useSaveAs ? "" : shellState.currentFilePath,
-        saveAs: useSaveAs,
-        suggestedName: getSuggestedMarkdownFilename()
-      });
-      if (!result) return;
-
-      shellState.currentFilePath = result.filePath || "";
-      shellState.currentFileName = result.fileName || shellState.currentFileName;
-
-      if (shellState.currentFilePath) {
-        const recentEntry = recentFilesController.recordRecentFile(shellState.currentFilePath, shellState.currentFileName);
-        recentFilesController.setCurrentRecentFile(recentEntry);
-      } else {
-        showToast("Recent file not tracked", "This save target did not provide a reusable full path, so it cannot appear in Recent.");
-      }
-
-      markDirty(false);
-      showToast("SAVED TO FILE", "", { id: "save-status", duration: 1600 });
-      showToast(useSaveAs ? "Saved as" : "Saved", `${shellState.currentFileName || "Document"} was written to disk.`);
-    } catch (error) {
-      if (error && error.name === "AbortError") return;
-      console.error("Unable to save markdown file", error);
-      showToast("Save failed", "The document could not be saved.");
-    }
+    return documentController.saveDocument(saveAs);
   }
 
   async function handleNewDocument() {
-    const canContinue = await confirmIfDirty(
-      "Create a new document?",
-      "You have unsaved changes in the current document. Creating a new document will replace the current contents.",
-      "Create new"
-    );
-    if (!canContinue) return;
-
-    shellState.currentFileName = "";
-    shellState.currentFilePath = "";
-    recentFilesController.clearCurrentRecentFile();
-    setDocumentContent(NEW_DOCUMENT_CONTENT, {
-      fileName: "",
-      filePath: "",
-      dirty: false,
-      showStatusToast: false
-    });
-    showToast("New document", "Started a fresh Markdown document.");
+    return documentController.createNewDocument();
   }
 
   async function handleDroppedFiles(files) {

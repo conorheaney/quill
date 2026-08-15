@@ -120,3 +120,7 @@ fn main() {
         .run(tauri::generate_context!())
         .expect("error while running Quill Tauri application");
 }
+
+#[cfg(test)]
+#[path = "../../tests/rust/desktop_commands.rs"]
+mod tests;

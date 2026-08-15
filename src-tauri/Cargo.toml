@@ -1,9 +1,13 @@
 [package]
 name = "quill-tauri"
-version = "1.0.12"
+version = "1.0.13"
 description = "Quill desktop shell built with Tauri."
 authors = ["conor"]
 edition = "2021"
+
+[[test]]
+name = "test-harness"
+path = "../tests/rust/test_harness.rs"
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }

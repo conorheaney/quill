@@ -1,9 +1,12 @@
 {
   "name": "Quill",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Local-first Markdown editor with a Tauri desktop shell.",
   "private": true,
   "scripts": {
+    "test": "npm run test:node && npm run test:rust",
+    "test:node": "node --test",
+    "test:rust": "cargo test --manifest-path src-tauri/Cargo.toml",
     "start": "npm run tauri:dev",
     "smoke:dev": "node scripts/serve-quill.mjs",
     "check:workflow": "powershell -NoProfile -ExecutionPolicy Bypass -File .agents/lifecyle-agent/check-workflow.ps1",
