@@ -72,6 +72,9 @@ const { createDocumentController } = window.QuillDocumentController;
   const confirmDialogMessage = document.getElementById("confirmDialogMessage");
   const confirmDialogCancel = document.getElementById("confirmDialogCancel");
   const confirmDialogAccept = document.getElementById("confirmDialogAccept");
+  const externalChangeDialog = document.getElementById("externalChangeDialog");
+  const externalChangeKeep = document.getElementById("externalChangeKeep");
+  const externalChangeReload = document.getElementById("externalChangeReload");
   const codeDialog = document.getElementById("codeDialog");
   const codeSnippetLanguage = document.getElementById("codeSnippetLanguage");
   const codeSnippetInput = document.getElementById("codeSnippetInput");
@@ -82,6 +85,7 @@ const { createDocumentController } = window.QuillDocumentController;
   const desktopBridge = window.QuillDesktop || null;
   const requiredDesktopMethods = [
     "getAppVersion",
+    "inspectMarkdownFile",
     "openMarkdownFile",
     "readImageDataUrl",
     "reopenMarkdownFile",
@@ -245,6 +249,23 @@ const { createDocumentController } = window.QuillDocumentController;
   async function confirmIfDirty(title, message, acceptLabel) {
     if (!shellState.isDirty) return true;
     return openConfirmDialog(title, message, acceptLabel);
+  }
+
+  function confirmExternalChange() {
+    return new Promise((resolve) => {
+      const finish = (choice) => {
+        if (typeof externalChangeDialog.close === "function") externalChangeDialog.close();
+        externalChangeDialog.removeAttribute("open");
+        resolve(choice);
+      };
+      externalChangeKeep.onclick = () => finish("keep");
+      externalChangeReload.onclick = () => finish("reload");
+      if (typeof externalChangeDialog.showModal === "function") {
+        externalChangeDialog.showModal();
+      } else {
+        externalChangeDialog.setAttribute("open", "open");
+      }
+    });
   }
 
   const recentFilesController = createRecentFilesController({
@@ -666,6 +687,7 @@ const { createDocumentController } = window.QuillDocumentController;
       dirty: false,
       showStatusToast: false
     });
+    documentController?.setFileBaseline(result.fileState);
 
     if (result.filePath) {
       recentEntry = recentFilesController.recordRecentFile(result.filePath, result.fileName);
@@ -690,7 +712,7 @@ const { createDocumentController } = window.QuillDocumentController;
       setTimeout: (callback, delay) => window.setTimeout(callback, delay)
     },
     desktopBridge: isDesktopBridgeReady ? desktopBridge : null,
-    dialogs: { confirmIfDirty },
+    dialogs: { confirmExternalChange, confirmIfDirty },
     document: {
       getContent: () => markdownPane.getValue(),
       getFileIdentity: () => ({
@@ -709,6 +731,8 @@ const { createDocumentController } = window.QuillDocumentController;
         console.error(labels[operation] || `Document operation failed: ${operation}`, error);
       },
       onLoaded: (result) => loadMarkdownFromDesktopResult(result),
+      onExternalReloaded: (result) => loadMarkdownFromDesktopResult(result, { showLoadedToast: false }),
+      onExternalKept: () => showToast("External change kept out", "Your Quill version remains open; the disk version will not prompt again until it changes."),
       onNewDocument: () => {
         shellState.currentFileName = "";
         shellState.currentFilePath = "";
@@ -733,6 +757,7 @@ const { createDocumentController } = window.QuillDocumentController;
         }
 
         markDirty(false);
+        documentController.setFileBaseline(result.fileState);
         showToast("SAVED TO FILE", "", { id: "save-status", duration: 1600 });
         showToast(context.saveAs ? "Saved as" : "Saved", `${shellState.currentFileName || "Document"} was written to disk.`);
       },
@@ -897,6 +922,12 @@ const { createDocumentController } = window.QuillDocumentController;
   confirmDialog.addEventListener("cancel", (event) => {
     event.preventDefault();
     closeConfirmDialog(false);
+  });
+  externalChangeDialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+  });
+  window.addEventListener("focus", () => {
+    documentController.checkExternalChange();
   });
   window.addEventListener("resize", syncWorkspaceHeight);
   window.addEventListener("beforeunload", (event) => {

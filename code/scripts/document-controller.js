@@ -19,6 +19,8 @@
     const events = dependencies.events || {};
     const draftDelay = Number.isFinite(dependencies.draftDelay) ? dependencies.draftDelay : 220;
     let draftTimer = null;
+    let fileBaseline = null;
+    let externalCheckInFlight = false;
 
     function reportMissing(name) {
       if (typeof events.onMissingDependency === "function") {
@@ -142,6 +144,70 @@
       }
     }
 
+    function setFileBaseline(nextBaseline) {
+      fileBaseline = nextBaseline && nextBaseline.filePath ? { ...nextBaseline } : null;
+    }
+
+    function fileStateChanged(currentState) {
+      if (!fileBaseline || !currentState) return false;
+      return fileBaseline.filePath !== currentState.filePath
+        || fileBaseline.exists !== currentState.exists
+        || fileBaseline.modifiedAt !== currentState.modifiedAt
+        || fileBaseline.size !== currentState.size
+        || fileBaseline.contentHash !== currentState.contentHash;
+    }
+
+    function fileMetadataChanged(currentState) {
+      if (!fileBaseline || !currentState) return false;
+      return fileBaseline.filePath !== currentState.filePath
+        || fileBaseline.exists !== currentState.exists
+        || fileBaseline.modifiedAt !== currentState.modifiedAt
+        || fileBaseline.size !== currentState.size;
+    }
+
+    async function checkExternalChange() {
+      if (externalCheckInFlight || !fileBaseline || !desktopBridge || typeof desktopBridge.inspectMarkdownFile !== "function") {
+        return { status: "unchanged" };
+      }
+      externalCheckInFlight = true;
+      try {
+        const currentMetadata = await desktopBridge.inspectMarkdownFile(fileBaseline.filePath);
+        if (!fileMetadataChanged(currentMetadata)) return { status: "unchanged" };
+
+        const currentState = typeof desktopBridge.verifyMarkdownFile === "function"
+          ? await desktopBridge.verifyMarkdownFile(fileBaseline.filePath)
+          : currentMetadata;
+        if (currentState.exists && currentState.contentHash === fileBaseline.contentHash) {
+          setFileBaseline(currentState);
+          return { status: "unchanged" };
+        }
+        if (!fileStateChanged(currentState)) return { status: "unchanged" };
+
+        if (!dialogs || typeof dialogs.confirmExternalChange !== "function") {
+          return reportMissing("dialogs.confirmExternalChange");
+        }
+        const choice = await dialogs.confirmExternalChange();
+        if (choice === "reload") {
+          const result = await desktopBridge.reopenMarkdownFile(fileBaseline.filePath);
+          if (result && typeof events.onExternalReloaded === "function") {
+            await events.onExternalReloaded(result);
+          }
+          setFileBaseline(result && result.fileState);
+          return { result, status: "reloaded" };
+        }
+        if (choice === "keep") {
+          setFileBaseline(currentState);
+          if (typeof events.onExternalKept === "function") await events.onExternalKept(currentState);
+          return { status: "kept" };
+        }
+        return { status: "cancelled" };
+      } catch (error) {
+        return reportFailure("checkExternalChange", error, "External change check failed", "The file could not be checked for external changes.");
+      } finally {
+        externalCheckInFlight = false;
+      }
+    }
+
     async function createNewDocument() {
       try {
         const confirmation = await confirmDirty(
@@ -162,11 +228,13 @@
 
     return {
       cancelDraftSave,
+      checkExternalChange,
       createNewDocument,
       loadDocument,
       persistDraft,
       saveDocument,
-      scheduleDraftSave
+      scheduleDraftSave,
+      setFileBaseline
     };
   }
 

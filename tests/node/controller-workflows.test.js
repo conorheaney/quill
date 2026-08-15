@@ -172,3 +172,66 @@ test("missing controller dependencies return unavailable outcomes", async () => 
     "clock"
   ]);
 });
+
+function createFileState(overrides = {}) {
+  return {
+    contentHash: "hash-1",
+    exists: true,
+    filePath: "C:/notes/current.md",
+    modifiedAt: 1,
+    size: 10,
+    ...overrides
+  };
+}
+
+test("external changes can be reloaded without discarding the decision flow", async () => {
+  const state = { content: "Quill draft", fileName: "current.md", filePath: "C:/notes/current.md" };
+  const baseline = createFileState();
+  const external = createFileState({ contentHash: "hash-2", modifiedAt: 2 });
+  const reloaded = {
+    content: "External version",
+    fileName: "current.md",
+    filePath: state.filePath,
+    fileState: external
+  };
+  const decisions = [];
+  const reloads = [];
+  const controller = createDocumentController({
+    desktopBridge: {
+      async inspectMarkdownFile() { return external; },
+      async verifyMarkdownFile() { return external; },
+      async reopenMarkdownFile() { return reloaded; }
+    },
+    dialogs: { confirmExternalChange: async () => "reload" },
+    document: createDocumentPort(state),
+    events: {
+      onExternalReloaded(result) { reloads.push(result); },
+      onExternalKept() { decisions.push("keep"); }
+    }
+  });
+
+  controller.setFileBaseline(baseline);
+  assert.equal((await controller.checkExternalChange()).status, "reloaded");
+  assert.deepEqual(reloads, [reloaded]);
+  assert.deepEqual(decisions, []);
+});
+
+test("keeping an external change preserves the Quill version and suppresses repeat prompts", async () => {
+  const baseline = createFileState();
+  const external = createFileState({ contentHash: "hash-2", modifiedAt: 2 });
+  let prompts = 0;
+  const controller = createDocumentController({
+    desktopBridge: {
+      async inspectMarkdownFile() { return external; },
+      async verifyMarkdownFile() { return external; }
+    },
+    dialogs: { confirmExternalChange: async () => { prompts += 1; return "keep"; } },
+    document: createDocumentPort({ content: "Quill draft", fileName: "current.md", filePath: baseline.filePath }),
+    events: {}
+  });
+
+  controller.setFileBaseline(baseline);
+  assert.equal((await controller.checkExternalChange()).status, "kept");
+  assert.equal((await controller.checkExternalChange()).status, "unchanged");
+  assert.equal(prompts, 1);
+});

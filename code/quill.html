@@ -97,6 +97,17 @@
     </div>
   </dialog>
 
+  <dialog id="externalChangeDialog" class="confirm-dialog" aria-labelledby="externalChangeDialogTitle">
+    <div class="confirm-dialog-content">
+      <h2 id="externalChangeDialogTitle">File changed outside Quill</h2>
+      <p>This file changed on disk while Quill was unfocused. Choose which version to keep.</p>
+      <div class="dialog-actions">
+        <button type="button" id="externalChangeKeep">KEEP QUILL VERSION</button>
+        <button type="button" id="externalChangeReload" data-primary="true">RELOAD EXTERNAL VERSION</button>
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="codeDialog" class="code-dialog dialog-backdrop" aria-labelledby="codeDialogTitle">
     <form method="dialog">
       <section class="code-dialog-main">

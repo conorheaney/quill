@@ -19,7 +19,6 @@
 | PRD-000019-CHANGE | CHANGE | Externalize Default Getting Started Guide | Proposed | Backlog | Store the default getting-started guide in a deployed Markdown document and load it through Quill's supported desktop runtime.                                                                   |
 | PRD-000021-TECH   | TECH   | TypeScript Migration For Frontend Runtime | Proposed | Backlog | Plan and execute a staged TypeScript migration for Quill's frontend runtime and desktop bridge so the editor gains stronger module contracts, safer state handling, and better refactor support. |
 | PRD-000023-CHANGE | CHANGE | Make AutoSave Persist Open Files          | Proposed | Backlog | Make AutoSave write changes to the current file with clear status feedback and a tuned save interval.                                                                                            |
-| PRD-000027-CHANGE | CHANGE | Detect External File Changes              | Proposed | Backlog | Detect when the open file changes outside Quill and prompt the user with safe choices when Quill regains focus.                                                                                  |
 | PRD-000028-TECH   | TECH   | Preserve Untouched Markdown Source         | Proposed | Backlog | Address `REV-001` by making Render-pane edits lossless outside the explicitly edited source range.                                                                                                 |
 | PRD-000029-TECH   | TECH   | Make Saves Revision-Aware                   | Proposed | Backlog | Address `REV-002` by preventing stale asynchronous save completions from clearing newer dirty state.                                                                                               |
 | PRD-000030-TECH   | TECH   | Harden Desktop Trust Boundary              | Proposed | Backlog | Address `REV-005` with CSP, path, file-type, size, error, and safe process-argument controls for the desktop bridge.                                                                               |
@@ -36,6 +35,7 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000027-CHANGE | CHANGE | Detect External File Changes | In Progress | Implement | Detect when the open file changes outside Quill and prompt the user with safe choices when Quill regains focus. |
 
 ## Done
 

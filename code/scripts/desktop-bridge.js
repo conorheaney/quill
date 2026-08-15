@@ -34,6 +34,18 @@
     });
   }
 
+  async function inspectMarkdownFile(filePath) {
+    return coreApi.invoke("inspect_markdown_file", {
+      filePath
+    });
+  }
+
+  async function verifyMarkdownFile(filePath) {
+    return coreApi.invoke("verify_markdown_file", {
+      filePath
+    });
+  }
+
   const previewImageCache = new Map();
 
   async function readImageDataUrl(filePath) {
@@ -61,6 +73,14 @@
       }
 
       return appApi.getVersion();
+    },
+
+    async inspectMarkdownFile(filePath) {
+      return inspectMarkdownFile(filePath);
+    },
+
+    async verifyMarkdownFile(filePath) {
+      return verifyMarkdownFile(filePath);
     },
 
     async openMarkdownFile() {

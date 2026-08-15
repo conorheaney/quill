@@ -74,6 +74,9 @@ fn reads_markdown_from_an_isolated_file() {
     assert_eq!(result.content, content);
     assert_eq!(result.file_name, "read contract.md");
     assert_eq!(PathBuf::from(result.file_path), file_path);
+    assert_eq!(result.file_state.size, content.len() as u64);
+    assert_eq!(result.file_state.file_path, file_path.to_string_lossy());
+    assert!(!result.file_state.content_hash.is_empty());
 }
 
 #[test]
@@ -98,7 +101,33 @@ fn writes_and_overwrites_markdown_in_an_isolated_file() {
     .expect("overwrite markdown");
     assert_eq!(replacement_result.content, replacement);
     assert_eq!(PathBuf::from(replacement_result.file_path), file_path);
+    assert_eq!(replacement_result.file_state.size, replacement.len() as u64);
     assert_eq!(fs::read_to_string(&file_path).unwrap(), replacement);
+}
+
+#[test]
+fn inspects_current_file_state_and_reports_missing_files() {
+    let directory = TestDirectory::new("inspect");
+    let file_path = directory.path().join("inspect.md");
+    fs::write(&file_path, "# Inspect\n").expect("seed inspect file");
+
+    let first = inspect_markdown_file(file_path.to_string_lossy().into_owned())
+        .expect("inspect markdown file");
+    assert_eq!(first.size, 10);
+    assert!(first.content_hash.is_empty());
+    let first_verified = verify_markdown_file(file_path.to_string_lossy().into_owned())
+        .expect("verify markdown file");
+    assert!(!first_verified.content_hash.is_empty());
+
+    fs::write(&file_path, "# Changed\n").expect("change inspect file");
+    let second = verify_markdown_file(file_path.to_string_lossy().into_owned())
+        .expect("inspect changed markdown file");
+    assert_ne!(first_verified.content_hash, second.content_hash);
+
+    let missing = directory.path().join("missing.md");
+    let missing_state = inspect_markdown_file(missing.to_string_lossy().into_owned())
+        .expect("missing file state should be inspectable");
+    assert!(!missing_state.exists);
 }
 
 #[test]

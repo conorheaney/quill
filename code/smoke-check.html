@@ -28,6 +28,9 @@
       }
 
       const bridge = {
+        fileState(filePath, hash = "smoke") {
+          return { contentHash: hash, exists: true, filePath, modifiedAt: 1, size: 10 };
+        },
         async getAppVersion() {
           bridgeLog.push("getAppVersion");
           return "1.0.4";
@@ -37,8 +40,17 @@
           return {
             content: "# Loaded\n\nLoaded from the desktop bridge.",
             fileName: "loaded.md",
-            filePath: "C:\\Quill Smoke\\loaded.md"
+            filePath: "C:\\Quill Smoke\\loaded.md",
+            fileState: bridge.fileState("C:\\Quill Smoke\\loaded.md")
           };
+        },
+        async inspectMarkdownFile(filePath) {
+          bridgeLog.push(`inspectMarkdownFile:${filePath}`);
+          return bridge.fileState(filePath);
+        },
+        async verifyMarkdownFile(filePath) {
+          bridgeLog.push(`verifyMarkdownFile:${filePath}`);
+          return bridge.fileState(filePath);
         },
         async readImageDataUrl(filePath) {
           bridgeLog.push(`readImageDataUrl:${filePath}`);
@@ -49,7 +61,8 @@
           return {
             content: "# Reopened\n\nLoaded from Recent.",
             fileName: "loaded.md",
-            filePath
+            filePath,
+            fileState: bridge.fileState(filePath, "reopened")
           };
         },
         async revealInExplorer(filePath) {
@@ -62,7 +75,8 @@
           return {
             content: payload.content,
             fileName,
-            filePath: `C:\\Quill Smoke\\${fileName}`
+            filePath: `C:\\Quill Smoke\\${fileName}`,
+            fileState: bridge.fileState(`C:\\Quill Smoke\\${fileName}`, "saved")
           };
         }
       };
