@@ -39,11 +39,11 @@ Out:
 
 | Test Case | Criteria | Product Version | Status | Description | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| `TC-01` | `AC-01` | `1.0.13` | `in progress` | Deterministically audit the Code-Review ledger, final dispositions, owning-PRD references, and PRD-000010 scope. | Pending committed documentation state. |
+| `TC-01` | `AC-01` | `1.0.13` | `complete` | Deterministically audit the Code-Review ledger, final dispositions, owning-PRD references, and PRD-000010 scope. | [Evidence](../90%20-%20Evidence/PRD-000010-TECH-TC-01.md) |
 
 ## Next Step
 
-Commit the documentation-only review closure state, record `TC-01` evidence against that commit, then promote this item to Closed.
+Promote this documentation-only item to Closed.
 
 ## History
 
@@ -68,4 +68,5 @@ Commit the documentation-only review closure state, record `TC-01` evidence agai
 | 2026-08-15T17:05:28.9276709Z | Promotion | User confirmed the documentation-only scope and promotion from Plan to Implement; the completed review and handoff record are ready for deterministic verification. |
 | 2026-08-15T17:05:45.2097678Z | Test handoff | Documentation-only implementation is complete: the review ledger has final dispositions and all follow-on ownership records exist. The item is ready for the single deterministic audit test. |
 | 2026-08-15T17:06:45.2111601Z | Verification attempt | The deterministic audit passed in the working tree: 13 ledger rows, zero `PENDING` dispositions, all owner PRDs present, and exactly one AC/TC. Evidence remains open until this documentation state is committed, as required for Test-phase evidence. |
+| 2026-08-15T17:18:49.3755060Z | Verification | Completed `TC-01` against the committed documentation state at Git commit `f9bfb90c1281102fdeb9584170c2ef9fa851c45c`; the review ledger, handoffs, and new backlog PRDs passed the deterministic audit. |
 
