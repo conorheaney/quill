@@ -26,12 +26,12 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
-| PRD-000002-TECH | TECH | Establish Automated Test Suite | In Progress | Implement | Establish repeatable automated coverage for Markdown integrity, document persistence, controller workflows, desktop commands, and CI-ready regression checks. |
 
 ## Done
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000002-TECH | TECH | Establish Automated Test Suite | Done | Closed | Establish repeatable automated coverage for Markdown integrity, document persistence, controller workflows, desktop commands, and CI-ready regression checks. |
 | PRD-000016-CHANGE | CHANGE | Limit Recent Files To Tauri | Done | Closed | Restrict the Recent Files option to the Tauri desktop runtime instead of exposing it in non-Tauri paths. |
 | PRD-000001-TECH | TECH | Split UI Controller | Done | Closed | Reshape the app around a Shell plus Outline Pane, Markdown Pane, and Preview Pane components, including HTML and code naming cleanup. |
 | PRD-000005-CHANGE | CHANGE | Bump App Version | Done | Closed | Update the packaged app version to the semver-safe equivalent of release label `1.02`. |
