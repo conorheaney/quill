@@ -12,20 +12,31 @@
 
 ## Backlogged
 
-| ID | Class | Short Name | Status | Phase | Brief Description |
-| --- | --- | --- | --- | --- | --- |
-| PRD-000003-CHANGE | CHANGE | Remove Cache Busting | Proposed | Backlog | Remove static asset query-string cache busting once the app's loading and release approach is settled. |
-| PRD-000004-UI | UI | Accessibility Pass | Proposed | Backlog | Review keyboard behaviour, focus handling, labels, and error feedback across the editor and preview flows. |
-| PRD-000010-TECH | TECH | Critical Codebase Review And Refactor | Planned | Plan | Review the current codebase critically, document the highest-value structural issues, and carry out follow-on refactoring to improve maintainability. |
-| PRD-000019-CHANGE | CHANGE | Externalize Default Getting Started Guide | Proposed | Backlog | Store the default getting-started guide in a deployed Markdown document and load it through Quill's supported desktop runtime. |
-| PRD-000021-TECH | TECH | TypeScript Migration For Frontend Runtime | Proposed | Backlog | Plan and execute a staged TypeScript migration for Quill's frontend runtime and desktop bridge so the editor gains stronger module contracts, safer state handling, and better refactor support. |
-| PRD-000023-CHANGE | CHANGE | Make AutoSave Persist Open Files | Proposed | Backlog | Make AutoSave write changes to the current file with clear status feedback and a tuned save interval. |
-| PRD-000027-CHANGE | CHANGE | Detect External File Changes | Proposed | Backlog | Detect when the open file changes outside Quill and prompt the user with safe choices when Quill regains focus. |
+| ID                | Class  | Short Name                                | Status   | Phase   | Brief Description                                                                                                                                                                                |
+| ----------------- | ------ | ----------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| PRD-000003-CHANGE | CHANGE | Remove Cache Busting                      | Proposed | Backlog | Remove static asset query-string cache busting once the app's loading and release approach is settled.                                                                                           |
+| PRD-000004-UI     | UI     | Accessibility Pass                        | Proposed | Backlog | Review keyboard behaviour, focus handling, labels, and error feedback across the editor and preview flows.                                                                                       |
+| PRD-000019-CHANGE | CHANGE | Externalize Default Getting Started Guide | Proposed | Backlog | Store the default getting-started guide in a deployed Markdown document and load it through Quill's supported desktop runtime.                                                                   |
+| PRD-000021-TECH   | TECH   | TypeScript Migration For Frontend Runtime | Proposed | Backlog | Plan and execute a staged TypeScript migration for Quill's frontend runtime and desktop bridge so the editor gains stronger module contracts, safer state handling, and better refactor support. |
+| PRD-000023-CHANGE | CHANGE | Make AutoSave Persist Open Files          | Proposed | Backlog | Make AutoSave write changes to the current file with clear status feedback and a tuned save interval.                                                                                            |
+| PRD-000027-CHANGE | CHANGE | Detect External File Changes              | Proposed | Backlog | Detect when the open file changes outside Quill and prompt the user with safe choices when Quill regains focus.                                                                                  |
+| PRD-000028-TECH   | TECH   | Preserve Untouched Markdown Source         | Proposed | Backlog | Address `REV-001` by making Render-pane edits lossless outside the explicitly edited source range.                                                                                                 |
+| PRD-000029-TECH   | TECH   | Make Saves Revision-Aware                   | Proposed | Backlog | Address `REV-002` by preventing stale asynchronous save completions from clearing newer dirty state.                                                                                               |
+| PRD-000030-TECH   | TECH   | Harden Desktop Trust Boundary              | Proposed | Backlog | Address `REV-005` with CSP, path, file-type, size, error, and safe process-argument controls for the desktop bridge.                                                                               |
+| PRD-000031-TECH   | TECH   | Decompose Application Controller           | Proposed | Backlog | Address `REV-006` by separating document-session, persistence, rendering, desktop, and code-image responsibilities from bootstrap composition.                                                  |
+| PRD-000032-TECH   | TECH   | Bound Embedded Asset Persistence            | Proposed | Backlog | Address `REV-007` by bounding embedded assets, handling storage failures, and providing actionable recovery feedback.                                                                            |
+| PRD-000033-TECH   | TECH   | Bound Preview Image Cache                   | Proposed | Backlog | Address `REV-008` with bounded image caching and invalidation for changed files and document transitions.                                                                                          |
+| PRD-000034-TECH   | TECH   | Schedule Large-Document Rendering           | Proposed | Backlog | Address `REV-009` by coalescing render work and measuring large-document responsiveness without dropping edits.                                                                                    |
+| PRD-000035-TECH   | TECH   | Consolidate Markdown Runtime Paths          | Proposed | Backlog | Address `REV-010` by establishing one canonical rendering path and removing duplicated helpers, constants, and unused exports.                                                                  |
+| PRD-000036-TECH   | TECH   | Refresh Rendering After Save As             | Proposed | Backlog | Address `REV-011` by making file-path changes invalidate and rerender path-dependent assets immediately.                                                                                          |
+| PRD-000037-TECH   | TECH   | Add Bootstrap Failure Boundary              | Proposed | Backlog | Address `REV-012` by showing an actionable fatal-startup state when packaged initialization fails.                                                                                               |
+| PRD-000038-TECH   | TECH   | Make Recent-File Hydration Deterministic    | Proposed | Backlog | Address `REV-013` by preventing early recent-file activity from discarding persisted entries during hydration races.                                                                             |
 
 ## In Progress
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000010-TECH | TECH | Critical Codebase Review And Refactor | In Progress | Test | Verify the completed code-review record and deterministic handoff audit without implementing follow-on product fixes in this item. |
 
 ## Done
 
