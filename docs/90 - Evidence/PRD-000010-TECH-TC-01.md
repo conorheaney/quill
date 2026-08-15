@@ -2,7 +2,7 @@
 
 | Field | Detail |
 | --- | --- |
-| PRD | [PRD-000010-TECH](../../docs/20%20-%20Test/PRD-000010-TECH.md) |
+| PRD | [PRD-000010-TECH](../../docs/25%20-%20Closed/PRD-000010-TECH.md) |
 | Acceptance Criteria | AC-01 |
 | Product Version | 1.0.13 |
 | Git Commit | f9bfb90c1281102fdeb9584170c2ef9fa851c45c |
