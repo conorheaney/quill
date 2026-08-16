@@ -35,12 +35,12 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
-| PRD-000027-CHANGE | CHANGE | Detect External File Changes | In Progress | Implement | Detect when the open file changes outside Quill and prompt the user with safe choices when Quill regains focus. |
 
 ## Done
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000027-CHANGE | CHANGE | Detect External File Changes | Done | Closed | Detect when the open file changes outside Quill and prompt the user with safe choices when Quill regains focus. |
 | PRD-000002-TECH | TECH | Establish Automated Test Suite | Done | Closed | Establish repeatable automated coverage for Markdown integrity, document persistence, controller workflows, desktop commands, and CI-ready regression checks. |
 | PRD-000010-TECH | TECH | Critical Codebase Review And Refactor | Done | Closed | Complete the documented code review and hand off all findings to owning PRDs without implementing follow-on product fixes in this item. |
 | PRD-000016-CHANGE | CHANGE | Limit Recent Files To Tauri | Done | Closed | Restrict the Recent Files option to the Tauri desktop runtime instead of exposing it in non-Tauri paths. |
