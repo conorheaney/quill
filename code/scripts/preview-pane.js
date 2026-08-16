@@ -303,10 +303,44 @@
       return contentElement;
     }
 
-    function scrollToBlock(index) {
+    function scrollToBlock(index, viewportTop) {
       const target = contentElement.querySelector(`[data-block-id="${index}"]`);
       if (!target) return;
-      contentElement.scrollTop = Math.max(0, target.offsetTop - contentElement.clientHeight * 0.3);
+      setActiveBlock(index, previewBlocks.length, viewportTop);
+      const targetTop = Number.isFinite(viewportTop) ? viewportTop : contentElement.clientHeight * 0.3;
+      contentElement.scrollTop = Math.max(0, target.offsetTop - targetTop);
+    }
+
+    function setActiveBlock(index, totalBlocks, viewportTop) {
+      contentElement.querySelectorAll(".preview-block.is-scroll-active").forEach((element) => {
+        element.classList.remove("is-scroll-active");
+      });
+      const indicator = rootElement.querySelector("[data-scroll-gutter-indicator]");
+      if (indicator && index >= 0 && totalBlocks) {
+        const gutterHeight = Math.max(0, rootElement.clientHeight - 65);
+        const markerTop = Number.isFinite(viewportTop)
+          ? Math.max(0, Math.min(viewportTop, Math.max(0, gutterHeight - 32)))
+          : (totalBlocks <= 1 ? 0 : (index / (totalBlocks - 1)) * Math.max(0, gutterHeight - 32));
+        indicator.style.top = `${markerTop}px`;
+        indicator.classList.add("is-active");
+      } else if (indicator) {
+        indicator.classList.remove("is-active");
+      }
+      const target = contentElement.querySelector(`[data-block-id="${index}"]`);
+      if (target) target.classList.add("is-scroll-active");
+    }
+
+    function getVisibleBlockIndex() {
+      const blocks = [...contentElement.querySelectorAll(".preview-block")];
+      const anchor = contentElement.scrollTop + contentElement.clientHeight * 0.3;
+      let activeIndex = blocks.length ? Number(blocks[0].dataset.blockId) : -1;
+      blocks.forEach((block) => {
+        if (block.offsetTop <= anchor) {
+          activeIndex = Number(block.dataset.blockId);
+        }
+      });
+      setActiveBlock(activeIndex, blocks.length);
+      return activeIndex;
     }
 
     function scrollToHeading(headingId) {
@@ -430,6 +464,7 @@
     contentElement.addEventListener("input", handlePreviewEditorInput);
     contentElement.addEventListener("change", handlePreviewEditorChange);
     contentElement.addEventListener("scroll", () => {
+      onScroll(getVisibleBlockIndex());
       refreshActiveHeadingFromScroll();
     });
 
@@ -437,6 +472,8 @@
       focus,
       getContentElement,
       getScrollElement,
+      getVisibleBlockIndex,
+      setActiveBlock,
       scrollToBlock,
       scrollToHeading,
       setBlocks,

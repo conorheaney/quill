@@ -258,6 +258,7 @@
     }
 
     .pane {
+      position: relative;
       min-width: 0;
       min-height: 0;
       display: flex;
@@ -303,6 +304,34 @@
     .pane-header-buttons[data-toolbar-actions="true"] {
       align-items: center;
     }
+
+    .pane-scroll-gutter {
+      position: absolute;
+      top: 65px;
+      bottom: 0;
+      z-index: 5;
+      width: 4px;
+      background: color-mix(in srgb, var(--border) 55%, transparent);
+      pointer-events: none;
+    }
+
+    .pane-scroll-gutter-left { left: 0; }
+    .pane-scroll-gutter-right { right: 0; }
+
+    .pane-scroll-gutter-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 32px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 70%, transparent);
+      opacity: 0;
+      transition: opacity 0.16s ease;
+    }
+
+    .pane-scroll-gutter-indicator.is-active { opacity: 1; }
 
     .pane-header-actions span {
       overflow: hidden;
@@ -431,6 +460,7 @@
       color: var(--text);
       font: 1rem/1.7 var(--font-mono);
       outline: none;
+      caret-color: var(--accent);
       tab-size: 2;
     }
 
@@ -462,6 +492,11 @@
       border-color: transparent;
       background: transparent;
       cursor: default;
+    }
+
+    .preview-block.is-scroll-active {
+      border-color: rgba(212, 106, 58, 0.55);
+      background: rgba(212, 106, 58, 0.08);
     }
 
     .preview-block > :last-child {

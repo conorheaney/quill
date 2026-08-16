@@ -413,11 +413,19 @@ const { createDocumentController } = window.QuillDocumentController;
 
   function handleMarkdownInput(showStatusToast) {
     const markdown = markdownPane.getValue();
-    const selection = markdownPane.getSelectionState();
+    const editPosition = getMarkdownEditPosition(markdown, markdownPane.getCaretOffset());
     renderPreviewFromMarkdown(markdown);
-    scrollPreviewToBlock(getBlockIndexAtOffset(markdown, selection.start));
+    updateActiveBlock(editPosition.index, editPosition.viewportTop);
+    scrollPreviewToBlock(editPosition.index, editPosition.viewportTop);
     markDirty(true);
     scheduleSave(showStatusToast);
+  }
+
+  function handleMarkdownCaretChange() {
+    const markdown = markdownPane.getValue();
+    const editPosition = getMarkdownEditPosition(markdown, markdownPane.getCaretOffset());
+    updateActiveBlock(editPosition.index, editPosition.viewportTop);
+    scrollPreviewToBlock(editPosition.index, editPosition.viewportTop);
   }
 
   function getBlockIndexAtOffset(markdown, offset) {
@@ -431,10 +439,25 @@ const { createDocumentController } = window.QuillDocumentController;
     return ranges.length - 1;
   }
 
-  function scrollPreviewToBlock(index) {
+  function getMarkdownEditPosition(markdown, offset) {
+    const index = getBlockIndexAtOffset(markdown, offset);
+    const markdownScrollElement = markdownPane.getScrollElement();
+    if (index < 0 || !markdownScrollElement) return { index, viewportTop: 0 };
+
+    return {
+      index,
+      viewportTop: markdownPane.getCaretViewportTop()
+    };
+  }
+
+  function scrollPreviewToBlock(index, viewportTop) {
     if (index < 0) return;
     window.requestAnimationFrame(() => {
-      previewPane.scrollToBlock(index);
+      shellState.isSyncingScroll = true;
+      previewPane.scrollToBlock(index, viewportTop);
+      window.requestAnimationFrame(() => {
+        shellState.isSyncingScroll = false;
+      });
     });
   }
 
@@ -447,6 +470,53 @@ const { createDocumentController } = window.QuillDocumentController;
     const lineHeight = parseFloat(window.getComputedStyle(markdownScrollElement).lineHeight) || 27;
     const lineNumber = markdown.slice(0, target.start).split("\n").length - 1;
     markdownScrollElement.scrollTop = Math.max(0, lineNumber * lineHeight - markdownScrollElement.clientHeight * 0.3);
+  }
+
+  function updateActiveBlock(index, viewportTop) {
+    const totalBlocks = getMarkdownBlockRanges(markdownPane.getValue()).length;
+    markdownPane.setActiveBlock(index, totalBlocks, viewportTop);
+    previewPane.setActiveBlock(index, totalBlocks, viewportTop);
+  }
+
+  function getBlockIndexForMarkdownScroll(markdown) {
+    const markdownScrollElement = markdownPane.getScrollElement();
+    const ranges = getMarkdownBlockRanges(markdown);
+    if (!ranges.length || !markdownScrollElement) return -1;
+    const lineHeight = parseFloat(window.getComputedStyle(markdownScrollElement).lineHeight) || 27;
+    const lineNumber = Math.max(0, Math.floor(markdownScrollElement.scrollTop / lineHeight));
+    let activeIndex = 0;
+    ranges.forEach((range, index) => {
+      const rangeLine = markdown.slice(0, range.start).split("\n").length - 1;
+      if (rangeLine <= lineNumber) activeIndex = index;
+    });
+    return activeIndex;
+  }
+
+  function handleMarkdownScroll() {
+    if (shellState.isSyncingScroll) return;
+    const markdown = markdownPane.getValue();
+    if (document.activeElement === markdownPane.getScrollElement()) {
+      handleMarkdownCaretChange();
+      return;
+    }
+    const blockIndex = getBlockIndexForMarkdownScroll(markdown);
+    updateActiveBlock(blockIndex);
+    shellState.isSyncingScroll = true;
+    previewPane.scrollToBlock(blockIndex);
+    window.requestAnimationFrame(() => {
+      shellState.isSyncingScroll = false;
+    });
+  }
+
+  function handlePreviewScroll(blockIndex) {
+    if (shellState.isSyncingScroll) return;
+    const markdown = markdownPane.getValue();
+    updateActiveBlock(blockIndex);
+    shellState.isSyncingScroll = true;
+    scrollMarkdownToBlock(markdown, blockIndex);
+    window.requestAnimationFrame(() => {
+      shellState.isSyncingScroll = false;
+    });
   }
 
   function resetDocumentScrollPositions() {
@@ -864,6 +934,8 @@ const { createDocumentController } = window.QuillDocumentController;
       });
     },
     onInput: handleMarkdownInput,
+    onCaretChange: handleMarkdownCaretChange,
+    onScroll: handleMarkdownScroll,
     onShortcutCommand: (command) => {
       if (command === "save") {
         handleSaveDocument(false);
@@ -886,7 +958,12 @@ const { createDocumentController } = window.QuillDocumentController;
       const nextMarkdown = blocksToMarkdown(blocks);
       markdownPane.setValue(nextMarkdown);
       renderPreviewFromMarkdown(nextMarkdown);
+      updateActiveBlock(editedBlockIndex);
+      shellState.isSyncingScroll = true;
       scrollMarkdownToBlock(nextMarkdown, editedBlockIndex);
+      window.requestAnimationFrame(() => {
+        shellState.isSyncingScroll = false;
+      });
       markDirty(true);
       scheduleSave(false);
       if (toastTitle) {
@@ -896,6 +973,7 @@ const { createDocumentController } = window.QuillDocumentController;
     onHeadingStateChange: (headings, activeHeadingId) => {
       outlinePane.render(headings, activeHeadingId);
     },
+    onScroll: handlePreviewScroll,
     onToast: showToast,
     renderBlockContent: window.QuillMarkdown.renderBlockContent,
     requestConfirm: openConfirmDialog,
