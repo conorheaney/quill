@@ -35,7 +35,6 @@
       normaliseLanguage,
       onBlocksCommitted,
       onHeadingStateChange,
-      onScroll,
       onToast,
       requestConfirm
     } = options;
@@ -263,8 +262,8 @@
       };
     }
 
-    function commitBlocks(messageTitle, messageBody) {
-      onBlocksCommitted(cloneBlocks(previewBlocks), messageTitle, messageBody);
+    function commitBlocks(messageTitle, messageBody, editedBlockIndex) {
+      onBlocksCommitted(cloneBlocks(previewBlocks), messageTitle, messageBody, editedBlockIndex);
     }
 
     function openInlineEditor(index, optionsOverride) {
@@ -302,6 +301,12 @@
 
     function getContentElement() {
       return contentElement;
+    }
+
+    function scrollToBlock(index) {
+      const target = contentElement.querySelector(`[data-block-id="${index}"]`);
+      if (!target) return;
+      contentElement.scrollTop = Math.max(0, target.offsetTop - contentElement.clientHeight * 0.3);
     }
 
     function scrollToHeading(headingId) {
@@ -397,6 +402,7 @@
         }
 
         if (editorAction.dataset.editorAction === "confirm") {
+          const editedBlockIndex = activeInlineEdit ? activeInlineEdit.index : -1;
           const nextBlock = applyInlineEdit();
           if (!nextBlock) {
             onToast("Check the block", "That block type needs valid content before it can be applied.");
@@ -404,7 +410,7 @@
           }
           previewBlocks.splice(activeInlineEdit.index, 1, nextBlock);
           activeInlineEdit = null;
-          commitBlocks("Block updated", "The rendered block was written back to Markdown.");
+          commitBlocks("Block updated", "The rendered block was written back to Markdown.", editedBlockIndex);
           return;
         }
       }
@@ -424,7 +430,6 @@
     contentElement.addEventListener("input", handlePreviewEditorInput);
     contentElement.addEventListener("change", handlePreviewEditorChange);
     contentElement.addEventListener("scroll", () => {
-      onScroll();
       refreshActiveHeadingFromScroll();
     });
 
@@ -432,6 +437,7 @@
       focus,
       getContentElement,
       getScrollElement,
+      scrollToBlock,
       scrollToHeading,
       setBlocks,
       setReadOnly

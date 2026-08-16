@@ -662,6 +662,104 @@ window.QuillMarkdown = (() => {
         return blocks;
       }
 
+      function getMarkdownBlockRanges(markdown) {
+        const normalized = markdown.replace(/\r\n?/g, "\n");
+        const lines = normalized.split("\n");
+        const lineStarts = [];
+        const ranges = [];
+        let offset = 0;
+
+        lines.forEach((line) => {
+          lineStarts.push(offset);
+          offset += line.length + 1;
+        });
+
+        function addRange(startIndex, endIndex) {
+          ranges.push({
+            start: lineStarts[startIndex],
+            end: lineStarts[endIndex] + lines[endIndex].length
+          });
+        }
+
+        for (let index = 0; index < lines.length; index += 1) {
+          const line = lines[index];
+          const trimmed = line.trim();
+
+          if (!trimmed) continue;
+
+          const codeFenceMatch = line.match(/^```([\w-]*)\s*$/);
+          if (codeFenceMatch) {
+            let endIndex = index + 1;
+            while (endIndex < lines.length && !lines[endIndex].match(/^```/)) {
+              endIndex += 1;
+            }
+            addRange(index, Math.min(endIndex, lines.length - 1));
+            index = Math.min(endIndex, lines.length - 1);
+            continue;
+          }
+
+          if (trimmed.match(/^(#{1,6})\s+(.*)$/)) {
+            addRange(index, index);
+            continue;
+          }
+
+          if (isRawTableHeader(lines, index)) {
+            const table = parseTableBlock(lines, index);
+            addRange(index, table.endIndex);
+            index = table.endIndex;
+            continue;
+          }
+
+          if (line.match(/^\s*>\s?(.*)$/)) {
+            let endIndex = index;
+            while (endIndex + 1 < lines.length && lines[endIndex + 1].match(/^\s*>\s?(.*)$/)) {
+              endIndex += 1;
+            }
+            addRange(index, endIndex);
+            index = endIndex;
+            continue;
+          }
+
+          if (line.match(/^\s*\d+\.\s+(.*)$/)) {
+            let endIndex = index;
+            while (endIndex + 1 < lines.length && lines[endIndex + 1].match(/^\s*\d+\.\s+(.*)$/)) {
+              endIndex += 1;
+            }
+            addRange(index, endIndex);
+            index = endIndex;
+            continue;
+          }
+
+          if (line.match(/^\s*[-*+]\s+(.*)$/)) {
+            let endIndex = index;
+            while (endIndex + 1 < lines.length && lines[endIndex + 1].match(/^\s*[-*+]\s+(.*)$/)) {
+              endIndex += 1;
+            }
+            addRange(index, endIndex);
+            index = endIndex;
+            continue;
+          }
+
+          let endIndex = index;
+          while (endIndex + 1 < lines.length) {
+            const nextLine = lines[endIndex + 1];
+            const nextTrimmed = nextLine.trim();
+            if (!nextTrimmed) break;
+            if (nextLine.match(/^```([\w-]*)\s*$/)) break;
+            if (nextTrimmed.match(/^(#{1,6})\s+/)) break;
+            if (nextLine.match(/^\s*>\s?/)) break;
+            if (nextLine.match(/^\s*\d+\.\s+/)) break;
+            if (nextLine.match(/^\s*[-*+]\s+/)) break;
+            if (isRawTableHeader(lines, endIndex + 1)) break;
+            endIndex += 1;
+          }
+          addRange(index, endIndex);
+          index = endIndex;
+        }
+
+        return ranges;
+      }
+
       function tableRowsToMarkdown(rows) {
         return rows.map((row) => `| ${row.join(" | ")} |`).join("\n");
       }
@@ -726,6 +824,7 @@ window.QuillMarkdown = (() => {
     blocksToMarkdown,
     escapeAttribute,
     escapeHtml,
+    getMarkdownBlockRanges,
     normaliseLanguage,
     parseMarkdownBlocks,
     renderBlockContent,

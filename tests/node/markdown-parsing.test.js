@@ -49,3 +49,13 @@ for (const { name, input, expected } of parsingCases) {
     assert.deepEqual(markdown.parseMarkdownBlocks(input), expected);
   });
 }
+
+test("getMarkdownBlockRanges maps source blocks to exact source spans", () => {
+  const input = "# Heading\n\nFirst paragraph\nsecond line\n\n- One\n- Two";
+
+  assert.deepEqual(markdown.getMarkdownBlockRanges(input), [
+    { start: 0, end: 9 },
+    { start: 11, end: 38 },
+    { start: 40, end: 51 }
+  ]);
+});

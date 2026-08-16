@@ -35,6 +35,7 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000039-CHANGE | CHANGE | Synchronize Markdown And Render Scrolling | In Progress | Implement | First-pass edit-driven synchronization: keep the active pane's native scroll and reposition only the inactive counterpart. |
 
 ## Done
 

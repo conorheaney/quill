@@ -85,7 +85,9 @@
     }
 
     inputElement.addEventListener("input", () => onInput(true));
-    inputElement.addEventListener("scroll", onScroll);
+    if (onScroll) {
+      inputElement.addEventListener("scroll", onScroll);
+    }
 
     inputElement.addEventListener("keydown", (event) => {
       const shortcutKey = event.ctrlKey || event.metaKey;

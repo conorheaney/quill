@@ -1,6 +1,7 @@
 const {
   blocksToMarkdown,
   escapeHtml,
+  getMarkdownBlockRanges,
   parseMarkdownBlocks
 } = window.QuillMarkdown;
 const { DEFAULT_CONTENT, LANGUAGE_META, NEW_DOCUMENT_CONTENT } = window.QuillConfig;
@@ -411,9 +412,41 @@ const { createDocumentController } = window.QuillDocumentController;
   }
 
   function handleMarkdownInput(showStatusToast) {
-    renderPreviewFromMarkdown(markdownPane.getValue());
+    const markdown = markdownPane.getValue();
+    const selection = markdownPane.getSelectionState();
+    renderPreviewFromMarkdown(markdown);
+    scrollPreviewToBlock(getBlockIndexAtOffset(markdown, selection.start));
     markDirty(true);
     scheduleSave(showStatusToast);
+  }
+
+  function getBlockIndexAtOffset(markdown, offset) {
+    const ranges = getMarkdownBlockRanges(markdown);
+    if (!ranges.length) return -1;
+
+    const safeOffset = Math.max(0, Math.min(Number(offset) || 0, markdown.length));
+    const containingIndex = ranges.findIndex((range) => safeOffset >= range.start && safeOffset <= range.end);
+    if (containingIndex >= 0) return containingIndex;
+    if (safeOffset < ranges[0].start) return 0;
+    return ranges.length - 1;
+  }
+
+  function scrollPreviewToBlock(index) {
+    if (index < 0) return;
+    window.requestAnimationFrame(() => {
+      previewPane.scrollToBlock(index);
+    });
+  }
+
+  function scrollMarkdownToBlock(markdown, index) {
+    const ranges = getMarkdownBlockRanges(markdown);
+    const target = ranges[index];
+    const markdownScrollElement = markdownPane.getScrollElement();
+    if (!target || !markdownScrollElement) return;
+
+    const lineHeight = parseFloat(window.getComputedStyle(markdownScrollElement).lineHeight) || 27;
+    const lineNumber = markdown.slice(0, target.start).split("\n").length - 1;
+    markdownScrollElement.scrollTop = Math.max(0, lineNumber * lineHeight - markdownScrollElement.clientHeight * 0.3);
   }
 
   function resetDocumentScrollPositions() {
@@ -446,16 +479,6 @@ const { createDocumentController } = window.QuillDocumentController;
     resetDocumentScrollPositions();
     persistDraft(Boolean(settings.showStatusToast));
     markDirty(Boolean(settings.dirty));
-  }
-
-  function syncScroll(source, target) {
-    if (shellState.isSyncingScroll) return;
-    const ratio = source.scrollTop / Math.max(source.scrollHeight - source.clientHeight, 1);
-    shellState.isSyncingScroll = true;
-    target.scrollTop = ratio * Math.max(target.scrollHeight - target.clientHeight, 0);
-    window.requestAnimationFrame(() => {
-      shellState.isSyncingScroll = false;
-    });
   }
 
   function normaliseLanguage(language) {
@@ -841,9 +864,6 @@ const { createDocumentController } = window.QuillDocumentController;
       });
     },
     onInput: handleMarkdownInput,
-    onScroll: () => {
-      syncScroll(markdownPane.getScrollElement(), previewPane.getScrollElement());
-    },
     onShortcutCommand: (command) => {
       if (command === "save") {
         handleSaveDocument(false);
@@ -862,10 +882,11 @@ const { createDocumentController } = window.QuillDocumentController;
     contentElement: document.getElementById("previewPaneContent"),
     escapeHtml,
     normaliseLanguage,
-    onBlocksCommitted: (blocks, toastTitle, toastMessage) => {
+    onBlocksCommitted: (blocks, toastTitle, toastMessage, editedBlockIndex) => {
       const nextMarkdown = blocksToMarkdown(blocks);
       markdownPane.setValue(nextMarkdown);
       renderPreviewFromMarkdown(nextMarkdown);
+      scrollMarkdownToBlock(nextMarkdown, editedBlockIndex);
       markDirty(true);
       scheduleSave(false);
       if (toastTitle) {
@@ -874,9 +895,6 @@ const { createDocumentController } = window.QuillDocumentController;
     },
     onHeadingStateChange: (headings, activeHeadingId) => {
       outlinePane.render(headings, activeHeadingId);
-    },
-    onScroll: () => {
-      syncScroll(previewPane.getScrollElement(), markdownPane.getScrollElement());
     },
     onToast: showToast,
     renderBlockContent: window.QuillMarkdown.renderBlockContent,
