@@ -458,11 +458,11 @@ const { createDocumentController } = window.QuillDocumentController;
     return previousIndex;
   }
 
-  function scrollPreviewToBlock(index, viewportTop) {
+  function ensurePreviewBlockVisible(index) {
     if (index < 0) return;
     window.requestAnimationFrame(() => {
       shellState.isSyncingScroll = true;
-      previewPane.scrollToBlock(index, viewportTop);
+      previewPane.ensureBlockVisible(index);
       window.requestAnimationFrame(() => {
         shellState.isSyncingScroll = false;
       });
@@ -491,7 +491,7 @@ const { createDocumentController } = window.QuillDocumentController;
     markdownPane.setActiveBlock(editPosition.index, totalBlocks, editPosition.viewportTop);
     if (editPosition.index >= 0) {
       previewPane.setActiveBlock(editPosition.index, totalBlocks, editPosition.viewportTop);
-      scrollPreviewToBlock(editPosition.index, editPosition.viewportTop);
+      ensurePreviewBlockVisible(editPosition.index);
     } else {
       previewPane.setActiveBlock(editPosition.renderIndex, totalBlocks);
     }

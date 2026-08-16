@@ -311,21 +311,25 @@
       contentElement.scrollTop = Math.max(0, target.offsetTop - targetTop);
     }
 
+    function ensureBlockVisible(index) {
+      const target = contentElement.querySelector(`[data-block-id="${index}"]`);
+      if (!target) return;
+
+      setActiveBlock(index, previewBlocks.length);
+      const viewportTop = contentElement.scrollTop;
+      const viewportBottom = viewportTop + contentElement.clientHeight;
+      const targetTop = target.offsetTop;
+      const targetBottom = targetTop + target.offsetHeight;
+
+      if (targetBottom <= viewportTop || targetTop >= viewportBottom) {
+        contentElement.scrollTop = Math.max(0, targetTop - contentElement.clientHeight * 0.3);
+      }
+    }
+
     function setActiveBlock(index, totalBlocks, viewportTop) {
       contentElement.querySelectorAll(".preview-block.is-scroll-active").forEach((element) => {
         element.classList.remove("is-scroll-active");
       });
-      const indicator = rootElement.querySelector("[data-scroll-gutter-indicator]");
-      if (indicator && index >= 0 && totalBlocks) {
-        const gutterHeight = Math.max(0, rootElement.clientHeight - 65);
-        const markerTop = Number.isFinite(viewportTop)
-          ? Math.max(0, Math.min(viewportTop, Math.max(0, gutterHeight - 32)))
-          : (totalBlocks <= 1 ? 0 : (index / (totalBlocks - 1)) * Math.max(0, gutterHeight - 32));
-        indicator.style.top = `${markerTop}px`;
-        indicator.classList.add("is-active");
-      } else if (indicator) {
-        indicator.classList.remove("is-active");
-      }
       const target = contentElement.querySelector(`[data-block-id="${index}"]`);
       if (target) target.classList.add("is-scroll-active");
     }
@@ -473,6 +477,7 @@
       getContentElement,
       getScrollElement,
       getVisibleBlockIndex,
+      ensureBlockVisible,
       setActiveBlock,
       scrollToBlock,
       scrollToHeading,

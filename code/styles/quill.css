@@ -316,8 +316,6 @@
     }
 
     .pane-scroll-gutter-left { left: 0; }
-    .pane-scroll-gutter-right { right: 0; }
-
     .pane-scroll-gutter-indicator {
       position: absolute;
       top: 0;
