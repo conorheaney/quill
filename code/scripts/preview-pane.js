@@ -321,7 +321,11 @@
       const targetTop = target.offsetTop;
       const targetBottom = targetTop + target.offsetHeight;
 
-      if (targetBottom <= viewportTop || targetTop >= viewportBottom) {
+      const targetIsLargerThanViewport = target.offsetHeight > contentElement.clientHeight;
+      const targetIsOutsideViewport = targetBottom <= viewportTop || targetTop >= viewportBottom;
+      const targetIsPartiallyOutsideViewport = targetTop < viewportTop || targetBottom > viewportBottom;
+
+      if (targetIsOutsideViewport || (!targetIsLargerThanViewport && targetIsPartiallyOutsideViewport)) {
         contentElement.scrollTop = Math.max(0, targetTop - contentElement.clientHeight * 0.3);
       }
     }
