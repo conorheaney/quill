@@ -86,3 +86,6 @@ Run the packaged-candidate verification for TC-01 using a document with substant
 | 2026-08-16T17:04:59.9537665Z | Bug fix | At line starts, the marker now measures the first character's range on that line to avoid the browser resolving a collapsed boundary to the preceding line. |
 | 2026-08-16T17:09:53.5737508Z | Runtime verification | Reproduced a soft-wrapped continuation line with deterministic mouse and Home-key placement; the caret and blue gutter marker appeared on the same visual row. |
 | 2026-08-16T17:17:37.5459216Z | Bug fix | Added keyboard caret affinity so End and Left resolve shared visual-line boundaries to the preceding row, while Home and Right resolve them to the following row. |
+| 2026-08-16T21:50:02.8706526Z | Bug fix | Separator whitespace between Markdown blocks no longer maps to the final rendered block; the raw marker remains caret-driven and Render keeps its last valid block position. |
+| 2026-08-16T22:00:58.6432892Z | UX refinement | Separator whitespace now highlights the nearest rendered block above without changing Render scroll position, and both synchronization gutters are widened to 8px. |
+| 2026-08-16T22:07:29.4008717Z | UX refinement | Changed the synchronization gutter marker from rounded to rectangular ends. |

@@ -152,7 +152,11 @@
     function setActiveBlock(index, totalBlocks, viewportTop) {
       const indicator = rootElement.querySelector("[data-scroll-gutter-indicator]");
       if (!indicator || index < 0 || !totalBlocks) {
-        if (indicator) indicator.classList.remove("is-active");
+        if (Number.isFinite(viewportTop)) {
+          setCaretPosition(viewportTop);
+        } else if (indicator) {
+          indicator.classList.remove("is-active");
+        }
         return;
       }
 
@@ -164,6 +168,18 @@
       const markerTop = isCaretPosition
         ? Math.max(0, Math.min(viewportTop, Math.max(0, gutterHeight - markerHeight)))
         : (totalBlocks <= 1 ? 0 : (index / (totalBlocks - 1)) * Math.max(0, gutterHeight - markerHeight));
+      indicator.style.height = `${markerHeight}px`;
+      indicator.style.top = `${markerTop}px`;
+      indicator.classList.add("is-active");
+    }
+
+    function setCaretPosition(viewportTop) {
+      const indicator = rootElement.querySelector("[data-scroll-gutter-indicator]");
+      if (!indicator || !Number.isFinite(viewportTop)) return;
+
+      const gutterHeight = Math.max(0, rootElement.clientHeight - 65);
+      const markerHeight = parseFloat(window.getComputedStyle(inputElement).lineHeight) || 27;
+      const markerTop = Math.max(0, Math.min(viewportTop, Math.max(0, gutterHeight - markerHeight)));
       indicator.style.height = `${markerHeight}px`;
       indicator.style.top = `${markerTop}px`;
       indicator.classList.add("is-active");
@@ -281,6 +297,7 @@
       insertLink,
       setSelectionRange,
       setActiveBlock,
+      setCaretPosition,
       setValue,
       wrapSelection
     };

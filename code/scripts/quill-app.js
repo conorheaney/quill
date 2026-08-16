@@ -415,8 +415,7 @@ const { createDocumentController } = window.QuillDocumentController;
     const markdown = markdownPane.getValue();
     const editPosition = getMarkdownEditPosition(markdown, markdownPane.getCaretOffset());
     renderPreviewFromMarkdown(markdown);
-    updateActiveBlock(editPosition.index, editPosition.viewportTop);
-    scrollPreviewToBlock(editPosition.index, editPosition.viewportTop);
+    updateMarkdownCaretPosition(editPosition);
     markDirty(true);
     scheduleSave(showStatusToast);
   }
@@ -424,8 +423,7 @@ const { createDocumentController } = window.QuillDocumentController;
   function handleMarkdownCaretChange() {
     const markdown = markdownPane.getValue();
     const editPosition = getMarkdownEditPosition(markdown, markdownPane.getCaretOffset());
-    updateActiveBlock(editPosition.index, editPosition.viewportTop);
-    scrollPreviewToBlock(editPosition.index, editPosition.viewportTop);
+    updateMarkdownCaretPosition(editPosition);
   }
 
   function getBlockIndexAtOffset(markdown, offset) {
@@ -435,19 +433,29 @@ const { createDocumentController } = window.QuillDocumentController;
     const safeOffset = Math.max(0, Math.min(Number(offset) || 0, markdown.length));
     const containingIndex = ranges.findIndex((range) => safeOffset >= range.start && safeOffset <= range.end);
     if (containingIndex >= 0) return containingIndex;
-    if (safeOffset < ranges[0].start) return 0;
-    return ranges.length - 1;
+    return -1;
   }
 
   function getMarkdownEditPosition(markdown, offset) {
     const index = getBlockIndexAtOffset(markdown, offset);
     const markdownScrollElement = markdownPane.getScrollElement();
-    if (index < 0 || !markdownScrollElement) return { index, viewportTop: 0 };
+    if (!markdownScrollElement) return { index, viewportTop: 0 };
 
     return {
       index,
+      renderIndex: index >= 0 ? index : getPreviousBlockIndexAtOffset(markdown, offset),
       viewportTop: markdownPane.getCaretViewportTop()
     };
+  }
+
+  function getPreviousBlockIndexAtOffset(markdown, offset) {
+    const ranges = getMarkdownBlockRanges(markdown);
+    const safeOffset = Math.max(0, Math.min(Number(offset) || 0, markdown.length));
+    let previousIndex = -1;
+    ranges.forEach((range, index) => {
+      if (safeOffset > range.end) previousIndex = index;
+    });
+    return previousIndex;
   }
 
   function scrollPreviewToBlock(index, viewportTop) {
@@ -476,6 +484,17 @@ const { createDocumentController } = window.QuillDocumentController;
     const totalBlocks = getMarkdownBlockRanges(markdownPane.getValue()).length;
     markdownPane.setActiveBlock(index, totalBlocks, viewportTop);
     previewPane.setActiveBlock(index, totalBlocks, viewportTop);
+  }
+
+  function updateMarkdownCaretPosition(editPosition) {
+    const totalBlocks = getMarkdownBlockRanges(markdownPane.getValue()).length;
+    markdownPane.setActiveBlock(editPosition.index, totalBlocks, editPosition.viewportTop);
+    if (editPosition.index >= 0) {
+      previewPane.setActiveBlock(editPosition.index, totalBlocks, editPosition.viewportTop);
+      scrollPreviewToBlock(editPosition.index, editPosition.viewportTop);
+    } else {
+      previewPane.setActiveBlock(editPosition.renderIndex, totalBlocks);
+    }
   }
 
   function getBlockIndexForMarkdownScroll(markdown) {
