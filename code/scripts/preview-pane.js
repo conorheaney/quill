@@ -311,7 +311,7 @@
       contentElement.scrollTop = Math.max(0, target.offsetTop - targetTop);
     }
 
-    function ensureBlockVisible(index) {
+    function ensureBlockVisible(index, blockProgress) {
       const target = contentElement.querySelector(`[data-block-id="${index}"]`);
       if (!target) return;
 
@@ -319,14 +319,17 @@
       const viewportTop = contentElement.scrollTop;
       const viewportBottom = viewportTop + contentElement.clientHeight;
       const targetTop = target.offsetTop;
-      const targetBottom = targetTop + target.offsetHeight;
 
-      const targetIsLargerThanViewport = target.offsetHeight > contentElement.clientHeight;
-      const targetIsOutsideViewport = targetBottom <= viewportTop || targetTop >= viewportBottom;
-      const targetIsPartiallyOutsideViewport = targetTop < viewportTop || targetBottom > viewportBottom;
+      const progress = Number.isFinite(blockProgress)
+        ? Math.max(0, Math.min(1, blockProgress))
+        : 0;
+      const activePoint = targetTop + target.offsetHeight * progress;
+      const activePointMargin = Math.max(12, Math.min(32, contentElement.clientHeight * 0.08));
 
-      if (targetIsOutsideViewport || (!targetIsLargerThanViewport && targetIsPartiallyOutsideViewport)) {
-        contentElement.scrollTop = Math.max(0, targetTop - contentElement.clientHeight * 0.3);
+      if (activePoint < viewportTop + activePointMargin) {
+        contentElement.scrollTop = Math.max(0, activePoint - contentElement.clientHeight * 0.3);
+      } else if (activePoint > viewportBottom - activePointMargin) {
+        contentElement.scrollTop = Math.max(0, activePoint - contentElement.clientHeight * 0.7);
       }
     }
 

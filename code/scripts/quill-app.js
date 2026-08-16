@@ -437,14 +437,23 @@ const { createDocumentController } = window.QuillDocumentController;
   }
 
   function getMarkdownEditPosition(markdown, offset) {
-    const index = getBlockIndexAtOffset(markdown, offset);
+    const ranges = getMarkdownBlockRanges(markdown);
+    const safeOffset = Math.max(0, Math.min(Number(offset) || 0, markdown.length));
+    const index = getBlockIndexAtOffset(markdown, safeOffset);
     const markdownScrollElement = markdownPane.getScrollElement();
-    if (!markdownScrollElement) return { index, viewportTop: 0 };
+    if (!markdownScrollElement) return { index, viewportTop: 0, blockProgress: 0 };
+
+    const range = index >= 0 ? ranges[index] : null;
+    const blockLength = range ? Math.max(1, range.end - range.start) : 1;
+    const blockProgress = range
+      ? Math.max(0, Math.min(1, (safeOffset - range.start) / blockLength))
+      : 0;
 
     return {
       index,
       renderIndex: index >= 0 ? index : getPreviousBlockIndexAtOffset(markdown, offset),
-      viewportTop: markdownPane.getCaretViewportTop()
+      viewportTop: markdownPane.getCaretViewportTop(),
+      blockProgress
     };
   }
 
@@ -458,11 +467,11 @@ const { createDocumentController } = window.QuillDocumentController;
     return previousIndex;
   }
 
-  function ensurePreviewBlockVisible(index) {
+  function ensurePreviewBlockVisible(index, blockProgress) {
     if (index < 0) return;
     window.requestAnimationFrame(() => {
       shellState.isSyncingScroll = true;
-      previewPane.ensureBlockVisible(index);
+      previewPane.ensureBlockVisible(index, blockProgress);
       window.requestAnimationFrame(() => {
         shellState.isSyncingScroll = false;
       });
@@ -491,7 +500,7 @@ const { createDocumentController } = window.QuillDocumentController;
     markdownPane.setActiveBlock(editPosition.index, totalBlocks, editPosition.viewportTop);
     if (editPosition.index >= 0) {
       previewPane.setActiveBlock(editPosition.index, totalBlocks, editPosition.viewportTop);
-      ensurePreviewBlockVisible(editPosition.index);
+      ensurePreviewBlockVisible(editPosition.index, editPosition.blockProgress);
     } else {
       previewPane.setActiveBlock(editPosition.renderIndex, totalBlocks);
     }
