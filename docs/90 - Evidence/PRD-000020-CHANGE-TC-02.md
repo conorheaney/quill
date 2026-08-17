@@ -9,7 +9,19 @@
 | Recorded | 2026-07-25T16:16:25.6889074Z |
 | Completed | 2026-07-25T16:19:29.8555999Z |
 | Test | Load a Markdown file, then cancel a second load without changing the document. |
-| Result | Passed: the selected file opened and rendered; cancelling another selection left the loaded file and content unchanged. |
+| Result | PASS |
+
+## Preconditions
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Steps to Reproduce
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Expected Results
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
 
 ## Evidence
 

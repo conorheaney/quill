@@ -7,8 +7,8 @@
 | Product Version | 1.0.13 |
 | Status | complete |
 | Recorded | 2026-08-15T11:43:12.6674792Z |
-| Test | PASS: Verified the root test structure, canonical Node-and-Rust `npm test` command, and controlled failure signals for both automated layers. |
-| Result | Passed. The test-asset inventory remained under root `tests/`; the clean suite passed with exit code `0`; controlled Node and Rust failures produced their expected messages and exit codes `1` and `101`; and the seed variable was cleared. |
+| Test | Verified the root test structure, canonical Node-and-Rust `npm test` command, and controlled error signals for both automated layers. |
+| Result | PASS |
 
 ## Preconditions
 

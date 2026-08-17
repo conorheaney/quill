@@ -7,8 +7,8 @@
 | Product Version | 1.0.13 |
 | Status | complete |
 | Recorded | 2026-08-15T11:57:29.1822323Z |
-| Test | PASS: Exercise the supported and unsupported Markdown corpus fixtures and verify byte stability outside the one explicitly edited block range. |
-| Result | All four source-preservation assertions passed with 0 failures and exit code `0` under the documented non-isolated Node fallback. The initial isolated run was blocked before assertion execution by the managed sandbox with `spawn EPERM`. |
+| Test | Exercise the supported and unsupported Markdown corpus fixtures and verify byte stability outside the one explicitly edited block range. |
+| Result | PASS |
 
 ## Preconditions
 

@@ -46,7 +46,7 @@ $utcTimestampPattern = '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z$'
 # These values identify unfilled templates. The pattern is intentionally used
 # for evidence metadata, not arbitrary PRD prose, so historical wording does
 # not create excessive false positives.
-$placeholderPattern = '(?i)^(?:pending|open|x\.y\.z|abc1234|tbd|not yet recorded|observed outcome\.?|human-readable|describe |list the |pass/fail:)'
+$placeholderPattern = '(?i)^(?:pending|open|x\.y\.z|abc1234|tbd|not yet recorded|observed outcome\.?|human-readable|describe |list the )'
 $statusPhaseMap = Get-Content -LiteralPath $statusMapPath -Raw | ConvertFrom-Json
 $phaseDirectories = @("05 - Backlog", "10 - Plan", "15 - Implement", "20 - Test", "25 - Closed")
 $phaseByDirectory = @{}
@@ -224,6 +224,14 @@ function Test-EvidenceRecord([System.IO.FileInfo]$file, [string]$expectedProduct
         }
     }
     if ($metadata.ContainsKey("Product Version") -and (Test-PlaceholderValue $metadata["Product Version"])) { Add-Error "$($file.Name) has placeholder Product Version" }
+    if ($metadata.ContainsKey("Result") -and $metadata["Result"] -notmatch '^(PASS|FAIL)$') {
+        $message = "$($file.Name) Result must be exactly PASS or FAIL"
+        if ($strict) { Add-Error $message } else { Add-Warning $message }
+    }
+    if ($metadata.ContainsKey("Test") -and $metadata["Test"] -match '(?i)\bpass\b|\bfail\b') {
+        $message = "$($file.Name) Test must contain only the description and no pass/fail wording"
+        if ($strict) { Add-Error $message } else { Add-Warning $message }
+    }
     if ($metadata.ContainsKey("Recorded")) { Test-ValidTimestamp $metadata["Recorded"] "$($file.Name) Recorded" | Out-Null }
     if ($expectedProductVersion -and $metadata.ContainsKey("Product Version") -and $metadata["Product Version"] -ne $expectedProductVersion) { Add-Error "$($file.Name) product version does not match verification row: $($metadata["Product Version"]) / $expectedProductVersion" }
     if ($expectedTestCase -and $metadata.ContainsKey("PRD") -and $metadata["PRD"] -notmatch [regex]::Escape($expectedTestCase)) { Add-Error "$($file.Name) does not identify expected test case: $expectedTestCase" }

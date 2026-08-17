@@ -8,7 +8,19 @@
 | Status | complete |
 | Recorded | 2026-07-25T16:43:57.2707610Z |
 | Test | Save an edit as a new file, then reopen the original and confirm it is unchanged. |
-| Result | Passed: the new file retained the edit and the reopened original retained its original content. |
+| Result | PASS |
+
+## Preconditions
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Steps to Reproduce
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Expected Results
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
 
 ## Evidence
 

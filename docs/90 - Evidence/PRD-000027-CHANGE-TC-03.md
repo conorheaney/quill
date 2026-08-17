@@ -7,8 +7,8 @@
 | Product Version | 1.0.14 |
 | Status | complete |
 | Recorded | 2026-08-16T04:14:02.7560991Z |
-| Test | PASS: Verify that the longer Quill document remains unchanged while an external-change prompt is pending. |
-| Result | The external editor showed the file edited with the content below the first lines removed. Quill continued to display the longer document, including the three Lorem Ipsum paragraphs, beneath the external-change prompt; the Quill content remained unchanged while the prompt awaited a decision. |
+| Test | Verify that the longer Quill document remains unchanged while an external-change prompt is pending. |
+| Result | PASS |
 
 ## Preconditions
 

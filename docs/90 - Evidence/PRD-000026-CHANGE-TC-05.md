@@ -2,13 +2,13 @@
 
 | Field | Detail |
 | --- | --- |
-| PRD | [PRD-000026-CHANGE](../../docs/20%20-%20Test/PRD-000026-CHANGE.md) |
+| PRD | [PRD-000026-CHANGE](../../docs/25%20-%20Closed/PRD-000026-CHANGE.md) |
 | Acceptance Criteria | AC-05 |
 | Product Version | 1.0.12 |
 | Status | complete |
 | Recorded | 2026-08-08T18:44:46.1608400Z |
-| Test | PASS/FAIL: Verify that the Recent Files action opens the containing folder and selects the requested file, with clear feedback when the operation succeeds or fails. |
-| Result | PASS - For the existing-file scenario: the Recent Files reveal action opened the containing `docs/20 - Test` folder and selected `PRD-000026-CHANGE.md`, without replacing the document in the editor. Additional observation for the temporarily renamed-file scenario: Explorer opened at the Desktop when the original file path no longer resolved. |
+| Test | Verify that the Recent Files action opens the containing folder and selects the requested file, with clear feedback when the operation succeeds or fails. |
+| Result | PASS |
 
 ## Preconditions
 

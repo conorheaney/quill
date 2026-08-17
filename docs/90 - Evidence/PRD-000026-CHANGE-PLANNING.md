@@ -35,7 +35,7 @@ Concise record of the planning rounds for `PRD-000026-CHANGE — Improve Recent 
 
 ## Source
 
-The decisions above were made interactively with the user during the Plan phase and are reflected in [PRD-000026-CHANGE](../10%20-%20Plan/PRD-000026-CHANGE.md).
+The decisions above were made interactively with the user during the Plan phase and are reflected in [PRD-000026-CHANGE](../25%20-%20Closed/PRD-000026-CHANGE.md).
 
 ## Recorded
 

@@ -7,8 +7,8 @@
 | Product Version | 1.0.14 |
 | Status | complete |
 | Recorded | 2026-08-15T23:41:16.3937191Z |
-| Test | PASS: Modify the open file externally while Quill is unfocused, regain focus, and verify that Quill detects the change before replacing or saving content. |
-| Result | Quill detected the external edit on focus return, displayed the external-change prompt, and reloaded the externally added line after the reload choice. |
+| Test | Modify the open file externally while Quill is unfocused, regain focus, and verify that Quill detects the change before replacing or saving content. |
+| Result | PASS |
 
 ## Preconditions
 

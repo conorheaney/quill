@@ -7,8 +7,8 @@
 | Product Version | 1.0.13 |
 | Status | complete |
 | Recorded | 2026-08-15T11:51:45.7153004Z |
-| Test | PASS: Run the table-driven Markdown suites and verify parsing, rendering, URL sanitization, table handling, block conversion, and serialization results. |
-| Result | All 20 Markdown assertions passed with 0 failures and exit code 0 under the documented non-isolated Node fallback. The initial isolated run was blocked before assertion execution by the managed sandbox with `spawn EPERM`. |
+| Test | Run the table-driven Markdown suites and verify parsing, rendering, URL sanitization, table handling, block conversion, and serialization results. |
+| Result | PASS |
 
 ## Preconditions
 

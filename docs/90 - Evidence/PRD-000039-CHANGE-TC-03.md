@@ -7,8 +7,8 @@
 | Product Version | 1.0.15 |
 | Status | complete |
 | Recorded | 2026-08-17T19:49:23.5482227Z |
-| Test | PASS: Edit both panes and check that synchronization is stable and one-way. |
-| Result | The active pane remains under user control while the inactive pane follows the matching content without visible proportional mirroring, feedback, oscillation, or interference. |
+| Test | Edit both panes and check that synchronization is stable and one-way. |
+| Result | PASS |
 
 ## Preconditions
 

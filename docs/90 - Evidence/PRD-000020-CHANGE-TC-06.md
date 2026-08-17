@@ -9,7 +9,19 @@
 | Recorded | 2026-07-25T22:48:45.7714549Z |
 | Completed | 2026-07-25T23:18:13.2663330Z |
 | Test | Verify core editor behavior still works. |
-| Result | Passed: New, themes, editing, dirty state, preview, outline, confirmation, version display, and inline images worked. |
+| Result | PASS |
+
+## Preconditions
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Steps to Reproduce
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Expected Results
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
 
 ## Evidence
 

@@ -7,8 +7,8 @@
 | Product Version | 1.0.13 |
 | Status | complete |
 | Recorded | 2026-08-15T12:15:45.0752884Z |
-| Test | PASS: Verify the human UI regression checklist defines reproducible preconditions, steps, and expected results for the critical application workflows while remaining outside `npm test` and explicitly deferring automated UI testing. |
-| Result | The checklist contains global preconditions, an execution-record scaffold, and eight scenarios covering packaged startup, Load, Save, Save As, dirty-document prompts, Render-pane inline editing, byte-exact source preservation, and missing desktop-bridge behavior. Every scenario defines numbered steps and observable expected results; `tests/README.md` and `package.json` confirm the manual suite is outside `npm test`; and the checklist explicitly defers automated browser, packaged-Tauri UI, and visual-regression testing. |
+| Test | Verify the human UI regression checklist defines reproducible preconditions, steps, and expected results for the critical application workflows while remaining outside `npm test` and explicitly deferring automated UI testing. |
+| Result | PASS |
 
 ## Preconditions
 

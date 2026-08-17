@@ -8,7 +8,19 @@
 | Status | complete |
 | Recorded | 2026-08-06T00:14:05.9469118Z |
 | Test | Run Quill in light and dark themes at a representative desktop window size, then inspect the two-column Markdown and Render state, Render-only state, Recent Files UI, and inline Markdown editing state. |
-| Result | Pass. The combined screenshots show Quill version 1.0.6 in both light and dark visual states, with Show Markdown disabled for Render-only mode, Show Markdown enabled for the two-column Markdown and Render mode, Recent Files visible in Render-only mode, and the Markdown formatting toolbar plus inline editing enabled in the editor state. Dialog checks are outside this item’s theme-controlled surfaces, and multiple window sizes are not required by the refined test scope. `TC-02` is complete. |
+| Result | PASS |
+
+## Preconditions
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Steps to Reproduce
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Expected Results
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
 
 ## Evidence
 

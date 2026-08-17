@@ -25,6 +25,7 @@ New and actively maintained PRDs use these headings in this order:
 - `Audit` is a Markdown table containing other timestamped operational records.
 - `Verification` contains a Markdown test-case tracking table with the columns `Test Case`, `Criteria`, `Product Version`, `Status`, `Description`, and `Evidence`.
 - New evidence records copied from `.agents/lifecyle-agent/prd-testcase.md` contain `Preconditions`, `Steps to Reproduce`, and `Expected Results` in that order between the metadata table and the `Evidence` section.
+- Evidence metadata keeps `Test` as the description only, without pass/fail wording, and `Result` as exactly `PASS` or `FAIL`.
 - Workflow timestamps use `yyyy-MM-ddTHH:mm:ss.fffffffZ` in UTC.
 
 ## Validation ownership

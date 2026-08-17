@@ -8,7 +8,19 @@
 | Status | complete |
 | Recorded | 2026-07-25T22:37:40.9458018Z |
 | Test | Open Quill outside Tauri and verify file actions are unavailable without a browser fallback. |
-| Result | Passed: file controls were disabled, the desktop-runtime message appeared, and the mocked smoke check confirmed no fallback. |
+| Result | PASS |
+
+## Preconditions
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Steps to Reproduce
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Expected Results
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
 
 ## Evidence
 

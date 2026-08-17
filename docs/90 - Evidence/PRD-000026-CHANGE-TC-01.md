@@ -2,13 +2,13 @@
 
 | Field | Detail |
 | --- | --- |
-| PRD | [PRD-000026-CHANGE](../../docs/20%20-%20Test/PRD-000026-CHANGE.md) |
+| PRD | [PRD-000026-CHANGE](../../docs/25%20-%20Closed/PRD-000026-CHANGE.md) |
 | Acceptance Criteria | AC-01 |
 | Product Version | 1.0.12 |
 | Status | complete |
 | Recorded | 2026-08-08T17:00:36.5774321Z |
-| Test | PASS/FAIL: Select a recent-file entry that cannot be reopened and verify the failure message and explicit removal-preservation confirmation flow. |
-| Result | PASS: The supplied evidence shows the failed-reopen dialog for `PRD-000026-CHANGE.md`, then shows that the entry is absent from Recent Files after `REMOVE` is clicked. |
+| Test | Select a recent-file entry that cannot be reopened and verify the error message and explicit removal-preservation confirmation flow. |
+| Result | PASS |
 
 ## Preconditions
 

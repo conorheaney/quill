@@ -7,8 +7,8 @@
 | Product Version | 1.0.13 |
 | Status | complete |
 | Recorded | 2026-08-15T12:56:44.4555135Z |
-| Test | PASS: Review the risk matrix, verify that each priority-5 regression contract has an explicit owner, activation point, and actionable failure signal, and demonstrate the controlled Node and Rust failure paths. |
-| Result | All three priority-5 handoffs were complete and guarded by an automated matrix test. The managed sandbox blocked canonical Node worker creation with `spawn EPERM`; the documented fallback passed all 44 Node and 7 Rust tests, while the controlled Node and Rust failures emitted the expected messages and exited `1` and `101`. |
+| Test | Review the risk matrix, verify that each priority-5 regression contract has an explicit owner, activation point, and actionable error signal, and demonstrate the controlled Node and Rust error paths. |
+| Result | PASS |
 
 ## Preconditions
 

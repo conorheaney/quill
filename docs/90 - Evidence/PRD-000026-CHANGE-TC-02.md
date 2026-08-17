@@ -1,14 +1,14 @@
-﻿# TC-02 Evidence
+# TC-02 Evidence
 
 | Field | Detail |
 | --- | --- |
-| PRD | [PRD-000026-CHANGE](../../docs/20%20-%20Test/PRD-000026-CHANGE.md) |
+| PRD | [PRD-000026-CHANGE](../../docs/25%20-%20Closed/PRD-000026-CHANGE.md) |
 | Acceptance Criteria | AC-02 |
 | Product Version | 1.0.12 |
 | Status | complete |
 | Recorded | 2026-08-08T18:12:11.6246656Z |
-| Test | PASS/FAIL: Open, switch, and revisit recent files to verify most-recent-first ordering, duplicate handling, and the current-entry indication. |
-| Result | PASS: The supplied screenshots show `TC-02` as the current recent file at the top of the list, followed by the `TC-01` entries. After switching, `TC-01` is shown as the current top entry and `TC-02` follows it, demonstrating most-recent-first ordering and correct current-entry indication. |
+| Test | Open, switch, and revisit recent files to verify most-recent-first ordering, duplicate handling, and the current-entry indication. |
+| Result | PASS |
 
 ## Preconditions
 

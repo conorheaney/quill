@@ -8,7 +8,19 @@
 | Status | complete |
 | Recorded | 2026-08-06T00:19:29.7575566Z |
 | Test | Switch between the named light and dark themes and inspect the preserved Render-only layout and supported visual states. |
-| Result | Pass. The screenshots show the same Render-only layout, Acceptance Criteria content, Test Cases table, and inline editing control in both themes, with intentional light/dark color differences. `TC-03` is complete. |
+| Result | PASS |
+
+## Preconditions
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Steps to Reproduce
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Expected Results
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
 
 ## Evidence
 

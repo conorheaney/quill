@@ -2,7 +2,7 @@
 
 | Field | Detail |
 | --- | --- |
-| PRD | [PRD-000039-CHANGE](../../docs/15%20-%20Implement/PRD-000039-CHANGE.md) |
+| PRD | [PRD-000039-CHANGE](../../docs/25%20-%20Closed/PRD-000039-CHANGE.md) |
 | Analysis Type | Current functionality description |
 | Recorded | 2026-08-16T13:48:17.3808296Z |
 | Source | Static analysis of the current Markdown and Render pane implementation |

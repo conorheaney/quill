@@ -7,8 +7,8 @@
 | Product Version | 1.0.13 |
 | Status | complete |
 | Recorded | 2026-08-15T12:19:14.9893178Z |
-| Test | PASS: Run Rust helper and command tests against isolated temporary files, including successful, unusual-path, empty-path, missing-path, and I/O-failure cases. |
-| Result | All 6 Rust helper and desktop-command contract tests passed with 0 failures; the Rust harness also passed, and `npm run test:rust` exited with code `0`. |
+| Test | Run Rust helper and command tests against isolated temporary files, including successful, unusual-path, empty-path, missing-path, and I/O-error cases. |
+| Result | PASS |
 
 ## Preconditions
 

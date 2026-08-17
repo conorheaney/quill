@@ -7,8 +7,8 @@
 | Product Version | 1.0.14 |
 | Status | complete |
 | Recorded | 2026-08-16T10:04:03.7562972Z |
-| Test | PASS/FAIL: Verify that an unchanged file and a successful Quill-originated save do not produce an external-change prompt when Quill regains focus. |
-| Result | PASS: Quill lost focus and regained focus without displaying an external-change prompt. Part 2 also shows content modified in Quill, saved successfully, and still present after focus returned with no message shown. |
+| Test | Verify that an unchanged file and a successful Quill-originated save do not produce an external-change prompt when Quill regains focus. |
+| Result | PASS |
 
 ## Preconditions
 

@@ -7,8 +7,8 @@
 | Product Version | 1.0.15 |
 | Status | complete |
 | Recorded | 2026-08-17T19:28:55.4079995Z |
-| Test | PASS: Verify that editing raw Markdown preserves the raw Markdown pane's native scroll position while repositioning only the Render pane to the corresponding content. |
-| Result | The supplied screenshot records the packaged Quill `1.0.15` candidate with the TC-01 evidence document open simultaneously in the Markdown and Render panes. |
+| Test | Verify that editing raw Markdown preserves the raw Markdown pane's native scroll position while repositioning only the Render pane to the corresponding content. |
+| Result | PASS |
 
 ## Preconditions
 

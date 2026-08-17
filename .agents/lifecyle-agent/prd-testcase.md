@@ -7,8 +7,8 @@
 | Product Version | x.y.z |
 | Status | complete |
 | Recorded | yyyy-MM-ddTHH:mm:ss.fffffffZ |
-| Test | PASS/FAIL: Human-readable test description. |
-| Result | Observed outcome. |
+| Test | Human-readable test description only. |
+| Result | PASS or FAIL only. |
 
 ## Preconditions
 

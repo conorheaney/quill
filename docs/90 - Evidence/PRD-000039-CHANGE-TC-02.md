@@ -7,8 +7,8 @@
 | Product Version | 1.0.15 |
 | Status | complete |
 | Recorded | 2026-08-17T19:32:25.2173510Z |
-| Test | PASS: Verify that editing the Render pane preserves its native scroll position while repositioning only the raw Markdown pane to the corresponding content. |
-| Result | The supplied execution screenshot shows the Render-pane edit reflected in the raw Markdown pane as `(It changed)`. The active Render pane remains in its captured position while the corresponding raw Markdown content is visible. |
+| Test | Verify that editing the Render pane preserves its native scroll position while repositioning only the raw Markdown pane to the corresponding content. |
+| Result | PASS |
 
 ## Preconditions
 

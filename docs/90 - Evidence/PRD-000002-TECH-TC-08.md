@@ -7,8 +7,8 @@
 | Product Version | 1.0.13 |
 | Status | complete |
 | Recorded | 2026-08-15T12:22:18.7464941Z |
-| Test | PASS: Run the automated suite from a clean local state and verify it needs no network, browser, real dialogs, user data, fixed sleeps, prior results, or hosted-CI environment. |
-| Result | The managed sandbox blocked the canonical Node worker processes with `spawn EPERM`, but the documented non-isolated execution passed all 44 identical Node assertions and the unchanged Rust command passed all 7 tests, each with exit `0`; the determinism contracts and risk matrix confirmed the required runtime independence. |
+| Test | Run the automated suite from a clean local state and verify it needs no network, browser, real dialogs, user data, fixed sleeps, prior results, or hosted-CI environment. |
+| Result | PASS |
 
 ## Preconditions
 

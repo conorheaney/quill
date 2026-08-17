@@ -7,8 +7,8 @@
 | Product Version | 1.0.14 |
 | Status | complete |
 | Recorded | 2026-08-16T03:59:01.0123584Z |
-| Test | PASS/FAIL: Exercise the `KEEP QUILL VERSION` action and verify that it preserves the current Quill version. |
-| Result | PASS: After selecting `KEEP QUILL VERSION`, the Quill document retained the Quill-side text and the dirty indicator remained present. |
+| Test | Exercise the `KEEP QUILL VERSION` action and verify that it preserves the current Quill version. |
+| Result | PASS |
 
 ## Preconditions
 

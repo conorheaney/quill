@@ -1,14 +1,14 @@
-﻿# TC-03 Evidence
+# TC-03 Evidence
 
 | Field | Detail |
 | --- | --- |
-| PRD | [PRD-000026-CHANGE](../../docs/20%20-%20Test/PRD-000026-CHANGE.md) |
+| PRD | [PRD-000026-CHANGE](../../docs/25%20-%20Closed/PRD-000026-CHANGE.md) |
 | Acceptance Criteria | AC-03 |
 | Product Version | 1.0.12 |
 | Status | complete |
 | Recorded | 2026-08-08T18:14:21.4362218Z |
-| Test | PASS/FAIL: Verify the Recent Files action cluster is visible within each file item and right-aligned, the overlaid Remove control works without opening the file, and the current file does not expose Remove. |
-| Result | PASS: The action line is functionally correct and right-aligned within the file item. The Remove control works without opening the file, and the current file does not expose Remove. The action line is not on the same line as the file entry; AC-03 was clarified to accept this layout. |
+| Test | Verify the Recent Files action cluster is visible within each file item and right-aligned, the overlaid Remove control works without opening the file, and the current file does not expose Remove. |
+| Result | PASS |
 
 ## Preconditions
 

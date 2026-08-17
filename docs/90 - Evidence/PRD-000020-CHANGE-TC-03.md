@@ -8,7 +8,19 @@
 | Status | complete |
 | Recorded | 2026-07-25T16:27:21.2493878Z |
 | Test | Edit and save a loaded file; confirm the edit is retained and the dirty state clears. |
-| Result | Passed: editing added `*` to the filename and highlighted Save; saving retained the edit and cleared both indicators. |
+| Result | PASS |
+
+## Preconditions
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Steps to Reproduce
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Expected Results
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
 
 ## Evidence
 

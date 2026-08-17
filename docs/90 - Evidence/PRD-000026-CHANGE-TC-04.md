@@ -1,14 +1,14 @@
-﻿# TC-04 Evidence
+# TC-04 Evidence
 
 | Field | Detail |
 | --- | --- |
-| PRD | [PRD-000026-CHANGE](../../docs/20%20-%20Test/PRD-000026-CHANGE.md) |
+| PRD | [PRD-000026-CHANGE](../../docs/25%20-%20Closed/PRD-000026-CHANGE.md) |
 | Acceptance Criteria | AC-04 |
 | Product Version | 1.0.12 |
 | Status | complete |
 | Recorded | 2026-08-08T18:35:39.6921079Z |
-| Test | PASS/FAIL: Copy a recent file's full path to the clipboard and verify concise success or failure toast feedback. |
-| Result | PASS: Quill displayed the `Path copied` toast after the Copy Path action, and the pasted value matched the full path of `PRD-000026-CHANGE.md`. |
+| Test | Copy a recent file's full path to the clipboard and verify concise success or error toast feedback. |
+| Result | PASS |
 
 ## Preconditions
 

@@ -7,8 +7,8 @@
 | Product Version | 1.0.13 |
 | Status | complete |
 | Recorded | 2026-08-15T12:03:01.8108082Z |
-| Test | PASS: Use deferred fake writes and revision-aware draft storage to verify latest-edit-wins behavior across newer edits, out-of-order completion, failures, cancellation, path changes, document changes, and recovery. |
-| Result | All 10 persistence assertions passed with 0 failures and exit code `0` under the documented non-isolated Node fallback. The initial isolated run was blocked before assertion execution by the managed sandbox with `spawn EPERM`. |
+| Test | Use deferred fake writes and revision-aware draft storage to verify latest-edit-wins behavior across newer edits, out-of-order completion, errors, cancellation, path changes, document changes, and recovery. |
+| Result | PASS |
 
 ## Preconditions
 

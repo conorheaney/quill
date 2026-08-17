@@ -8,7 +8,19 @@
 | Status | complete |
 | Recorded | 2026-07-25T22:33:00.5828441Z |
 | Test | Open Markdown containing relative image references beside the document. |
-| Result | Passed: the referenced images rendered inline in Quill. |
+| Result | PASS |
+
+## Preconditions
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Steps to Reproduce
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Expected Results
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
 
 ## Evidence
 

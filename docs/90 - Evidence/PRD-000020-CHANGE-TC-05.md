@@ -9,7 +9,19 @@
 | Recorded | 2026-07-25T22:19:03.3110614Z |
 | Completed | 2026-07-25T22:27:36.6488922Z |
 | Test | Open more than ten files; verify the Recent limit, valid reopening, and missing-file handling. |
-| Result | Passed: Recent retained ten files, reopened a valid entry, and marked a renamed file unavailable without disrupting the current document. |
+| Result | PASS |
+
+## Preconditions
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Steps to Reproduce
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
+
+## Expected Results
+
+> Legacy evidence record: this section was added to preserve the current evidence structure; no new test execution is implied.
 
 ## Evidence
 
