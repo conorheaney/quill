@@ -52,7 +52,7 @@ Implement the first pass around edit-driven one-way synchronization. Identify th
 
 ## Next Step
 
-Run the packaged-candidate verification for TC-01 using a document with substantial source-to-render height differences, then record the result and evidence.
+Run the packaged-candidate verification for TC-01 using a document with substantial source-to-render height differences, then record the result and evidence. The committed `1.0.15` candidate is ready for explicit `prd-promote` validation.
 
 ## History
 
@@ -89,3 +89,6 @@ Run the packaged-candidate verification for TC-01 using a document with substant
 | 2026-08-16T21:50:02.8706526Z | Bug fix | Separator whitespace between Markdown blocks no longer maps to the final rendered block; the raw marker remains caret-driven and Render keeps its last valid block position. |
 | 2026-08-16T22:00:58.6432892Z | UX refinement | Separator whitespace now highlights the nearest rendered block above without changing Render scroll position, and both synchronization gutters are widened to 8px. |
 | 2026-08-16T22:07:29.4008717Z | UX refinement | Changed the synchronization gutter marker from rounded to rectangular ends. |
+| 2026-08-16T22:45:00.8418810Z | UX refinement | Removed the Render pane gutter while retaining the raw Markdown gutter and Render block highlighting. |
+| 2026-08-16T23:06:35.7538398Z | UX refinement | Raw edit synchronization now keeps large rendered blocks stable while the caret moves within them, scrolling only when the corresponding block is outside the Render viewport. |
+| 2026-08-17T19:05:59.3031412Z | Candidate preparation | Created product candidate `1.0.15`; release build and NSIS installer succeeded, root `quill.exe` was synchronized with `src-tauri/target/release/quill-tauri.exe`, and both executables matched SHA-256 `A22DA09FE06D3245520BE11326C87B12451FC246EFF7A757636B428041666F6D`. Static JavaScript and diff checks passed. |
