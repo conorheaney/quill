@@ -1,4 +1,4 @@
-﻿# PRD-000021-TECH
+# PRD-000021-TECH
 
 ## Short Name
 

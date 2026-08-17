@@ -1,4 +1,4 @@
-﻿# PRD-000023-CHANGE
+# PRD-000023-CHANGE
 
 ## Short Name
 
