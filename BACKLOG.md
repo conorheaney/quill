@@ -30,12 +30,12 @@
 | PRD-000036-TECH   | TECH   | Refresh Rendering After Save As             | Proposed | Backlog | Address `REV-011` by making file-path changes invalidate and rerender path-dependent assets immediately.                                                                                          |
 | PRD-000037-TECH   | TECH   | Add Bootstrap Failure Boundary              | Proposed | Backlog | Address `REV-012` by showing an actionable fatal-startup state when packaged initialization fails.                                                                                               |
 | PRD-000038-TECH   | TECH   | Make Recent-File Hydration Deterministic    | Proposed | Backlog | Address `REV-013` by preventing early recent-file activity from discarding persisted entries during hydration races.                                                                             |
-| PRD-000040-UI     | UI     | Replace Tauri Chrome With HTML Title Bar      | Proposed | Backlog | Replace the current Tauri window chrome with a slightly taller HTML title bar containing the current title plus minimize, restore, and close controls.                                      |
 
 ## In Progress
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000040-UI | UI | Replace Tauri Chrome With HTML Title Bar | In Progress | Implement | Replace the current Tauri window chrome with a slightly taller HTML title bar containing the current title plus minimize, restore, and close controls. |
 
 ## Done
 
