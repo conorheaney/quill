@@ -61,6 +61,7 @@ Run the packaged-candidate verification for TC-01 using a document with substant
 | 2026-08-16T13:09:34.1201183Z | Backlog |
 | 2026-08-16T13:49:43.5505913Z | Plan |
 | 2026-08-16T14:03:24.5629410Z | Implement |
+| 2026-08-17T19:11:10.8049866Z | Test |
 
 ## Audit
 
@@ -92,3 +93,4 @@ Run the packaged-candidate verification for TC-01 using a document with substant
 | 2026-08-16T22:45:00.8418810Z | UX refinement | Removed the Render pane gutter while retaining the raw Markdown gutter and Render block highlighting. |
 | 2026-08-16T23:06:35.7538398Z | UX refinement | Raw edit synchronization now keeps large rendered blocks stable while the caret moves within them, scrolling only when the corresponding block is outside the Render viewport. |
 | 2026-08-17T19:05:59.3031412Z | Candidate preparation | Created product candidate `1.0.15`; release build and NSIS installer succeeded, root `quill.exe` was synchronized with `src-tauri/target/release/quill-tauri.exe`, and both executables matched SHA-256 `A22DA09FE06D3245520BE11326C87B12451FC246EFF7A757636B428041666F6D`. Static JavaScript and diff checks passed. |
+| 2026-08-17T19:11:10.8049866Z | Promotion | Promoted from Implement to Test after the committed and pushed `1.0.15` candidate, PRD gate checks, and workflow alignment validation passed. |

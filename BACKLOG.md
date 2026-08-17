@@ -35,7 +35,7 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
-| PRD-000039-CHANGE | CHANGE | Synchronize Markdown And Render Scrolling | In Progress | Implement | Synchronize edit-driven and manual pane navigation while showing the corresponding current block in both panes. |
+| PRD-000039-CHANGE | CHANGE | Synchronize Markdown And Render Scrolling | In Progress | Test | Synchronize edit-driven and manual pane navigation while showing the corresponding current block in both panes. |
 
 ## Done
 
