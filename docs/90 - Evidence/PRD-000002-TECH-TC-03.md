@@ -1,11 +1,10 @@
-# TC-03 Evidence
+﻿# TC-03 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000002-TECH](../../docs/25%20-%20Closed/PRD-000002-TECH.md) |
 | Acceptance Criteria | AC-03 |
 | Product Version | 1.0.13 |
-| Git Commit | af9df91f1de93a23523a460c3b87f5f665276d6e |
 | Status | complete |
 | Recorded | 2026-08-15T11:57:29.1822323Z |
 | Test | PASS: Exercise the supported and unsupported Markdown corpus fixtures and verify byte stability outside the one explicitly edited block range. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Use the repository state for product version `1.0.13` at Git commit `af9df91f1de93a23523a460c3b87f5f665276d6e`.
+- Use the repository state for product version `1.0.13`.
 - Run from the repository root with Node.js and the project dependencies available.
 - Ensure `QUILL_TEST_SEED_FAILURE` is unset.
 - Keep the source and expected fixture pairs under `tests/fixtures/markdown/source-preservation/` unchanged before execution.
@@ -35,9 +34,10 @@ All four source-preservation tests pass with exit code `0`. Both corpus fixtures
 
 | Check | Result |
 | --- | --- |
-| Candidate | Version `1.0.13`; commit `af9df91f1de93a23523a460c3b87f5f665276d6e`; seed variable unset |
+| Candidate | Version `1.0.13`;; seed variable unset |
 | Isolated command | `node --test tests/node/markdown-source-preservation.test.js` blocked by sandbox `spawn EPERM`; 0 assertions executed |
 | Executed fallback | `node --test --test-isolation=none tests/node/markdown-source-preservation.test.js` |
 | Outcome | 4 passed; 0 failed; exit `0`; duration `22.305 ms` |
 | Coverage | Editing one section leaves everything before and after it completely unchanged, including unusual or complex Markdown formatting. |
 | Sources | [Test suite](../../tests/node/markdown-source-preservation.test.js); [byte-range assertions](../../tests/node/helpers/source-preservation.js) |
+

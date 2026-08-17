@@ -5,7 +5,6 @@
 | PRD | [PRD-000027-CHANGE](../../docs/25%20-%20Closed/PRD-000027-CHANGE.md) |
 | Acceptance Criteria | AC-03 |
 | Product Version | 1.0.14 |
-| Git Commit | 502d505bc8db8141f6cd1bd7267f48b0d80ad85a |
 | Status | complete |
 | Recorded | 2026-08-16T04:14:02.7560991Z |
 | Test | PASS: Verify that the longer Quill document remains unchanged while an external-change prompt is pending. |
@@ -33,12 +32,12 @@ The external-change prompt appears, and Quill does not reload or discard its cur
 
 - Initial longer fixture displayed in Quill:
 
-  ![TC-03 initial longer fixture](PRD-000027-CHANGE-TC-03-01.png)
+ ![TC-03 initial longer fixture](PRD-000027-CHANGE-TC-03-01.png)
 
 - External editor after the file was edited:
 
-  ![TC-03 external file edit](PRD-000027-CHANGE-TC-03-02.png)
+ ![TC-03 external file edit](PRD-000027-CHANGE-TC-03-02.png)
 
 - Quill conflict prompt with the longer document still visible underneath:
 
-  ![TC-03 pending conflict prompt](PRD-000027-CHANGE-TC-03-03.png)
+ ![TC-03 pending conflict prompt](PRD-000027-CHANGE-TC-03-03.png)

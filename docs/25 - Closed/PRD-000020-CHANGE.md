@@ -52,14 +52,14 @@ Manual desktop cases:
 
 | Test Case Number | Acceptance Criteria | Product Version | Test Case Description | Test Case Status | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| TC-01 | AC-01 | 1.0.4 | Run `npm run tauri:dev`; confirm Quill opens and Load, Save, Save As, and Recent are enabled. | complete | [PRD-000020-TC-01.md](../90%20-%20Evidence/PRD-000020-TC-01.md) |
-| TC-02 | AC-02 | 1.0.4 | Load a Markdown file and confirm its content appears; cancel a second load and confirm the document is unchanged. | complete | [PRD-000020-TC-02.md](../90%20-%20Evidence/PRD-000020-TC-02.md) |
-| TC-03 | AC-03 | 1.0.4 | Edit and save a loaded file; confirm the file contains the edit and Quill clears the dirty marker. | complete | [PRD-000020-TC-03.md](../90%20-%20Evidence/PRD-000020-TC-03.md) |
-| TC-04 | AC-03 | 1.0.4 | Save an edit as a new file. Confirm the new file is saved and the new filename is shown in the main screen. Reopen the old file and verify it has not changed. | complete | [PRD-000020-TC-04.md](../90%20-%20Evidence/PRD-000020-TC-04.md) |
-| TC-05 | AC-04 | 1.0.4 | Open more than ten files; confirm Recent keeps ten, reopens a valid file, and reports a missing file without changing the document. | complete | [PRD-000020-TC-05.md](../90%20-%20Evidence/PRD-000020-TC-05.md) |
-| TC-06 | AC-05 | 1.0.4 | Confirm New, themes, editing, preview, outline, unsaved-change confirmation, version display, and inline images work. | complete | [PRD-000020-TC-06.md](../90%20-%20Evidence/PRD-000020-TC-06.md) |
-| TC-07 | AC-05 | 1.0.4 | Open Markdown with a relative image beside the document and confirm the image renders. | complete | [PRD-000020-TC-07.md](../90%20-%20Evidence/PRD-000020-TC-07.md) |
-| TC-08 | AC-06 | 1.0.4 | Open `code/quill.html` outside Tauri; confirm file controls are disabled, the runtime message appears, and no picker or download starts. | complete | [PRD-000020-TC-08.md](../90%20-%20Evidence/PRD-000020-TC-08.md) |
+| TC-01 | AC-01 | 1.0.4 | Run `npm run tauri:dev`; confirm Quill opens and Load, Save, Save As, and Recent are enabled. | complete | [PRD-000020-CHANGE-TC-01.md](../90%20-%20Evidence/PRD-000020-CHANGE-TC-01.md) |
+| TC-02 | AC-02 | 1.0.4 | Load a Markdown file and confirm its content appears; cancel a second load and confirm the document is unchanged. | complete | [PRD-000020-CHANGE-TC-02.md](../90%20-%20Evidence/PRD-000020-CHANGE-TC-02.md) |
+| TC-03 | AC-03 | 1.0.4 | Edit and save a loaded file; confirm the file contains the edit and Quill clears the dirty marker. | complete | [PRD-000020-CHANGE-TC-03.md](../90%20-%20Evidence/PRD-000020-CHANGE-TC-03.md) |
+| TC-04 | AC-03 | 1.0.4 | Save an edit as a new file. Confirm the new file is saved and the new filename is shown in the main screen. Reopen the old file and verify it has not changed. | complete | [PRD-000020-CHANGE-TC-04.md](../90%20-%20Evidence/PRD-000020-CHANGE-TC-04.md) |
+| TC-05 | AC-04 | 1.0.4 | Open more than ten files; confirm Recent keeps ten, reopens a valid file, and reports a missing file without changing the document. | complete | [PRD-000020-CHANGE-TC-05.md](../90%20-%20Evidence/PRD-000020-CHANGE-TC-05.md) |
+| TC-06 | AC-05 | 1.0.4 | Confirm New, themes, editing, preview, outline, unsaved-change confirmation, version display, and inline images work. | complete | [PRD-000020-CHANGE-TC-06.md](../90%20-%20Evidence/PRD-000020-CHANGE-TC-06.md) |
+| TC-07 | AC-05 | 1.0.4 | Open Markdown with a relative image beside the document and confirm the image renders. | complete | [PRD-000020-CHANGE-TC-07.md](../90%20-%20Evidence/PRD-000020-CHANGE-TC-07.md) |
+| TC-08 | AC-06 | 1.0.4 | Open `code/quill.html` outside Tauri; confirm file controls are disabled, the runtime message appears, and no picker or download starts. | complete | [PRD-000020-CHANGE-TC-08.md](../90%20-%20Evidence/PRD-000020-CHANGE-TC-08.md) |
 
 ## Next Step
 

@@ -5,7 +5,6 @@
 | PRD | [PRD-000008-TECH](../25%20-%20Closed/PRD-000008-TECH.md) |
 | Acceptance Criteria | AC-02, AC-03 |
 | Product Version | 1.0.6 |
-| Git Commit | 07a997edf3a9f250ecd8159e50084bc9bfa36b3d |
 | Status | complete |
 | Recorded | 2026-08-06T00:19:29.7575566Z |
 | Test | Switch between the named light and dark themes and inspect the preserved Render-only layout and supported visual states. |
@@ -15,12 +14,12 @@
 
 **Figure 1 - Light theme after theme switch**
 
-![Light theme after theme switch](PRD-000008-TC-03-theme-light.png)
+![Light theme after theme switch](PRD-000008-TECH-TC-03-theme-light.png)
 
 Observation: The light theme is active and preserves the Render-only layout, Acceptance Criteria content, Test Cases table, and enabled `ALLOW INLINE EDITING` control.
 
 **Figure 2 - Dark theme after theme switch**
 
-![Dark theme after theme switch](PRD-000008-TC-03-theme-dark.png)
+![Dark theme after theme switch](PRD-000008-TECH-TC-03-theme-dark.png)
 
 Observation: The dark theme is active and preserves the same supported layout and content while applying the intended dark theme colors and rendering styles.

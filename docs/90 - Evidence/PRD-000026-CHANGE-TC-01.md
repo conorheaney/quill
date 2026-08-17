@@ -5,7 +5,6 @@
 | PRD | [PRD-000026-CHANGE](../../docs/20%20-%20Test/PRD-000026-CHANGE.md) |
 | Acceptance Criteria | AC-01 |
 | Product Version | 1.0.12 |
-| Git Commit | 0756c43 |
 | Status | complete |
 | Recorded | 2026-08-08T17:00:36.5774321Z |
 | Test | PASS/FAIL: Select a recent-file entry that cannot be reopened and verify the failure message and explicit removal-preservation confirmation flow. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Run the packaged Quill `1.0.12` candidate built from Git commit `0756c43`.
+- Run the packaged Quill `1.0.12` candidate.
 - Have at least one recent-file entry whose path cannot be reopened, such as a file that has been moved or deleted outside Quill.
 - Ensure the Recent Files list contains the target entry before making it unavailable.
 - Keep the current document in a state where the standard unsaved-change confirmation can be observed if applicable.
@@ -39,14 +38,15 @@
 
 ## Evidence
 
-![Recent Files panel showing the current and recent entries](PRD-000026-TC-01-RECENT-FILES.png)
+![Recent Files panel showing the current and recent entries](PRD-000026-CHANGE-TC-01-RECENT-FILES.png)
 
 The first screenshot shows the Recent Files panel in Quill `1.0.12`, including the current entry and recent-file rows.
 
-![Failed reopen removal confirmation](PRD-000026-TC-01-REMOVE-CONFIRMATION.png)
+![Failed reopen removal confirmation](PRD-000026-CHANGE-TC-01-REMOVE-CONFIRMATION.png)
 
 The second screenshot shows the failed-reopen confirmation for `PRD-000026-CHANGE.md`. The visible choices are `CANCEL` and `REMOVE`; `CANCEL` is the specified preserve-entry action.
 
-![Recent file removed after clicking Remove](PRD-000026-TC-01-REMOVED.png)
+![Recent file removed after clicking Remove](PRD-000026-CHANGE-TC-01-REMOVED.png)
 
 The third screenshot shows `PRD-000026-CHANGE.md` absent from the Recent Files list after `REMOVE` was clicked.
+

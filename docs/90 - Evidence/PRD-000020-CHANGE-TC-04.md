@@ -14,16 +14,16 @@
 
 Edited original:
 
-![Quill showing an edited original document](PRD-000020-TC-04-EDITED.png)
+![Quill showing an edited original document](PRD-000020-CHANGE-TC-04-EDITED.png)
 
 New path selected:
 
-![Save As dialog naming a new copy](PRD-000020-TC-04-SAVE-AS-DIALOG.png)
+![Save As dialog naming a new copy](PRD-000020-CHANGE-TC-04-SAVE-AS-DIALOG.png)
 
 Saved copy:
 
-![Quill showing the edit in the saved copy](PRD-000020-TC-04-SAVED-COPY.png)
+![Quill showing the edit in the saved copy](PRD-000020-CHANGE-TC-04-SAVED-COPY.png)
 
 Original reopened:
 
-![Quill showing the original document without the copied edit](PRD-000020-TC-04-ORIGINAL-REOPENED.png)
+![Quill showing the original document without the copied edit](PRD-000020-CHANGE-TC-04-ORIGINAL-REOPENED.png)

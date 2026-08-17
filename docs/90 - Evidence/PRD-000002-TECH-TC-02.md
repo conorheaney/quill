@@ -1,11 +1,10 @@
-# TC-02 Evidence
+﻿# TC-02 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000002-TECH](../../docs/25%20-%20Closed/PRD-000002-TECH.md) |
 | Acceptance Criteria | AC-02 |
 | Product Version | 1.0.13 |
-| Git Commit | af9df91f1de93a23523a460c3b87f5f665276d6e |
 | Status | complete |
 | Recorded | 2026-08-15T11:51:45.7153004Z |
 | Test | PASS: Run the table-driven Markdown suites and verify parsing, rendering, URL sanitization, table handling, block conversion, and serialization results. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Use the repository state for product version `1.0.13` at Git commit `af9df91f1de93a23523a460c3b87f5f665276d6e`.
+- Use the repository state for product version `1.0.13`.
 - Run from the repository root with Node.js and the project dependencies available.
 - Ensure `QUILL_TEST_SEED_FAILURE` is unset.
 
@@ -33,8 +32,9 @@ All 20 table-driven Markdown cases pass with exit code `0`, and their actual par
 
 ## Evidence
 
-- Candidate identity: product version `1.0.13`; Git commit `af9df91f1de93a23523a460c3b87f5f665276d6e`; `QUILL_TEST_SEED_FAILURE` unset.
+- Candidate identity: product version `1.0.13`;; `QUILL_TEST_SEED_FAILURE` unset.
 - Initial command: `node --test tests/node/markdown-parsing.test.js tests/node/markdown-rendering.test.js tests/node/markdown-tables.test.js tests/node/markdown-serialization.test.js`.
 - Initial result: the managed sandbox denied Node worker creation with `spawn EPERM`; 0 assertions executed and the command exited `1`.
 - Executed fallback: `node --test --test-isolation=none tests/node/markdown-parsing.test.js tests/node/markdown-rendering.test.js tests/node/markdown-tables.test.js tests/node/markdown-serialization.test.js`.
 - Final result: 20 tests passed, 0 failed, 0 cancelled, 0 skipped, 0 todo; exit code `0`; duration `26.9153 ms`.
+

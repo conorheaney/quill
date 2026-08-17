@@ -5,7 +5,6 @@
 | PRD | [PRD-000002-TECH](../../docs/25%20-%20Closed/PRD-000002-TECH.md) |
 | Acceptance Criteria | AC-06 |
 | Product Version | 1.0.13 |
-| Git Commit | af9df91f1de93a23523a460c3b87f5f665276d6e |
 | Status | complete |
 | Recorded | 2026-08-15T12:15:45.0752884Z |
 | Test | PASS: Verify the human UI regression checklist defines reproducible preconditions, steps, and expected results for the critical application workflows while remaining outside `npm test` and explicitly deferring automated UI testing. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Inspect the committed repository at candidate Git commit `af9df91f1de93a23523a460c3b87f5f665276d6e` for product version `1.0.13`.
+- Inspect the committed repository atfor product version `1.0.13`.
 - Use `AC-06` as the verification boundary: the regression checklist must be complete and reproducible, while executing its UI scenarios and adding automated UI coverage are not required.
 - Review `tests/manual/PRD-000002-TECH-UI-REGRESSION-CHECKLIST.md`, `tests/README.md`, and the root `package.json`.
 

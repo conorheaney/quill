@@ -1,4 +1,4 @@
-# PRD-000026 Implementation Evidence
+# PRD-000026-CHANGE-IMPLEMENTATION Evidence
 
 ## Summary
 
@@ -26,7 +26,7 @@ Recent Files was improved to make the list easier to scan, keep, and use during 
 ## Related Records
 
 - [PRD-000026-CHANGE](../15%20-%20Implement/PRD-000026-CHANGE.md)
-- [PRD-000026 Planning](PRD-000026%20Planning.md)
+- [PRD-000026-CHANGE-PLANNING](PRD-000026-CHANGE-PLANNING.md)
 
 ## Recorded
 

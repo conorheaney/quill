@@ -5,7 +5,6 @@
 | PRD | [PRD-000026-CHANGE](../../docs/20%20-%20Test/PRD-000026-CHANGE.md) |
 | Acceptance Criteria | AC-05 |
 | Product Version | 1.0.12 |
-| Git Commit | 0756c439061ab51e4cd5ede9f544e363007e3150 |
 | Status | complete |
 | Recorded | 2026-08-08T18:44:46.1608400Z |
 | Test | PASS/FAIL: Verify that the Recent Files action opens the containing folder and selects the requested file, with clear feedback when the operation succeeds or fails. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Run the packaged Quill `1.0.12` candidate built from commit `0756c43` on Windows.
+- Run the packaged Quill `1.0.12` candidate on Windows.
 - Have a recent-file entry for an existing file whose path can be resolved.
 
 ## Steps to Reproduce
@@ -36,18 +35,18 @@
 
 ## Evidence
 
-![Recent Files action](PRD-000026-TC-05-RECENT-FILES.png)
+![Recent Files action](PRD-000026-CHANGE-TC-05-RECENT-FILES.png)
 
 The Recent Files panel shows the reveal action for `PRD-000026-CHANGE.md`.
 
-![Explorer selected file](PRD-000026-TC-05-EXPLORER-SELECTED.png)
+![Explorer selected file](PRD-000026-CHANGE-TC-05-EXPLORER-SELECTED.png)
 
 Windows Explorer is open to `docs/20 - Test` with `PRD-000026-CHANGE.md` selected.
 
-![Renamed file](PRD-000026-TC-05-RENAMED-FILE.png)
+![Renamed file](PRD-000026-CHANGE-TC-05-RENAMED-FILE.png)
 
 The original file is temporarily renamed to `PRD-000026-CHANGE.md.bak`.
 
-![Explorer opened at Desktop](PRD-000026-TC-05-EXPLORER-DESKTOP.png)
+![Explorer opened at Desktop](PRD-000026-CHANGE-TC-05-EXPLORER-DESKTOP.png)
 
 After invoking the reveal action with the original path unavailable, Explorer is shown at the Desktop.

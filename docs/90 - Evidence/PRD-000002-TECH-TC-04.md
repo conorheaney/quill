@@ -1,11 +1,10 @@
-# TC-04 Evidence
+﻿# TC-04 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000002-TECH](../../docs/25%20-%20Closed/PRD-000002-TECH.md) |
 | Acceptance Criteria | AC-04 |
 | Product Version | 1.0.13 |
-| Git Commit | af9df91f1de93a23523a460c3b87f5f665276d6e |
 | Status | complete |
 | Recorded | 2026-08-15T12:03:01.8108082Z |
 | Test | PASS: Use deferred fake writes and revision-aware draft storage to verify latest-edit-wins behavior across newer edits, out-of-order completion, failures, cancellation, path changes, document changes, and recovery. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Use product version `1.0.13` at Git commit `af9df91f1de93a23523a460c3b87f5f665276d6e`.
+- Use product version `1.0.13`.
 - Run from the repository root with Node.js and the project dependencies available.
 - Ensure `QUILL_TEST_SEED_FAILURE` is unset.
 - Keep the persistence suites and `tests/node/helpers/persistence-contract.js` unchanged before execution.
@@ -37,10 +36,11 @@ All targeted assertions pass with exit code `0`. A save clears dirty state only 
 
 | Check | Result |
 | --- | --- |
-| Candidate | Version `1.0.13`; commit `af9df91f1de93a23523a460c3b87f5f665276d6e`; seed variable unset |
+| Candidate | Version `1.0.13`;; seed variable unset |
 | Isolated command | `node --test tests/node/persistence-latest-edit-wins.test.js tests/node/persistence-draft-recovery.test.js` blocked by sandbox `spawn EPERM`; 0 assertions executed |
 | Executed fallback | `node --test --test-isolation=none tests/node/persistence-latest-edit-wins.test.js tests/node/persistence-draft-recovery.test.js` |
 | Outcome | 10 passed; 0 failed; exit `0`; duration `21.1196 ms` |
 | Save-race coverage | Current and delayed saves, newer edits, out-of-order completion, failure, cancellation, path changes, and document changes passed. |
 | Draft coverage | Highest-revision recovery and newest-draft retention after failed disk save passed. |
 | Sources | [Latest-edit-wins suite](../../tests/node/persistence-latest-edit-wins.test.js); [draft-recovery suite](../../tests/node/persistence-draft-recovery.test.js); [persistence fakes](../../tests/node/helpers/persistence-contract.js) |
+

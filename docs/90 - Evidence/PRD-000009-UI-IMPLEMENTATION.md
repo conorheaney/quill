@@ -1,4 +1,4 @@
-# PRD-000009-UI - Implementation
+# PRD-000009-UI-IMPLEMENTATION
 
 ## Record
 

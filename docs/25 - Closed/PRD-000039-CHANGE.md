@@ -1,4 +1,4 @@
-# PRD-000039-CHANGE
+﻿# PRD-000039-CHANGE
 
 ## Short Name
 
@@ -98,11 +98,12 @@ Promote the completed PRD from Test to Closed after the final workflow validatio
 | 2026-08-17T19:05:59.3031412Z | Candidate preparation | Created product candidate `1.0.15`; release build and NSIS installer succeeded, root `quill.exe` was synchronized with `src-tauri/target/release/quill-tauri.exe`, and both executables matched SHA-256 `A22DA09FE06D3245520BE11326C87B12451FC246EFF7A757636B428041666F6D`. Static JavaScript and diff checks passed. |
 | 2026-08-17T19:11:10.8049866Z | Promotion | Promoted from Implement to Test after the committed and pushed `1.0.15` candidate, PRD gate checks, and workflow alignment validation passed. |
 | 2026-08-17T19:15:24.4791306Z | Verification refinement | Split the combined verification entry into five distinct planned test cases, one for each acceptance criterion, while keeping the PRD in Test and all evidence statuses open for execution. |
-| 2026-08-17T19:49:23.5482227Z | Test result | Recorded TC-03 as passed from the supplied execution screenshot and marked its verification row complete; the exact candidate Git commit remains unresolved in the evidence record. |
+| 2026-08-17T19:49:23.5482227Z | Test result | Recorded TC-03 as passed from the supplied execution screenshot and marked its verification row complete; the exact candidate remains unresolved in the evidence record. |
 | 2026-08-17T19:53:18.4973675Z | Verification change | Removed TC-04 and its open evidence record at the user's request; the PRD remains in Test with TC-01, TC-02, and TC-05 pending. |
 | 2026-08-17T19:55:00.1529748Z | Verification change | Removed TC-05 at the user's request; the PRD remains in Test with TC-01 through TC-03 as the active verification range. |
-| 2026-08-17T19:56:08.8930404Z | Test result | User confirmed TC-01 through TC-03 complete; marked TC-01 and TC-02 complete and retained TC-03 complete. Evidence links and exact Git commit metadata remain unresolved where not recorded. |
-| 2026-08-17T19:57:29.1355770Z | Evidence update | Linked the existing TC-01 and TC-02 evidence records from the Verification table; both records include PASS results, exact `1.0.15` candidate metadata, Git commits, and supporting screenshots. |
-| 2026-08-17T20:02:52.3819950Z | Evidence update | Replaced the TC-03 evidence record's unresolved Git commit placeholder with commit `8eba8e4`. |
-| 2026-08-17T20:03:47.1498686Z | Promotion readiness | Updated Next Step after all planned test cases reached complete status with recorded product versions, Git commits, and evidence links. |
-| 2026-08-17T20:04:05.9109339Z | Promotion | Promoted from Test to Closed after all complete test records identified exact product versions, Git commits, and linked evidence. |
+| 2026-08-17T19:56:08.8930404Z | Test result | User confirmed TC-01 through TC-03 complete; marked TC-01 and TC-02 complete and retained TC-03 complete. Evidence links and exact metadata remain unresolved where not recorded. |
+| 2026-08-17T19:57:29.1355770Z | Evidence update | Linked the existing TC-01 and TC-02 evidence records from the Verification table; both records include PASS results, exact `1.0.15` candidate metadata, and supporting screenshots. |
+| 2026-08-17T20:02:52.3819950Z | Evidence update | Replaced the TC-03 evidence record's unresolved placeholder with. |
+| 2026-08-17T20:03:47.1498686Z | Promotion readiness | Updated Next Step after all planned test cases reached complete status with recorded product versions, and evidence links. |
+| 2026-08-17T20:04:05.9109339Z | Promotion | Promoted from Test to Closed after all complete test records identified exact product versions, and linked evidence. |
+

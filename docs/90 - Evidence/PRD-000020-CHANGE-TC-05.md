@@ -13,20 +13,20 @@
 
 ## Evidence
 
-![Quill Recent Files showing the latest ten entries](PRD-000020-TC-05-RECENT-LIMIT.png)
+![Quill Recent Files showing the latest ten entries](PRD-000020-CHANGE-TC-05-RECENT-LIMIT.png)
 
 Valid file reopened:
 
-![Quill showing a valid Recent entry reopened as the current document](PRD-000020-TC-05-VALID-REOPEN.png)
+![Quill showing a valid Recent entry reopened as the current document](PRD-000020-CHANGE-TC-05-VALID-REOPEN.png)
 
 File available before rename:
 
-![Quill Recent Files showing the file as available](PRD-000020-TC-05-AVAILABLE-ENTRY.png)
+![Quill Recent Files showing the file as available](PRD-000020-CHANGE-TC-05-AVAILABLE-ENTRY.png)
 
 File renamed on disk:
 
-![Windows Explorer showing the temporary renamed file](PRD-000020-TC-05-FILE-RENAMED.png)
+![Windows Explorer showing the temporary renamed file](PRD-000020-CHANGE-TC-05-FILE-RENAMED.png)
 
 File unavailable after rename:
 
-![Quill marking the renamed Recent file unavailable while preserving the current document](PRD-000020-TC-05-UNAVAILABLE-ENTRY.png)
+![Quill marking the renamed Recent file unavailable while preserving the current document](PRD-000020-CHANGE-TC-05-UNAVAILABLE-ENTRY.png)

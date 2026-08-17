@@ -5,7 +5,6 @@
 | PRD | [PRD-000002-TECH](../../docs/25%20-%20Closed/PRD-000002-TECH.md) |
 | Acceptance Criteria | AC-01 |
 | Product Version | 1.0.13 |
-| Git Commit | af9df91f1de93a23523a460c3b87f5f665276d6e |
 | Status | complete |
 | Recorded | 2026-08-15T11:43:12.6674792Z |
 | Test | PASS: Verified the root test structure, canonical Node-and-Rust `npm test` command, and controlled failure signals for both automated layers. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Check out Git commit `af9df91f1de93a23523a460c3b87f5f665276d6e` for product version `1.0.13` with Node.js, npm, and the Rust toolchain available.
+- Check outfor product version `1.0.13` with Node.js, npm, and the Rust toolchain available.
 - Start at the repository root with no `QUILL_TEST_SEED_FAILURE` environment variable set.
 - Use `tests/README.md` as the documented test-layout and harness-failure procedure.
 

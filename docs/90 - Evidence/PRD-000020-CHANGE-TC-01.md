@@ -12,4 +12,4 @@
 
 ## Screenshot
 
-![Quill open with desktop file controls enabled](PRD-000020-TC-01-startup-evidence.png)
+![Quill open with desktop file controls enabled](PRD-000020-CHANGE-TC-01-startup-evidence.png)

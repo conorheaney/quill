@@ -1,11 +1,10 @@
-# TC-02 Evidence
+﻿# TC-02 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000026-CHANGE](../../docs/20%20-%20Test/PRD-000026-CHANGE.md) |
 | Acceptance Criteria | AC-02 |
 | Product Version | 1.0.12 |
-| Git Commit | 0756c43 |
 | Status | complete |
 | Recorded | 2026-08-08T18:12:11.6246656Z |
 | Test | PASS/FAIL: Open, switch, and revisit recent files to verify most-recent-first ordering, duplicate handling, and the current-entry indication. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Run the packaged Quill `1.0.12` candidate built from Git commit `0756c43`.
+- Run the packaged Quill `1.0.12` candidate.
 - Have at least two Markdown files available to open through Quill.
 - Have both files represented in the Recent Files list, with one entry already positioned below the other.
 - Ensure the Recent Files panel is available and the current document can be changed without unrelated unsaved-content interruptions.
@@ -41,3 +40,4 @@ The first screenshot shows `PRD-000026-CHANGE-TC-02.md` as the current entry at 
 ![TC-01 current at top of Recent Files](PRD-000026-CHANGE-TC-02-ORDER-TC01-CURRENT.png)
 
 The second screenshot shows `PRD-000026-CHANGE-TC-01.md` as the current entry at the top, with the previously current `TC-02` entry below it.
+

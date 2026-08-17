@@ -12,4 +12,4 @@
 
 ## Evidence
 
-![Quill rendering relative images inline from a test-case document](PRD-000020-TC-07-RELATIVE-IMAGES.png)
+![Quill rendering relative images inline from a test-case document](PRD-000020-CHANGE-TC-07-RELATIVE-IMAGES.png)

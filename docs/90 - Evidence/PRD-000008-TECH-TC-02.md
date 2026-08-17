@@ -5,7 +5,6 @@
 | PRD | [PRD-000008-TECH](../25%20-%20Closed/PRD-000008-TECH.md) |
 | Acceptance Criteria | AC-01, AC-03 |
 | Product Version | 1.0.6 |
-| Git Commit | 07a997edf3a9f250ecd8159e50084bc9bfa36b3d |
 | Status | complete |
 | Recorded | 2026-08-06T00:14:05.9469118Z |
 | Test | Run Quill in light and dark themes at a representative desktop window size, then inspect the two-column Markdown and Render state, Render-only state, Recent Files UI, and inline Markdown editing state. |
@@ -15,36 +14,36 @@
 
 **Figure 1 - Light theme Render-only mode with Recent Files**
 
-![Light theme Render-only mode with Recent Files](PRD-000008-TC-02-render-only-light.png)
+![Light theme Render-only mode with Recent Files](PRD-000008-TECH-TC-02-render-only-light.png)
 
 Observation: The light theme is active, Show Markdown is disabled, the Render pane occupies the main content area, and the Recent Files panel is visible with `PRD-000008-TECH.md` marked Current.
 
 **Figure 2 - Dark theme Render-only mode with Recent Files**
 
-![Dark theme Render-only mode with Recent Files](PRD-000008-TC-02-render-only-dark.png)
+![Dark theme Render-only mode with Recent Files](PRD-000008-TECH-TC-02-render-only-dark.png)
 
 Observation: The dark theme is active, Show Markdown is disabled, the Render pane occupies the main content area, and the Recent Files panel is visible with `PRD-000008-TECH.md` marked Current.
 
 **Figure 3 - Light theme Markdown and Render display**
 
-![Light theme Markdown and Render display](PRD-000008-TC-02-markdown-display-light.png)
+![Light theme Markdown and Render display](PRD-000008-TECH-TC-02-markdown-display-light.png)
 
 Observation: The light theme shows the Markdown and Render panes together. The Markdown pane displays the source content and the Render pane displays the corresponding formatted Markdown, including the Acceptance Criteria list.
 
 **Figure 4 - Dark theme Markdown and Render display**
 
-![Dark theme Markdown and Render display](PRD-000008-TC-02-markdown-display-dark.png)
+![Dark theme Markdown and Render display](PRD-000008-TECH-TC-02-markdown-display-dark.png)
 
 Observation: The dark theme shows the Markdown and Render panes together. The Markdown pane displays the source content and the Render pane displays the corresponding formatted Markdown, including the Acceptance Criteria list.
 
 **Figure 5 - Light theme inline Markdown editing state**
 
-![Light theme inline Markdown editing state](PRD-000008-TC-02-editor-state-light.png)
+![Light theme inline Markdown editing state](PRD-000008-TECH-TC-02-editor-state-light.png)
 
 Observation: The light theme shows the Markdown pane, formatting toolbar, and `ALLOW INLINE EDITING` enabled while the Render pane displays the corresponding content.
 
 **Figure 6 - Dark theme inline Markdown editing state**
 
-![Dark theme inline Markdown editing state](PRD-000008-TC-02-editor-state-dark.png)
+![Dark theme inline Markdown editing state](PRD-000008-TECH-TC-02-editor-state-dark.png)
 
 Observation: The dark theme shows the Markdown pane, formatting toolbar, and `ALLOW INLINE EDITING` enabled while the Render pane displays the corresponding content.

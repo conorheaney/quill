@@ -217,14 +217,13 @@ function Test-EvidenceRecord([System.IO.FileInfo]$file, [string]$expectedProduct
     foreach ($line in $lines) {
         if ($line -match '^\|\s*([^|]+?)\s*\|\s*([^|]*?)\s*\|\s*$') { $metadata[$matches[1].Trim()] = $matches[2].Trim() }
     }
-    foreach ($field in @("PRD", "Acceptance Criteria", "Product Version", "Git Commit", "Status", "Recorded", "Test", "Result")) {
+    foreach ($field in @("PRD", "Acceptance Criteria", "Product Version", "Status", "Recorded", "Test", "Result")) {
         if (-not $metadata.ContainsKey($field) -or [string]::IsNullOrWhiteSpace($metadata[$field])) {
             $message = "$($file.Name) evidence record is missing metadata: $field"
             if ($strict) { Add-Error $message } else { Add-Warning $message }
         }
     }
     if ($metadata.ContainsKey("Product Version") -and (Test-PlaceholderValue $metadata["Product Version"])) { Add-Error "$($file.Name) has placeholder Product Version" }
-    if ($metadata.ContainsKey("Git Commit") -and (Test-PlaceholderValue $metadata["Git Commit"])) { Add-Error "$($file.Name) has placeholder Git Commit" }
     if ($metadata.ContainsKey("Recorded")) { Test-ValidTimestamp $metadata["Recorded"] "$($file.Name) Recorded" | Out-Null }
     if ($expectedProductVersion -and $metadata.ContainsKey("Product Version") -and $metadata["Product Version"] -ne $expectedProductVersion) { Add-Error "$($file.Name) product version does not match verification row: $($metadata["Product Version"]) / $expectedProductVersion" }
     if ($expectedTestCase -and $metadata.ContainsKey("PRD") -and $metadata["PRD"] -notmatch [regex]::Escape($expectedTestCase)) { Add-Error "$($file.Name) does not identify expected test case: $expectedTestCase" }
@@ -413,7 +412,7 @@ foreach ($file in $prdFiles) {
                             } else {
                                 $evidenceFile = Get-Item -LiteralPath $evidencePath
                                 if ($evidenceFile.Name -cnotmatch '^PRD-') { Add-Error "$id $testCase evidence filename must begin with uppercase PRD-: $($evidenceFile.Name)" }
-                                if ($evidenceFile.BaseName -notmatch ('^' + [regex]::Escape("$id-$testCase") + '$')) { Add-Error "$id $testCase evidence filename does not identify the expected record: $($evidenceFile.Name)" }
+                                if ($evidenceFile.BaseName -notmatch ('^' + [regex]::Escape($id) + '(?:-[A-Z]+)?-' + [regex]::Escape($testCase) + '$')) { Add-Error "$id $testCase evidence filename does not identify the expected record: $($evidenceFile.Name)" }
                                 Test-EvidenceRecord $evidenceFile $cells[2].Trim().Trim('`') $id $true
                             }
                         }

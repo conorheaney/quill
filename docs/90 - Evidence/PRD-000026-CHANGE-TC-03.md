@@ -1,11 +1,10 @@
-# TC-03 Evidence
+﻿# TC-03 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000026-CHANGE](../../docs/20%20-%20Test/PRD-000026-CHANGE.md) |
 | Acceptance Criteria | AC-03 |
 | Product Version | 1.0.12 |
-| Git Commit | 0756c43 |
 | Status | complete |
 | Recorded | 2026-08-08T18:14:21.4362218Z |
 | Test | PASS/FAIL: Verify the Recent Files action cluster is visible within each file item and right-aligned, the overlaid Remove control works without opening the file, and the current file does not expose Remove. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Run the packaged Quill `1.0.12` candidate built from Git commit `0756c43`.
+- Run the packaged Quill `1.0.12` candidate.
 - Populate Recent Files with at least two entries.
 - Ensure one entry is the current document and another entry is removable.
 - Open the Recent Files panel.
@@ -43,4 +42,4 @@ Shows the right-aligned action area and the Remove control tooltip, `Remove from
 
 The screenshots confirm the action line is within the file item and right-aligned, although it is not on the same line as the file entry.
 
-The layout difference is accepted as a documentation-level clarification; no implementation change was made.New paragraphNew paragraph
+The layout difference is accepted as a documentation-level clarification; no implementation change was made.

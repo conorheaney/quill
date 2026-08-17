@@ -1,11 +1,10 @@
-# TC-01 Evidence
+﻿# TC-01 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000027-CHANGE](../../docs/25%20-%20Closed/PRD-000027-CHANGE.md) |
 | Acceptance Criteria | AC-01 |
 | Product Version | 1.0.14 |
-| Git Commit | 502d505bc8db8141f6cd1bd7267f48b0d80ad85a |
 | Status | complete |
 | Recorded | 2026-08-15T23:41:16.3937191Z |
 | Test | PASS: Modify the open file externally while Quill is unfocused, regain focus, and verify that Quill detects the change before replacing or saving content. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Run the packaged Quill `1.0.14` candidate built from Git commit `502d505bc8db8141f6cd1bd7267f48b0d80ad85a`.
+- Run the packaged Quill `1.0.14` candidate.
 - Open a disposable Markdown file in Quill and confirm the file is unchanged before leaving Quill unfocused.
 - Have a second editor or file-management tool available to modify the same file externally; Windows Notepad was used.
 
@@ -39,3 +38,4 @@ Screenshots from the manual run:
 ![External edit in Notepad](PRD-000027-CHANGE-TC-01-02.png)
 ![External-change prompt](PRD-000027-CHANGE-TC-01-03.png)
 ![Reloaded external version](PRD-000027-CHANGE-TC-01-04.png)
+

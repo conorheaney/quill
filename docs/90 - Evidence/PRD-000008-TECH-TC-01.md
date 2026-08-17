@@ -5,7 +5,6 @@
 | PRD | [PRD-000008-TECH](../25%20-%20Closed/PRD-000008-TECH.md) |
 | Acceptance Criteria | AC-01 |
 | Product Version | 1.0.6 |
-| Git Commit | 07a997edf3a9f250ecd8159e50084bc9bfa36b3d |
 | Status | complete |
 | Recorded | 2026-08-05T23:54:30.6678285Z |
 | Test | Inspect the stylesheet loading boundary and repository structure for the named light and dark theme stylesheets. |
@@ -15,19 +14,19 @@
 
 **Figure 1 — Named theme stylesheets and loading links**
 
-![Named theme stylesheets and loading links](PRD-000008-TC-01-stylesheet-links.png)
+![Named theme stylesheets and loading links](PRD-000008-TECH-TC-01-stylesheet-links.png)
 
 Observation: The repository tree shows `quill-theme-light.css` and `quill-theme-dark.css` under `code/styles/themes`. The `quill.html` head shows both named theme stylesheets and `quill.css` loaded, with the light stylesheet disabled and the dark stylesheet active.
 
 **Figure 2 — Dark theme contract definitions**
 
-![Dark theme contract definitions](PRD-000008-TC-01-theme-dark-contract.png)
+![Dark theme contract definitions](PRD-000008-TECH-TC-01-theme-dark-contract.png)
 
 Observation: The dark theme defines the shared custom-property names for colors, surfaces, fonts, shadows, rendering styles, control radius, and theme transitions.
 
 **Figure 3 — Light theme contract definitions**
 
-![Light theme contract definitions](PRD-000008-TC-01-theme-light-contract.png)
+![Light theme contract definitions](PRD-000008-TECH-TC-01-theme-light-contract.png)
 
 Observation: The light theme defines the same custom-property names as the dark theme, with light-theme values.
 
@@ -41,16 +40,16 @@ Checks that `quill.css` contains no theme-token declarations or legacy theme blo
 $declarations = Select-String -Path code\styles\quill.css -Pattern '^\s*--[A-Za-z0-9_-]+\s*:'
 $themeBlocks = Select-String -Path code\styles\quill.css -Pattern '^\s*:root|body\.dark'
 if ($declarations) {
-  "FAIL: quill.css still declares theme variables"
-  $declarations | ForEach-Object { $_.Line.Trim() }
+ "FAIL: quill.css still declares theme variables"
+ $declarations | ForEach-Object { $_.Line.Trim() }
 } else {
-  "PASS: quill.css has no custom-property declarations"
+ "PASS: quill.css has no custom-property declarations"
 }
 if ($themeBlocks) {
-  "FAIL: quill.css still contains theme blocks"
-  $themeBlocks | ForEach-Object { $_.Line.Trim() }
+ "FAIL: quill.css still contains theme blocks"
+ $themeBlocks | ForEach-Object { $_.Line.Trim() }
 } else {
-  "PASS: quill.css has no :root or body.dark theme blocks"
+ "PASS: quill.css has no :root or body.dark theme blocks"
 }
 ```
 
@@ -111,19 +110,19 @@ Compares the variable names exposed by the light and dark theme files.
 
 ```powershell
 function Get-ThemeVariables($path) {
-  $matches = Select-String -Path $path -Pattern '^\s*--([A-Za-z0-9_-]+)\s*:'
-  @($matches | ForEach-Object {
-    $_.Matches.Groups[1].Value
-  } | Sort-Object -Unique)
+ $matches = Select-String -Path $path -Pattern '^\s*--([A-Za-z0-9_-]+)\s*:'
+ @($matches | ForEach-Object {
+ $_.Matches.Groups[1].Value
+ } | Sort-Object -Unique)
 }
 $light = Get-ThemeVariables 'code\styles\themes\quill-theme-light.css'
 $dark = Get-ThemeVariables 'code\styles\themes\quill-theme-dark.css'
 $differences = Compare-Object $light $dark
 if ($differences) {
-  "FAIL: light and dark theme contracts differ"
-  $differences
+ "FAIL: light and dark theme contracts differ"
+ $differences
 } else {
-  "PASS: light and dark themes expose the same variable names"
+ "PASS: light and dark themes expose the same variable names"
 }
 ```
 

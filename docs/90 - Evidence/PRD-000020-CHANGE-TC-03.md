@@ -14,8 +14,8 @@
 
 Edited state:
 
-![Quill showing edited content, a dirty marker, and highlighted Save button](PRD-000020-TC-03-EDITED.png)
+![Quill showing edited content, a dirty marker, and highlighted Save button](PRD-000020-CHANGE-TC-03-EDITED.png)
 
 Saved state:
 
-![Quill showing retained content with the dirty marker and Save highlight cleared](PRD-000020-TC-03-SAVED.png)
+![Quill showing retained content with the dirty marker and Save highlight cleared](PRD-000020-CHANGE-TC-03-SAVED.png)

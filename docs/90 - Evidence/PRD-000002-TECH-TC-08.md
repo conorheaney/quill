@@ -1,11 +1,10 @@
-# TC-08 Evidence
+﻿# TC-08 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000002-TECH](../../docs/25%20-%20Closed/PRD-000002-TECH.md) |
 | Acceptance Criteria | AC-08 |
 | Product Version | 1.0.13 |
-| Git Commit | af9df91f1de93a23523a460c3b87f5f665276d6e |
 | Status | complete |
 | Recorded | 2026-08-15T12:22:18.7464941Z |
 | Test | PASS: Run the automated suite from a clean local state and verify it needs no network, browser, real dialogs, user data, fixed sleeps, prior results, or hosted-CI environment. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Use product version `1.0.13` at Git commit `af9df91f1de93a23523a460c3b87f5f665276d6e`.
+- Use product version `1.0.13`.
 - Run from the repository root with Node.js, Rust, Cargo, and the committed project dependencies available.
 - Ensure `QUILL_TEST_SEED_FAILURE` is unset and use no prior test output as an input.
 - Use the managed local sandbox without browser automation, real dialogs, user files, user storage, or a hosted-CI service.
@@ -38,7 +37,7 @@ All Node and Rust assertions pass with exit code `0` using only local determinis
 
 | Check | Result |
 | --- | --- |
-| Candidate | Version `1.0.13`; commit `af9df91f1de93a23523a460c3b87f5f665276d6e`; `QUILL_TEST_SEED_FAILURE` unset |
+| Candidate | Version `1.0.13`;; `QUILL_TEST_SEED_FAILURE` unset |
 | Canonical command | `npm test` attempted; Node worker creation was denied by the managed sandbox with `spawn EPERM` before assertions executed, so the command exited `1` and did not reach Rust. |
 | Node fallback | `node --test --test-isolation=none` executed the identical Node assertions: 44 passed, 0 failed, exit `0`. |
 | Rust layer | `npm run test:rust`: 7 passed, 0 failed, exit `0`; 6 isolated helper/command tests plus 1 harness test. |
@@ -47,3 +46,4 @@ All Node and Rust assertions pass with exit code `0` using only local determinis
 | Test state | Repository fixtures, injected fake ports, controlled promises and sequence values, and per-test temporary directories replaced user data and external state; the passing fallback followed the blocked canonical attempt without consuming prior results. |
 | Coverage policy | [Risk coverage matrix](../../tests/RISK-COVERAGE-MATRIX.md) governs critical, high, and moderate risks; every listed row is `covered`, and numeric code-coverage thresholds are explicitly excluded. |
 | Sources | [Determinism contract](../../tests/node/determinism-contract.test.js); [test documentation](../../tests/README.md); [risk coverage matrix](../../tests/RISK-COVERAGE-MATRIX.md) |
+

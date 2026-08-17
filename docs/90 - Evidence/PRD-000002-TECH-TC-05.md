@@ -1,11 +1,10 @@
-# TC-05 Evidence
+﻿# TC-05 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000002-TECH](../../docs/25%20-%20Closed/PRD-000002-TECH.md) |
 | Acceptance Criteria | AC-05 |
 | Product Version | 1.0.13 |
-| Git Commit | af9df91f1de93a23523a460c3b87f5f665276d6e |
 | Status | complete |
 | Recorded | 2026-08-15T12:07:45.5490609Z |
 | Test | PASS: Run controller success, cancellation, failure, stale-completion, and missing-dependency cases using the approved fake desktop bridge, storage, clock, and dialog dependencies. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Use product version `1.0.13` at Git commit `af9df91f1de93a23523a460c3b87f5f665276d6e`.
+- Use product version `1.0.13`.
 - Run from the repository root with Node.js and the project dependencies available.
 - Ensure `QUILL_TEST_SEED_FAILURE` is unset.
 - Keep `tests/node/controller-workflows.test.js` and its approved fake dependencies unchanged before execution.
@@ -39,7 +38,7 @@ All targeted assertions pass with exit code `0`. Successful controller operation
 
 | Check | Result |
 | --- | --- |
-| Candidate | Version `1.0.13`; commit `af9df91f1de93a23523a460c3b87f5f665276d6e`; seed variable unset |
+| Candidate | Version `1.0.13`;; seed variable unset |
 | Isolated command | `node --test tests/node/controller-workflows.test.js` blocked by sandbox `spawn EPERM`; 0 assertions executed |
 | Executed fallback | `node --test --test-isolation=none tests/node/controller-workflows.test.js` |
 | Outcome | 5 passed; 0 failed; exit `0`; duration `19.7222 ms` |
@@ -48,3 +47,4 @@ All targeted assertions pass with exit code `0`. Successful controller operation
 | Stale-completion coverage | Draft rescheduling cleared the stale timer and persisted only the latest content. |
 | Missing-dependency coverage | Desktop bridge, dialog, storage, and clock omissions returned explicit unavailable outcomes. |
 | Sources | [Controller workflow suite](../../tests/node/controller-workflows.test.js); [controller fakes](../../tests/node/helpers/controller-fakes.js); [document controller](../../code/scripts/document-controller.js) |
+

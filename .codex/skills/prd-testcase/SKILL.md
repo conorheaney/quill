@@ -17,9 +17,9 @@ Create one PRD test-case evidence record and leave the PRD workflow unchanged.
 ## Generate the record
 
 1. Read the matching Verification row, acceptance criteria, and relevant PRD context.
-2. Copy `.agents/lifecyle-agent/prd-testcase.md` to `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md` and fill its metadata, timestamp, test description, and result fields.
+2. Copy `.agents/lifecyle-agent/prd-testcase.md` to `docs/90 - Evidence/PRD-NNNNNN-{CLASS}-TC-NN.md` and fill its metadata, timestamp, test description, and result fields.
 3. Set `Test` to start with `PASS/FAIL:`. Fill `Preconditions`, numbered `Steps to Reproduce`, `Expected Results`, and `Evidence` in that order. Derive content from the PRD; do not claim unprovided results or evidence.
-4. Use `open` status unless the user supplied a result and evidence. Never guess the product version or Git commit; retain clear placeholders when they cannot be established.
+4. Use `open` status unless the user supplied a result and evidence. Never guess the product version; retain a clear placeholder when it cannot be established.
 5. Do not overwrite an existing record. Validate the new file's name, `PASS/FAIL:` prefix, and four required headings/order, then run `npm run check:workflow`.
 6. Keep the language concise and human readable with specific technical information at the end of any paragraph or section.
 

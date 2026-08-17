@@ -43,7 +43,7 @@ Load `.codex/skills/prd-grill-me/SKILL.md` only if the target PRD has a weak or 
 6. Validate the PRD using the checks and phase gates below, applying `.agents/lifecyle-agent/lifecyle-agent.md` as the authority for any conflict.
 
 - For an `Implement` to `Test` promotion of a product-affecting item, verify that the candidate patch-version bump and product change are committed to `main` before moving the PRD.
-- For a `Test` to `Closed` promotion, verify that each complete test record identifies both the exact product version and Git commit, and treat `Closed` as PRD closure rather than an automatic product release.
+- For a `Test` to `Closed` promotion, verify that each complete test record identifies the exact product version, and treat `Closed` as PRD closure rather than an automatic product release.
 
 7. If any mandatory PRD section is missing or too light on information for the next workflow gate, use the repo-local `prd-grill-me` skill to fill it in before promotion.
 8. Run `npm run check:workflow` before mutation. Treat checker errors as promotion blockers; legacy Release warnings remain non-blocking.
@@ -90,7 +90,7 @@ Allow only when implementation is complete enough to verify, `Verification` desc
 
 ### Test -> Closed
 
-Allow only when planned verification is complete enough to support acceptance, the PRD records outcomes and evidence, no unresolved implementation or retest signal remains, the backlog row says `In Progress / Test` or `Blocked / Test`, and the PRD is in `docs/20 - Test/`. Verify that each complete test record identifies the exact product version and Git commit. On success, change the row to `Done / Closed`, move the PRD to `docs/25 - Closed/`, and append `Closed` to `History`.
+Allow only when planned verification is complete enough to support acceptance, the PRD records outcomes and evidence, no unresolved implementation or retest signal remains, the backlog row says `In Progress / Test` or `Blocked / Test`, and the PRD is in `docs/20 - Test/`. Verify that each complete test record identifies the exact product version. On success, change the row to `Done / Closed`, move the PRD to `docs/25 - Closed/`, and append `Closed` to `History`.
 
 ### Test -> Implement return
 

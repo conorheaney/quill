@@ -15,16 +15,16 @@
 
 Selected Markdown file:
 
-![Windows file picker with PRD-000012-BUG.md selected](PRD-000020-TC-02-LOAD-DIALOG.png)
+![Windows file picker with PRD-000012-BUG.md selected](PRD-000020-CHANGE-TC-02-LOAD-DIALOG.png)
 
 Loaded document:
 
-![Quill displaying the loaded PRD-000012-BUG.md document](PRD-000020-TC-02-LOADED-DOCUMENT.png)
+![Quill displaying the loaded PRD-000012-BUG.md document](PRD-000020-CHANGE-TC-02-LOADED-DOCUMENT.png)
 
 Second file selected before cancellation:
 
-![Windows file picker with PRD-000013-BUG.md selected](PRD-000020-TC-02-CANCEL-SELECTION.png)
+![Windows file picker with PRD-000013-BUG.md selected](PRD-000020-CHANGE-TC-02-CANCEL-SELECTION.png)
 
 Document unchanged after cancellation:
 
-![Quill still displaying PRD-000012-BUG.md after cancellation](PRD-000020-TC-02-UNCHANGED-DOCUMENT.png)
+![Quill still displaying PRD-000012-BUG.md after cancellation](PRD-000020-CHANGE-TC-02-UNCHANGED-DOCUMENT.png)

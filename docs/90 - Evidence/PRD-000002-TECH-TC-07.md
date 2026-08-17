@@ -1,11 +1,10 @@
-# TC-07 Evidence
+﻿# TC-07 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000002-TECH](../../docs/25%20-%20Closed/PRD-000002-TECH.md) |
 | Acceptance Criteria | AC-07 |
 | Product Version | 1.0.13 |
-| Git Commit | af9df91f1de93a23523a460c3b87f5f665276d6e |
 | Status | complete |
 | Recorded | 2026-08-15T12:19:14.9893178Z |
 | Test | PASS: Run Rust helper and command tests against isolated temporary files, including successful, unusual-path, empty-path, missing-path, and I/O-failure cases. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Use product version `1.0.13` at Git commit `af9df91f1de93a23523a460c3b87f5f665276d6e`.
+- Use product version `1.0.13`.
 - Run from the repository root with Rust, Cargo, Node.js, and project dependencies available.
 - Ensure `QUILL_TEST_SEED_FAILURE` is unset.
 - Keep `tests/rust/desktop_commands.rs` and `tests/rust/test_harness.rs` unchanged before execution.
@@ -39,7 +38,7 @@ All six helper and desktop-command contract tests pass, along with the Rust harn
 
 | Check | Result |
 | --- | --- |
-| Candidate | Version `1.0.13`; commit `af9df91f1de93a23523a460c3b87f5f665276d6e`; seed variable unset |
+| Candidate | Version `1.0.13`;; seed variable unset |
 | Executed command | `npm run test:rust` |
 | Outcome | 7 passed total; 0 failed; exit `0`; 6 helper/command tests plus 1 Rust harness test |
 | Path/name coverage | Nested paths and filenames containing spaces, symbols, and Unicode passed. |
@@ -48,3 +47,4 @@ All six helper and desktop-command contract tests pass, along with the Rust harn
 | Error coverage | Empty read/write paths, missing files, missing parent directories, reading a directory, and writing to a directory returned errors as expected. |
 | Isolation | Tests created unique directories under the operating system temporary directory and removed them through fixture cleanup; no user files were used. |
 | Sources | [Rust command suite](../../tests/rust/desktop_commands.rs); [Rust harness](../../tests/rust/test_harness.rs); [desktop commands](../../src-tauri/src/main.rs) |
+

@@ -1,11 +1,10 @@
-# TC-04 Evidence
+﻿# TC-04 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000026-CHANGE](../../docs/20%20-%20Test/PRD-000026-CHANGE.md) |
 | Acceptance Criteria | AC-04 |
 | Product Version | 1.0.12 |
-| Git Commit | 0756c43 |
 | Status | complete |
 | Recorded | 2026-08-08T18:35:39.6921079Z |
 | Test | PASS/FAIL: Copy a recent file's full path to the clipboard and verify concise success or failure toast feedback. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Run the packaged Quill `1.0.12` candidate built from Git commit `0756c43`.
+- Run the packaged Quill `1.0.12` candidate.
 - Have at least one recent-file entry with a known full path.
 - Open the Recent Files panel.
 
@@ -37,3 +36,4 @@
 ![Copy Path action with success toast](PRD-000026-CHANGE-TC-04-COPY-PATH.png)
 
 ![Copied full path in external text editor](PRD-000026-CHANGE-TC-04-CLIPBOARD-CONTENT.png)
+

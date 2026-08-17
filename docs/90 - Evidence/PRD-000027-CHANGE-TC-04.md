@@ -5,7 +5,6 @@
 | PRD | [PRD-000027-CHANGE](../../docs/25%20-%20Closed/PRD-000027-CHANGE.md) |
 | Acceptance Criteria | AC-04 |
 | Product Version | 1.0.14 |
-| Git Commit | 502d505bc8db8141f6cd1bd7267f48b0d80ad85a |
 | Status | complete |
 | Recorded | 2026-08-16T10:04:03.7562972Z |
 | Test | PASS/FAIL: Verify that an unchanged file and a successful Quill-originated save do not produce an external-change prompt when Quill regains focus. |

@@ -5,7 +5,6 @@
 | PRD | [PRD-000039-CHANGE](../../docs/25%20-%20Closed/PRD-000039-CHANGE.md) |
 | Acceptance Criteria | AC-01 |
 | Product Version | 1.0.15 |
-| Git Commit | d4a8d98de43bf3509e6b855ae822864546815381 |
 | Status | complete |
 | Recorded | 2026-08-17T19:28:55.4079995Z |
 | Test | PASS: Verify that editing raw Markdown preserves the raw Markdown pane's native scroll position while repositioning only the Render pane to the corresponding content. |

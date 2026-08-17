@@ -1,11 +1,10 @@
-# TC-02 Evidence
+﻿# TC-02 Evidence
 
 | Field | Detail |
 | --- | --- |
 | PRD | [PRD-000027-CHANGE](../../docs/25%20-%20Closed/PRD-000027-CHANGE.md) |
 | Acceptance Criteria | AC-02 |
 | Product Version | 1.0.14 |
-| Git Commit | 502d505bc8db8141f6cd1bd7267f48b0d80ad85a |
 | Status | complete |
 | Recorded | 2026-08-16T03:59:01.0123584Z |
 | Test | PASS/FAIL: Exercise the `KEEP QUILL VERSION` action and verify that it preserves the current Quill version. |
@@ -13,7 +12,7 @@
 
 ## Preconditions
 
-- Use the packaged Quill `1.0.14` candidate built from Git commit `502d505bc8db8141f6cd1bd7267f48b0d80ad85a`.
+- Use the packaged Quill `1.0.14` candidate.
 - Open a disposable Markdown file in Quill and prepare a second editor or file-management tool to modify the same file externally.
 - Ensure the open file has a known baseline before creating an external change.
 - Prepare distinct Quill and external contents so the selected version is unambiguous.
@@ -38,3 +37,4 @@ Screenshots from the manual run:
 ![External edit in Notepad](PRD-000027-CHANGE-TC-02-02.png)
 ![External-change prompt with Keep Quill Version](PRD-000027-CHANGE-TC-02-03.png)
 ![Quill version retained with dirty indicator](PRD-000027-CHANGE-TC-02-04.png)
+

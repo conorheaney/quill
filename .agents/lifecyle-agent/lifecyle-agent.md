@@ -87,11 +87,11 @@ The item is `In Progress / Implement` with its PRD in `docs/15 - Implement/`. Im
 
 ### Test
 
-The item is `In Progress / Test` with its PRD in `docs/20 - Test/`. Testing uses the committed packaged candidate from `main`. Each test case records its acceptance criterion, exact product version, Git commit, description, status, UTC timestamp, preconditions, reproducible steps, expected results, and evidence. Completed records use `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md` and link back to the PRD.
+The item is `In Progress / Test` with its PRD in `docs/20 - Test/`. Testing uses the committed packaged candidate from `main`. Each test case records its acceptance criterion, exact product version, description, status, UTC timestamp, preconditions, reproducible steps, expected results, and evidence. Completed records use `docs/90 - Evidence/PRD-NNNNNN-{CLASS}-TC-NN.md` and link back to the PRD.
 
-The PRD's `Verification` section must contain a Markdown tracking table with one row per planned test case and these columns: `Test Case`, `Criteria`, `Product Version`, `Status`, `Description`, and `Evidence`. Keep the row current while testing; the `Evidence` cell links to the corresponding record in `docs/90 - Evidence/` when evidence has been recorded. The exact Git commit belongs in the linked evidence record.
+The PRD's `Verification` section must contain a Markdown tracking table with one row per planned test case and these columns: `Test Case`, `Criteria`, `Product Version`, `Status`, `Description`, and `Evidence`. Keep the row current while testing; the `Evidence` cell links to the corresponding record in `docs/90 - Evidence/` when evidence has been recorded.
 
-Use `planned`, `open`, `in progress`, `complete`, `blocked`, or `exception` for the tracking-table `Status`. To generate a test evidence record, copy `.agents/lifecyle-agent/prd-testcase.md` to `docs/90 - Evidence/PRD-NNNNNN-TC-NN.md`, fill in the exact product version, Git commit, UTC timestamp, test, result, preconditions, numbered steps to reproduce, expected results, and supporting evidence, then link that file from the matching tracking-table row. Keep the `Preconditions`, `Steps to Reproduce`, and `Expected Results` sections between the metadata table and `Evidence` section in every new record.
+Use `planned`, `open`, `in progress`, `complete`, `blocked`, or `exception` for the tracking-table `Status`. To generate a test evidence record, copy `.agents/lifecyle-agent/prd-testcase.md` to `docs/90 - Evidence/PRD-NNNNNN-{CLASS}-TC-NN.md`, fill in the exact product version, UTC timestamp, test, result, preconditions, numbered steps to reproduce, expected results, and supporting evidence, then link that file from the matching tracking-table row. Keep the `Preconditions`, `Steps to Reproduce`, and `Expected Results` sections between the metadata table and `Evidence` section in every new record.
 
 If testing finds code work, return the PRD to `Implement`, update the backlog, record the transition, and only then resume implementation. Product-affecting corrections require a new patch candidate and repeat testing of affected coverage.
 
@@ -105,10 +105,12 @@ Product-affecting changes include application code, Tauri configuration, runtime
 
 - Product versioning is independent of PRD closure.
 - A new product cycle increases the minor version and resets the patch to zero.
-- Before a product-affecting PRD enters `Test`, create the next patch candidate, commit the product change and synchronized version files to `main`,  rebuild, and overwrite the root executable as required by the repository.
+- Before a product-affecting PRD enters `Test`, create the next patch candidate, commit the product change and synchronized version files to `main`, rebuild, and overwrite the root executable as required by the repository.
 - Documentation-only, evidence-only, and phase-transition commits do not require a product version bump unless they change packaged content.
 - Product tags are created only through the separate approved product-release process after the exact version has passed formal testing.
 
 ## Requirement shaping
 
 New requirements must be shaped with the repo-local [prd-grill-me](../../.codex/skills/prd-grill-me/SKILL.md) skill before becoming PRD items. If that skill is unavailable or broken, do not create the requirement.
+
+

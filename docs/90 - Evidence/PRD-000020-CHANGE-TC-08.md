@@ -12,4 +12,4 @@
 
 ## Evidence
 
-![Quill outside Tauri with disabled file controls and desktop-runtime message](PRD-000020-TC-08-NON-TAURI.png)
+![Quill outside Tauri with disabled file controls and desktop-runtime message](PRD-000020-CHANGE-TC-08-NON-TAURI.png)

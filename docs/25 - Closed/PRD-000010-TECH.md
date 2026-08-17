@@ -63,12 +63,13 @@ Promote this documentation-only item to Closed.
 | 2026-07-12T02:48:08.7003374Z | State | Current state: backlogged and waiting to move into `10 - Plan`. |
 | 2026-07-12T13:09:27.2378048Z | Consistency review | Reviewed during the workflow consistency sweep. No history backfill was required because this item has only reached `Backlog` and already had a captured UTC timestamp. |
 | 2026-08-13T23:57:10.6730371Z | Promotion | User approved promotion from `Backlog` to `Plan`; the workflow gate and pre-promotion validator passed without errors. |
-| 2026-08-14T00:03:47.3018614Z | Review evidence | Completed the requested detailed code review and recorded 13 prioritized, decision-ready findings in [PRD-000010-TECH-Code-Review.md](../90%20-%20Evidence/PRD-000010-TECH-Code-Review.md). |
+| 2026-08-14T00:03:47.3018614Z | Review evidence | Completed the requested detailed code review and recorded 13 prioritized, decision-ready findings in [PRD-000010-TECH-CODE-REVIEW.md](../90%20-%20Evidence/PRD-000010-TECH-CODE-REVIEW.md). |
 | 2026-08-14T18:18:16.4654439Z | Review triage | User assigned `REV-004` to the strengthened `PRD-000002-TECH` rather than creating a duplicate backlog item; the review decision was set to `DEFER` from this PRD. |
 | 2026-08-15T17:04:26.3888779Z | Scope clarification | User reduced PRD-000010-TECH to one deterministic documentation audit: prove the Code-Review document contains all findings and that every follow-on item has an owning backlog PRD. Product implementation remains outside this PRD. |
 | 2026-08-15T17:05:28.9276709Z | Promotion | User confirmed the documentation-only scope and promotion from Plan to Implement; the completed review and handoff record are ready for deterministic verification. |
 | 2026-08-15T17:05:45.2097678Z | Test handoff | Documentation-only implementation is complete: the review ledger has final dispositions and all follow-on ownership records exist. The item is ready for the single deterministic audit test. |
 | 2026-08-15T17:06:45.2111601Z | Verification attempt | The deterministic audit passed in the working tree: 13 ledger rows, zero `PENDING` dispositions, all owner PRDs present, and exactly one AC/TC. Evidence remains open until this documentation state is committed, as required for Test-phase evidence. |
-| 2026-08-15T17:18:49.3755060Z | Verification | Completed `TC-01` against the committed documentation state at Git commit `f9bfb90c1281102fdeb9584170c2ef9fa851c45c`; the review ledger, handoffs, and new backlog PRDs passed the deterministic audit. |
-| 2026-08-15T22:18:46.6579093Z | Promotion | User approved promotion from Test to Closed after TC-01 completed with evidence at Git commit `80a8629`; the closure gate and workflow checks were satisfied. |
+| 2026-08-15T17:18:49.3755060Z | Verification | Completed `TC-01` against the committed documentation state; the review ledger, handoffs, and new backlog PRDs passed the deterministic audit. |
+| 2026-08-15T22:18:46.6579093Z | Promotion | User approved promotion from Test to Closed after TC-01 completed with evidence; the closure gate and workflow checks were satisfied. |
+
 
