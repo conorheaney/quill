@@ -54,7 +54,7 @@ Implement the first pass around edit-driven one-way synchronization. Identify th
 
 ## Next Step
 
-Run the packaged-candidate verification for TC-01 through TC-03 using a document with substantial source-to-render height differences, then record the result and evidence for each case. The committed `1.0.15` candidate is ready for explicit `prd-promote` validation.
+Promote the completed PRD from Test to Closed after the final workflow validation. The committed `1.0.15` candidate has recorded results and evidence for TC-01 through TC-03.
 
 ## History
 
@@ -64,6 +64,7 @@ Run the packaged-candidate verification for TC-01 through TC-03 using a document
 | 2026-08-16T13:49:43.5505913Z | Plan |
 | 2026-08-16T14:03:24.5629410Z | Implement |
 | 2026-08-17T19:11:10.8049866Z | Test |
+| 2026-08-17T20:04:05.9109339Z | Closed |
 
 ## Audit
 
@@ -102,3 +103,6 @@ Run the packaged-candidate verification for TC-01 through TC-03 using a document
 | 2026-08-17T19:55:00.1529748Z | Verification change | Removed TC-05 at the user's request; the PRD remains in Test with TC-01 through TC-03 as the active verification range. |
 | 2026-08-17T19:56:08.8930404Z | Test result | User confirmed TC-01 through TC-03 complete; marked TC-01 and TC-02 complete and retained TC-03 complete. Evidence links and exact Git commit metadata remain unresolved where not recorded. |
 | 2026-08-17T19:57:29.1355770Z | Evidence update | Linked the existing TC-01 and TC-02 evidence records from the Verification table; both records include PASS results, exact `1.0.15` candidate metadata, Git commits, and supporting screenshots. |
+| 2026-08-17T20:02:52.3819950Z | Evidence update | Replaced the TC-03 evidence record's unresolved Git commit placeholder with commit `8eba8e4`. |
+| 2026-08-17T20:03:47.1498686Z | Promotion readiness | Updated Next Step after all planned test cases reached complete status with recorded product versions, Git commits, and evidence links. |
+| 2026-08-17T20:04:05.9109339Z | Promotion | Promoted from Test to Closed after all complete test records identified exact product versions, Git commits, and linked evidence. |

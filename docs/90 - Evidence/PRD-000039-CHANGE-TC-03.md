@@ -2,10 +2,10 @@
 
 | Field | Detail |
 | --- | --- |
-| PRD | [PRD-000039-CHANGE](../../docs/20%20-%20Test/PRD-000039-CHANGE.md) |
+| PRD | [PRD-000039-CHANGE](../../docs/25%20-%20Closed/PRD-000039-CHANGE.md) |
 | Acceptance Criteria | AC-03 |
 | Product Version | 1.0.15 |
-| Git Commit | PLACEHOLDER: exact candidate commit not recorded in the PRD |
+| Git Commit | 8eba8e4 |
 | Status | complete |
 | Recorded | 2026-08-17T19:49:23.5482227Z |
 | Test | PASS: Edit both panes and check that synchronization is stable and one-way. |

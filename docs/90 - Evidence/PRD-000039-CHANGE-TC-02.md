@@ -2,7 +2,7 @@
 
 | Field | Detail |
 | --- | --- |
-| PRD | [PRD-000039-CHANGE](../../docs/20%20-%20Test/PRD-000039-CHANGE.md) |
+| PRD | [PRD-000039-CHANGE](../../docs/25%20-%20Closed/PRD-000039-CHANGE.md) |
 | Acceptance Criteria | AC-02 |
 | Product Version | 1.0.15 |
 | Git Commit | a6755c1693369d57d9600dbaa8f17904eb4c797f |
