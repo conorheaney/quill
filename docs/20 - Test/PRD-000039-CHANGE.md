@@ -48,11 +48,13 @@ Implement the first pass around edit-driven one-way synchronization. Identify th
 
 | Test Case | Criteria | Product Version | Status | Description | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| TC-01 | AC-01, AC-02, AC-03, AC-04, AC-05 | pending | `planned` | Edit distinctive content in the raw Markdown and Render panes, then manually scroll each pane using a document where rendered content is substantially taller than source; verify one-way edit synchronization, anchored manual synchronization, stable behavior, and current-block indicators. | Not yet recorded. |
+| TC-01 | AC-01 | 1.0.15 | `complete` | Edit distinctive content in the raw Markdown pane and verify that the raw Markdown pane keeps its native scroll position while only the Render pane is automatically repositioned to the corresponding content. | [PRD-000039-CHANGE-TC-01.md](../90%20-%20Evidence/PRD-000039-CHANGE-TC-01.md) |
+| TC-02 | AC-02 | 1.0.15 | `complete` | Edit distinctive content in the Render pane and verify that the Render pane keeps its native scroll position while only the raw Markdown pane is automatically repositioned to the corresponding content. | [PRD-000039-CHANGE-TC-02.md](../90%20-%20Evidence/PRD-000039-CHANGE-TC-02.md) |
+| TC-03 | AC-03 | 1.0.15 | `complete` | Edit both panes in a document where rendered content is substantially taller than source; verify that edit-driven synchronization avoids proportional full-range mirroring, reciprocal scroll feedback, and visible interference with the active editor. | [PRD-000039-CHANGE-TC-03.md](../90%20-%20Evidence/PRD-000039-CHANGE-TC-03.md) |
 
 ## Next Step
 
-Run the packaged-candidate verification for TC-01 using a document with substantial source-to-render height differences, then record the result and evidence. The committed `1.0.15` candidate is ready for explicit `prd-promote` validation.
+Run the packaged-candidate verification for TC-01 through TC-03 using a document with substantial source-to-render height differences, then record the result and evidence for each case. The committed `1.0.15` candidate is ready for explicit `prd-promote` validation.
 
 ## History
 
@@ -94,3 +96,9 @@ Run the packaged-candidate verification for TC-01 using a document with substant
 | 2026-08-16T23:06:35.7538398Z | UX refinement | Raw edit synchronization now keeps large rendered blocks stable while the caret moves within them, scrolling only when the corresponding block is outside the Render viewport. |
 | 2026-08-17T19:05:59.3031412Z | Candidate preparation | Created product candidate `1.0.15`; release build and NSIS installer succeeded, root `quill.exe` was synchronized with `src-tauri/target/release/quill-tauri.exe`, and both executables matched SHA-256 `A22DA09FE06D3245520BE11326C87B12451FC246EFF7A757636B428041666F6D`. Static JavaScript and diff checks passed. |
 | 2026-08-17T19:11:10.8049866Z | Promotion | Promoted from Implement to Test after the committed and pushed `1.0.15` candidate, PRD gate checks, and workflow alignment validation passed. |
+| 2026-08-17T19:15:24.4791306Z | Verification refinement | Split the combined verification entry into five distinct planned test cases, one for each acceptance criterion, while keeping the PRD in Test and all evidence statuses open for execution. |
+| 2026-08-17T19:49:23.5482227Z | Test result | Recorded TC-03 as passed from the supplied execution screenshot and marked its verification row complete; the exact candidate Git commit remains unresolved in the evidence record. |
+| 2026-08-17T19:53:18.4973675Z | Verification change | Removed TC-04 and its open evidence record at the user's request; the PRD remains in Test with TC-01, TC-02, and TC-05 pending. |
+| 2026-08-17T19:55:00.1529748Z | Verification change | Removed TC-05 at the user's request; the PRD remains in Test with TC-01 through TC-03 as the active verification range. |
+| 2026-08-17T19:56:08.8930404Z | Test result | User confirmed TC-01 through TC-03 complete; marked TC-01 and TC-02 complete and retained TC-03 complete. Evidence links and exact Git commit metadata remain unresolved where not recorded. |
+| 2026-08-17T19:57:29.1355770Z | Evidence update | Linked the existing TC-01 and TC-02 evidence records from the Verification table; both records include PASS results, exact `1.0.15` candidate metadata, Git commits, and supporting screenshots. |
