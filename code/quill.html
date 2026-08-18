@@ -13,6 +13,14 @@
   <link rel="stylesheet" href="./styles/recent-files.css?v=1">
 </head>
 <body class="dark">
+  <header class="window-chrome" aria-label="Application window controls">
+    <div class="window-chrome-title">Quill Markdown Editor</div>
+    <div class="window-chrome-controls" role="group" aria-label="Window controls">
+      <button type="button" class="window-chrome-button" data-window-action="minimize" aria-label="Minimize window" title="MINIMIZE">−</button>
+      <button type="button" class="window-chrome-button" data-window-action="maximize" aria-label="Maximize window" title="MAXIMIZE">□</button>
+      <button type="button" class="window-chrome-button window-chrome-close" data-window-action="close" aria-label="Close window" title="CLOSE">×</button>
+    </div>
+  </header>
   <main class="shell">
     <aside class="sidebar">
       <section class="sidebar-product">
@@ -208,6 +216,7 @@
   <script src="./scripts/document-controller.js?v=1"></script>
   <script src="./scripts/recent-files.js?v=1"></script>
   <script src="./scripts/themes/theme-selector.js?v=1"></script>
+  <script src="./scripts/window-chrome.js?v=1"></script>
   <script src="./scripts/quill-app.js?v=12"></script>
 </body>
 </html>

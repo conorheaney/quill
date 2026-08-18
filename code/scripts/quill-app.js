@@ -888,6 +888,16 @@ const { createDocumentController } = window.QuillDocumentController;
     storage: { saveDraft }
   });
 
+  window.QuillWindowChrome?.initialise({
+    desktopBridge,
+    onRequestClose: () => confirmIfDirty(
+      "Close Quill?",
+      "You have unsaved changes in the current document. Closing Quill will discard those changes.",
+      "Close Quill"
+    ),
+    title: "Quill Markdown Editor"
+  });
+
   async function handleLoadDocument() {
     return documentController.loadDocument();
   }

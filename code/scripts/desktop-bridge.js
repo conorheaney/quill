@@ -3,6 +3,8 @@
   const appApi = tauriGlobal && tauriGlobal.app;
   const dialogApi = tauriGlobal && tauriGlobal.dialog;
   const coreApi = tauriGlobal && tauriGlobal.core;
+  const windowApi = tauriGlobal && tauriGlobal.window;
+  const eventApi = tauriGlobal && tauriGlobal.event;
 
   if (!dialogApi || typeof dialogApi.open !== "function" || typeof dialogApi.save !== "function") {
     return;
@@ -18,6 +20,18 @@
       extensions: ["md", "markdown", "txt"]
     }
   ];
+
+  function currentWindowLabel() {
+    return window.__TAURI_INTERNALS__?.metadata?.currentWindow?.label || "main";
+  }
+
+  function invokeWindowCommand(command, args) {
+    if (!coreApi || typeof coreApi.invoke !== "function") return Promise.resolve(null);
+    return coreApi.invoke(`plugin:window|${command}`, {
+      label: currentWindowLabel(),
+      ...(args || {})
+    });
+  }
 
   async function readMarkdownFile(filePath) {
     return coreApi.invoke("read_markdown_file", {
@@ -67,6 +81,58 @@
   }
 
   window.QuillDesktop = {
+    async minimizeWindow() {
+      if (windowApi && typeof windowApi.getCurrentWindow === "function") {
+        return windowApi.getCurrentWindow().minimize();
+      }
+      return invokeWindowCommand("minimize");
+    },
+
+    async toggleMaximizeWindow() {
+      if (windowApi && typeof windowApi.getCurrentWindow === "function") {
+        return windowApi.getCurrentWindow().toggleMaximize();
+      }
+      return invokeWindowCommand("toggle_maximize");
+    },
+
+    async isWindowMaximized() {
+      if (windowApi && typeof windowApi.getCurrentWindow === "function") {
+        return windowApi.getCurrentWindow().isMaximized();
+      }
+      return invokeWindowCommand("is_maximized");
+    },
+
+    async closeWindow() {
+      if (windowApi && typeof windowApi.getCurrentWindow === "function") {
+        return windowApi.getCurrentWindow().close();
+      }
+      return invokeWindowCommand("close");
+    },
+
+    async startWindowDragging() {
+      if (windowApi && typeof windowApi.getCurrentWindow === "function") {
+        return windowApi.getCurrentWindow().startDragging();
+      }
+      return invokeWindowCommand("start_dragging");
+    },
+
+    async setWindowTitle(title) {
+      if (windowApi && typeof windowApi.getCurrentWindow === "function") {
+        return windowApi.getCurrentWindow().setTitle(title);
+      }
+      return invokeWindowCommand("set_title", { value: title });
+    },
+
+    async onWindowCloseRequested(handler) {
+      if (windowApi && typeof windowApi.getCurrentWindow === "function") {
+        return windowApi.getCurrentWindow().onCloseRequested(handler);
+      }
+      if (eventApi && typeof eventApi.listen === "function") {
+        return eventApi.listen("tauri://close-requested", handler);
+      }
+      return Promise.resolve(null);
+    },
+
     async getAppVersion() {
       if (!appApi || typeof appApi.getVersion !== "function") {
         return null;
