@@ -35,12 +35,12 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
-| PRD-000040-UI | UI | Replace Tauri Chrome With HTML Title Bar | In Progress | Implement | Replace the current Tauri window chrome with a slightly taller HTML title bar containing the current title plus minimize, restore, and close controls. |
 
 ## Done
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000040-UI | UI | Replace Tauri Chrome With HTML Title Bar | Done | Closed | Replace the current Tauri window chrome with a slightly taller HTML title bar containing the current title plus minimize, restore, and close controls. |
 | PRD-000039-CHANGE | CHANGE | Synchronize Markdown And Render Scrolling | Done | Closed | Synchronize edit-driven and manual pane navigation while showing the corresponding current block in both panes. |
 | PRD-000027-CHANGE | CHANGE | Detect External File Changes | Done | Closed | Detect when the open file changes outside Quill and prompt the user with safe choices when Quill regains focus. |
 | PRD-000002-TECH | TECH | Establish Automated Test Suite | Done | Closed | Establish repeatable automated coverage for Markdown integrity, document persistence, controller workflows, desktop commands, and CI-ready regression checks. |
