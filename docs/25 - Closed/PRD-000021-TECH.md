@@ -54,14 +54,15 @@ Out:
 
 | Test Case | Criteria | Product Version | Status | Description | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| `TC-01` | `AC-01`, `AC-02` | `pending` | `planned` | Run the frontend build and verify authored resources compile or copy into a reproducible `dist/` output. | Not yet recorded. |
-| `TC-02` | `AC-03` | `pending` | `planned` | Run the preserved test, smoke, frontend-build, and packaged-build commands against the new layout. | Not yet recorded. |
-| `TC-03` | `AC-04` | `pending` | `planned` | Verify startup, asset loading, bridge availability, Markdown behavior, and representative smoke behavior remain unchanged. | Not yet recorded. |
-| `TC-04` | `AC-05` | `pending` | `planned` | Verify strict diagnostics apply to converted TypeScript while mixed JavaScript/TypeScript compilation remains available for later slices. | Not yet recorded. |
+| `TC-01` | `AC-01`, `AC-02` | `1.1.0` | `complete` | Run the frontend build and verify authored resources compile or copy into a reproducible `dist/` output. | [TC-01 evidence](../../docs/90%20-%20Evidence/PRD-000021-TECH-TC-01.md) |
+| `TC-02` | `AC-03` | `1.1.0` | `complete` | Run the preserved test, smoke, frontend-build, and packaged-build commands against the new layout. | [TC-02 evidence](../../docs/90%20-%20Evidence/PRD-000021-TECH-TC-02.md) |
+| `TC-03` | `AC-04` | `1.1.0` | `complete` | Automate generated-app startup serving, asset loading, bundle availability, bridge-adapter presence, and representative Markdown/runtime assertions. | [TC-03 evidence](../../docs/90%20-%20Evidence/PRD-000021-TECH-TC-03.md) |
+| `TC-04` | `AC-05` | `1.1.0` | `complete` | Verify strict diagnostics apply to converted TypeScript while mixed JavaScript/TypeScript compilation remains available for later slices. | [TC-04 evidence](../../docs/90%20-%20Evidence/PRD-000021-TECH-TC-04.md) |
+| `TC-05` | `AC-04` | `1.1.0` | `complete` | Manually smoke-check the packaged desktop behaviors in scope: startup, editing, rendering, save/load, Recent Files, themes, and maximize/restore controls. | [TC-05 evidence](../../docs/90%20-%20Evidence/PRD-000021-TECH-TC-05.md) |
 
 ## Next Step
 
-Review the Phase 1 verification results and, if accepted, promote this PRD to `Test` through the `prd-promote` workflow for formal candidate testing.
+No further workflow action is required; the PRD is closed with all planned verification complete.
 
 ## History
 
@@ -70,6 +71,8 @@ Review the Phase 1 verification results and, if accepted, promote this PRD to `T
 | 2026-07-17T18:28:11.8890877Z | Backlog |
 | 2026-08-29T11:17:54.7440982Z | Plan |
 | 2026-08-29T14:48:29.2009640Z | Implement |
+| 2026-08-29T15:19:22.4257122Z | Test |
+| 2026-08-29T16:05:06.2918424Z | Closed |
 
 ## Audit
 
@@ -87,4 +90,8 @@ Review the Phase 1 verification results and, if accepted, promote this PRD to `T
 | 2026-08-29T14:57:46.1743960Z | Implementation decision | Established the Phase 1 mixed JS/TypeScript foundation with a TypeScript entry point that preserves the existing browser-global initialization order; authored resources now live under `frontend/`, and esbuild generates the runtime bundle under ignored `dist/`. |
 | 2026-08-29T14:57:46.1743960Z | Verification | `npm run typecheck`, `npm run build:frontend`, `npm test` (47 Node tests and 8 Rust tests), `npm run build` (Tauri executable and NSIS installer), stale-path audit, and `npm run check:workflow` completed successfully. |
 | 2026-08-29T15:02:32.0000000Z | Candidate preparation | Created product candidate `1.1.0`; the release Tauri build and NSIS bundle succeeded, root `quill.exe` was synchronized with the release executable, and both SHA-256 hashes match: `592BF27813B3D8100C576A72513711A5CB553C3FD7952034AA1FE7F945661CF8`. TypeScript diagnostics and diff checks passed. |
+| 2026-08-29T15:19:22.4257122Z | Promotion | Promoted from `Implement` to `Test` after confirming the committed and pushed `1.1.0` candidate, synchronized executable hash, and passing workflow validation. |
+| 2026-08-29T15:32:33.7787363Z | Verification refinement | Split the original behavior-preservation coverage: TC-03 now records automatable generated-app/runtime checks, while TC-05 holds the manual packaged-desktop smoke checks. TC-01 through TC-04 completed with PASS evidence at product version `1.1.0`; TC-05 remains open for manual execution. |
+| 2026-08-29T16:05:06.2918424Z | Closure | Promoted from `Test` to `Closed` after all five planned test cases completed with PASS evidence for product version `1.1.0`, including the manual TC-05 smoke record and supporting screenshots. |
+| 2026-08-29T16:03:14.8684428Z | Verification scope clarification | Removed Tauri bridge actions and the close-control action from TC-05 at the user's direction. The remaining manually verified startup, editing, rendering, save/reload, Recent Files, theme, and maximize/restore coverage is complete. |
 
