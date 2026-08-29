@@ -33,16 +33,11 @@
 | PRD-000042-UI     | UI     | Extend Theme Surface Colors                 | Proposed | Backlog | Apply the PRD-000043-UI semantic theme tokens to dialogs, popup borders, toasts, and highlighted areas while preserving readability and visual hierarchy. |
 | PRD-000043-UI     | UI     | Refine Theme Token System                   | Proposed | Backlog | Establish a more cohesive, restrained visual language for Quill through semantic color roles, clearer elevation, focus states, and polished theme palettes. |
 
-## In Progress
-
-| ID | Class | Short Name | Status | Phase | Brief Description |
-| --- | --- | --- | --- | --- | --- |
-| PRD-000041-UI | UI | Remove Theme Gradients | In Progress | Implement | Remove gradient treatments from Quill's themes so the application has a more current, restrained visual style while preserving theme distinction and readability. |
-
 ## Done
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000041-UI | UI | Remove Theme Gradients | Done | Closed | Remove gradient treatments from Quill's themes so the application has a more current, restrained visual style while preserving theme distinction and readability. |
 | PRD-000040-UI | UI | Replace Tauri Chrome With HTML Title Bar | Done | Closed | Replace the current Tauri window chrome with a slightly taller HTML title bar containing the current title plus minimize, restore, and close controls. |
 | PRD-000039-CHANGE | CHANGE | Synchronize Markdown And Render Scrolling | Done | Closed | Synchronize edit-driven and manual pane navigation while showing the corresponding current block in both panes. |
 | PRD-000027-CHANGE | CHANGE | Detect External File Changes | Done | Closed | Detect when the open file changes outside Quill and prompt the user with safe choices when Quill regains focus. |
