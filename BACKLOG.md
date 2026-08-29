@@ -30,11 +30,14 @@
 | PRD-000036-TECH   | TECH   | Refresh Rendering After Save As             | Proposed | Backlog | Address `REV-011` by making file-path changes invalidate and rerender path-dependent assets immediately.                                                                                          |
 | PRD-000037-TECH   | TECH   | Add Bootstrap Failure Boundary              | Proposed | Backlog | Address `REV-012` by showing an actionable fatal-startup state when packaged initialization fails.                                                                                               |
 | PRD-000038-TECH   | TECH   | Make Recent-File Hydration Deterministic    | Proposed | Backlog | Address `REV-013` by preventing early recent-file activity from discarding persisted entries during hydration races.                                                                             |
+| PRD-000042-UI     | UI     | Extend Theme Surface Colors                 | Proposed | Backlog | Apply the PRD-000043-UI semantic theme tokens to dialogs, popup borders, toasts, and highlighted areas while preserving readability and visual hierarchy. |
+| PRD-000043-UI     | UI     | Refine Theme Token System                   | Proposed | Backlog | Establish a more cohesive, restrained visual language for Quill through semantic color roles, clearer elevation, focus states, and polished theme palettes. |
 
 ## In Progress
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000041-UI | UI | Remove Theme Gradients | In Progress | Implement | Remove gradient treatments from Quill's themes so the application has a more current, restrained visual style while preserving theme distinction and readability. |
 
 ## Done
 
