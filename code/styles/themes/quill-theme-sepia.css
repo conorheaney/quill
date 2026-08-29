@@ -1,5 +1,5 @@
 :root {
-  --bg: linear-gradient(135deg, #f3e3c3 0%, #d8b982 100%);
+  --bg: #f3e3c3;
   --panel: rgba(255, 248, 231, 0.9);
   --panel-strong: rgba(255, 250, 238, 0.97);
   --panel-solid: #fff4d9;

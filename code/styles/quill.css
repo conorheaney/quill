@@ -106,8 +106,7 @@
       display: grid;
       grid-template-rows: auto minmax(0, 1fr) auto;
       border-right: 1px solid var(--border);
-      background:
-        linear-gradient(180deg, var(--surface-highlight), transparent);
+      background: var(--panel);
     }
 
     .sidebar > div {
@@ -120,9 +119,7 @@
     .sidebar-product {
       padding: 24px 24px 20px;
       border-bottom: 1px solid rgba(212, 106, 58, 0.22);
-      background:
-        linear-gradient(120deg, rgba(212, 106, 58, 0.22), transparent 45%),
-        linear-gradient(300deg, rgba(70, 119, 173, 0.18), transparent 50%);
+      background: var(--surface-highlight-strong);
       box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.12);
     }
 
@@ -348,7 +345,7 @@
       min-height: 65px;
       padding: 14px 18px;
       border-bottom: 1px solid var(--border);
-      background: var(--surface-highlight);
+      background: var(--panel-solid);
       color: var(--muted);
       font-size: 0.92rem;
       letter-spacing: 0.03em;
@@ -860,9 +857,7 @@
     }
 
     .drop-active .editor {
-      background:
-        linear-gradient(rgba(212, 106, 58, 0.07), rgba(212, 106, 58, 0.07)),
-        transparent;
+      background: rgba(212, 106, 58, 0.07);
     }
 
     .dialog-backdrop::backdrop {
