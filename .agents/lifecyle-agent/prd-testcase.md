@@ -25,4 +25,4 @@ Describe the observable result that demonstrates the test passes.
 
 ## Evidence
 
-Embed or link supporting artifacts here, referencing and displaying screenshots inline.
+Embed or link supporting artifacts here. Screenshots must be displayed inline using Markdown image syntax (`![description](path)`); other artifacts may be referenced with ordinary links.
