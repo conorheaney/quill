@@ -46,5 +46,5 @@ All targeted assertions pass with exit code `0`. Successful controller operation
 | Cancellation and failure coverage | Dirty-dialog cancellation, desktop cancellation, and desktop failure paths passed without applying stale document results. |
 | Stale-completion coverage | Draft rescheduling cleared the stale timer and persisted only the latest content. |
 | Missing-dependency coverage | Desktop bridge, dialog, storage, and clock omissions returned explicit unavailable outcomes. |
-| Sources | [Controller workflow suite](../../tests/node/controller-workflows.test.js); [controller fakes](../../tests/node/helpers/controller-fakes.js); [document controller](../../code/scripts/document-controller.js) |
+| Sources | [Controller workflow suite](../../tests/node/controller-workflows.test.js); [controller fakes](../../tests/node/helpers/controller-fakes.js); [document controller](../../frontend/scripts/document-controller.js) |
 

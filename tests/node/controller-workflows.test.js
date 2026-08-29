@@ -1,7 +1,7 @@
 const assert = require("node:assert/strict");
 const test = require("node:test");
 
-const { createDocumentController } = require("../../code/scripts/document-controller");
+const { createDocumentController } = require("../../frontend/scripts/document-controller");
 const {
   createControllerEvents,
   createFakeClock

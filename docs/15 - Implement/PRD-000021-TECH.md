@@ -61,7 +61,7 @@ Out:
 
 ## Next Step
 
-Begin Phase 1 implementation: inventory current script dependencies, asset paths, test loading, and Rust bridge commands, then add the esbuild foundation and complete the static `code/` to `frontend/`/`dist/` move without changing product behavior.
+Review the Phase 1 verification results and, if accepted, promote this PRD to `Test` through the `prd-promote` workflow for formal candidate testing.
 
 ## History
 
@@ -84,4 +84,7 @@ Begin Phase 1 implementation: inventory current script dependencies, asset paths
 | 2026-08-29T14:47:55.7639519Z | Acceptance refinement | Replaced planning placeholders with concrete Phase 1 implementation criteria and four planned verification cases covering the esbuild foundation, static layout, preserved commands, behavior preservation, and strict TypeScript diagnostics. |
 | 2026-08-29T14:48:29.2009640Z | Promotion | Promoted from Plan to Implement after the Phase 1 scope, acceptance criteria, verification cases, and next implementation step were validated. |
 | 2026-08-29T14:49:01.8087342Z | Alignment repair | Moved the In Progress backlog row into the repository's required `In Progress` section after post-promotion validation identified the section-state invariant. |
+| 2026-08-29T14:57:46.1743960Z | Implementation decision | Established the Phase 1 mixed JS/TypeScript foundation with a TypeScript entry point that preserves the existing browser-global initialization order; authored resources now live under `frontend/`, and esbuild generates the runtime bundle under ignored `dist/`. |
+| 2026-08-29T14:57:46.1743960Z | Verification | `npm run typecheck`, `npm run build:frontend`, `npm test` (47 Node tests and 8 Rust tests), `npm run build` (Tauri executable and NSIS installer), stale-path audit, and `npm run check:workflow` completed successfully. |
+| 2026-08-29T15:02:32.0000000Z | Candidate preparation | Created product candidate `1.1.0`; the release Tauri build and NSIS bundle succeeded, root `quill.exe` was synchronized with the release executable, and both SHA-256 hashes match: `592BF27813B3D8100C576A72513711A5CB553C3FD7952034AA1FE7F945661CF8`. TypeScript diagnostics and diff checks passed. |
 

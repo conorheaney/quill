@@ -103,7 +103,7 @@
       <\/script>`;
       frame.srcdoc = appHtml
         .replace("<head>", "<head><base href=\"./\">")
-        .replace('<script src="./scripts/markdown.js?v=10"><\/script>', `${bootstrap}<script src="./scripts/markdown.js?v=10"><\/script>`);
+        .replace('<script src="./scripts/quill-app.js"><\/script>', `${bootstrap}<script src="./scripts/quill-app.js"><\/script>`);
 
       const loaded = new Promise((resolve, reject) => {
         frame.addEventListener("load", resolve, { once: true });

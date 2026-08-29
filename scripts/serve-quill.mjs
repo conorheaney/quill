@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const codeRoot = path.resolve(__dirname, "..", "code");
+const distRoot = path.resolve(__dirname, "..", "dist");
 const host = "127.0.0.1";
 const port = Number(process.env.PORT || 1420);
 
@@ -33,7 +33,7 @@ function resolveRequestPath(requestUrl) {
   }
 
   const normalizedPath = path.normalize(relativePath).replace(/^(\.\.(\/|\\|$))+/, "");
-  return path.join(codeRoot, normalizedPath);
+  return path.join(distRoot, normalizedPath);
 }
 
 const server = http.createServer(async (request, response) => {
@@ -45,7 +45,7 @@ const server = http.createServer(async (request, response) => {
 
   const targetPath = resolveRequestPath(request.url);
 
-  if (!targetPath.startsWith(codeRoot)) {
+  if (!targetPath.startsWith(distRoot)) {
     response.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
     response.end("Forbidden.");
     return;

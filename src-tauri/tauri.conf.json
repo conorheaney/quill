@@ -4,7 +4,8 @@
   "version": "../package.json",
   "identifier": "quill.markdown.editor",
   "build": {
-    "frontendDist": "../code"
+    "beforeDevCommand": "npm run build:frontend",
+    "frontendDist": "../dist"
   },
   "app": {
     "withGlobalTauri": true,

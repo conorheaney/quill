@@ -4,6 +4,6 @@ global.window = {
   }
 };
 
-require("../../../code/scripts/markdown.js");
+require("../../../frontend/scripts/markdown.js");
 
 module.exports = global.window.QuillMarkdown;
