@@ -50,9 +50,9 @@ The recommended first slice is a document-safety foundation: introduce regressio
 
 **Evidence**
 
-- [parseMarkdownBlocks](../../frontend/scripts/markdown.js#L545) recognizes only headings, fenced code, simple tables, contiguous blockquotes, flat ordered/unordered lists, and paragraphs. It trims paragraph lines and drops blank-line structure.
-- [blocksToMarkdown](../../frontend/scripts/markdown.js#L689) reconstructs every block with normalized spacing and syntax.
-- [onBlocksCommitted](../../frontend/scripts/quill-app.js#L864) serializes all preview blocks and replaces the full Markdown textarea after editing one rendered block.
+- [parseMarkdownBlocks](../../frontend/scripts/markdown.ts#L545) recognizes only headings, fenced code, simple tables, contiguous blockquotes, flat ordered/unordered lists, and paragraphs. It trims paragraph lines and drops blank-line structure.
+- [blocksToMarkdown](../../frontend/scripts/markdown.ts#L689) reconstructs every block with normalized spacing and syntax.
+- [onBlocksCommitted](../../frontend/scripts/quill-app.ts#L404) serializes all preview blocks and replaces the full Markdown textarea after editing one rendered block.
 
 **Impact**
 
@@ -70,8 +70,8 @@ A corpus covering supported and unsupported Markdown proves that editing one blo
 
 **Evidence**
 
-- [handleSaveDocument](../../frontend/scripts/quill-app.js#L724) captures `markdownPane.getValue()` before awaiting the desktop write.
-- After the await, it calls `markDirty(false)` unconditionally at [line 751](../../frontend/scripts/quill-app.js#L751).
+- [handleSaveDocument](../../frontend/scripts/quill-app.ts#L346) captures `markdownPane.getValue()` before awaiting the desktop write.
+- After the await, it calls the typed document-status boundary after the desktop write.
 - Input occurring during the write calls `markDirty(true)`, but there is no revision token or pending-save identity.
 
 **Impact**
@@ -90,9 +90,9 @@ An automated delayed-write test edits during save and verifies that the dirty ma
 
 **Evidence**
 
-- [storage.js](../../frontend/scripts/storage.js#L12) exposes `saveDraft` but no corresponding draft read operation.
-- Startup always calls `setDocumentContent(DEFAULT_CONTENT, ...)` at [quill-app.js:938](../../frontend/scripts/quill-app.js#L938), then writes that content back to draft storage at line 945 when autosave is enabled.
-- [setDocumentContent](../../frontend/scripts/quill-app.js#L427) also persists content unconditionally at line 440, independent of the autosave preference.
+- [storage.ts](../../frontend/scripts/storage.ts#L12) exposes `saveDraft` but no corresponding draft read operation.
+- Startup calls `setDocumentContent(DEFAULT_CONTENT, ...)` in [quill-app.ts](../../frontend/scripts/quill-app.ts), then writes that content back to draft storage when autosave is enabled.
+- [setDocumentContent](../../frontend/scripts/quill-app.ts#L212) also persists content unconditionally, independent of the autosave preference.
 
 **Impact**
 
@@ -152,7 +152,7 @@ Security tests demonstrate denied out-of-policy operations, CSP is non-null, and
 
 **Evidence**
 
-- [quill-app.js](../../frontend/scripts/quill-app.js) is 950 lines and owns bootstrap, DOM discovery, document/session state, draft persistence, disk persistence, rendering, image hydration, dialogs, syntax highlighting, canvas export, recent files, keyboard commands, and pane synchronization.
+- [quill-app.ts](../../frontend/scripts/quill-app.ts) owns bootstrap and composition while typed adapters own document/session state, draft persistence, rendering, image hydration, dialogs, recent files, keyboard commands, and pane synchronization.
 - Modules communicate through ordered `window.Quill*` globals, with script order declared manually in [quill.html:187-196](../../frontend/quill.html#L187).
 - `shellState` mixes document identity, transient dialog state, UI preferences, scroll coordination, and persistence timing.
 
@@ -166,15 +166,15 @@ Extract: (1) a pure `DocumentSession` state machine, (2) a persistence coordinat
 
 **Completion signal**
 
-Document open/edit/save/new/recovery transitions can be tested without constructing the full application DOM, and `quill-app.js` becomes composition/bootstrap rather than business logic.
+Document open/edit/save/new/recovery transitions can be tested without constructing the full application DOM, and `quill-app.ts` remains composition/bootstrap rather than business logic.
 
 ### REV-007 — Embedded assets can exhaust synchronous draft storage
 
 **Evidence**
 
-- Dropped images are converted to unbounded data URLs with `FileReader.readAsDataURL` at [quill-app.js:781-790](../../frontend/scripts/quill-app.js#L781).
-- Code-snippet images are inserted as canvas data URLs at [quill-app.js:648-654](../../frontend/scripts/quill-app.js#L648).
-- Every edit schedules a synchronous `localStorage.setItem` through [storage.js:12-14](../../frontend/scripts/storage.js#L12), with no `try/catch` or error result.
+- Dropped images are converted to data URLs with `FileReader.readAsDataURL` in [file-drop-controller.ts](../../frontend/scripts/file-drop-controller.ts).
+- Code-snippet images are inserted as canvas data URLs in [code-image-tool.ts](../../frontend/scripts/code-image-tool.ts).
+- Every edit schedules a synchronous `localStorage.setItem` through [storage.ts:12-14](../../frontend/scripts/storage.ts#L12), with no `try/catch` or error result.
 
 **Impact**
 
@@ -192,7 +192,7 @@ Oversized input is rejected or handled without freezing, data loss, or false sav
 
 **Evidence**
 
-- [desktop-bridge.js:37-55](../../frontend/scripts/desktop-bridge.js#L37) stores a promise containing each image's base64 payload in a process-lifetime `Map`.
+- [desktop-bridge.ts:37-55](../../frontend/scripts/desktop-bridge.ts#L37) stores a promise containing each image's base64 payload in a process-lifetime `Map`.
 - Successful entries are never evicted or invalidated, including after a file changes on disk or the active document changes.
 
 **Impact**
@@ -211,9 +211,9 @@ Cache size is bounded, changed files refresh, and document switches release entr
 
 **Evidence**
 
-- [handleMarkdownInput](../../frontend/scripts/quill-app.js#L406) immediately calls the complete render pipeline for every textarea input event.
-- [renderPreviewFromMarkdown](../../frontend/scripts/quill-app.js#L359) reparses all Markdown, replaces all preview blocks, rebuilds heading state/outline, starts image hydration, counts words, and triggers layout work.
-- [preview-pane.js:185-203](../../frontend/scripts/preview-pane.js#L185) replaces the full preview DOM and performs heading layout reads after each render.
+- [handleMarkdownInput](../../frontend/scripts/quill-app.ts#L193) immediately calls the complete render pipeline for every textarea input event.
+- [preview-renderer.ts](../../frontend/scripts/preview-renderer.ts) reparses Markdown, hydrates images, counts words, and triggers layout work.
+- [preview-pane.ts:185-203](../../frontend/scripts/preview-pane.ts#L185) replaces the full preview DOM and performs heading layout reads after each render.
 
 **Impact**
 
@@ -231,10 +231,10 @@ Defined large-document fixtures meet an agreed input-to-preview latency budget w
 
 **Evidence**
 
-- `markdown.js` contains both `renderMarkdown` and the active `parseMarkdownBlocks` plus `renderBlockContent` route; repository search found no caller for exported `renderMarkdown`.
-- `normaliseLanguage` exists in both [markdown.js:510](../../frontend/scripts/markdown.js#L510) and [quill-app.js:454](../../frontend/scripts/quill-app.js#L454).
-- Storage keys are declared in [app-config.js:7-8](../../frontend/scripts/app-config.js#L7) but unused there, while the live copies are in `storage.js`.
-- `RECENT_FILES_LIMIT` is independently declared in `storage.js` and `recent-files.js`.
+- `markdown.ts` contains both `renderMarkdown` and the active `parseMarkdownBlocks` plus `renderBlockContent` route; repository search found no caller for exported `renderMarkdown`.
+- `normaliseLanguage` exists in [markdown.ts](../../frontend/scripts/markdown.ts) and the coordinator’s injected code-dialog boundary.
+- Storage keys are declared in [app-config.ts:7-8](../../frontend/scripts/app-config.ts#L7) but unused there, while the live copies are in `storage.ts`.
+- `RECENT_FILES_LIMIT` is independently declared in `storage.ts` and `recent-files.ts`.
 
 **Impact**
 
@@ -252,8 +252,8 @@ Each behaviour has one owning implementation and repository search shows no dupl
 
 **Evidence**
 
-- Rendering derives image context from `shellState.currentFilePath` only inside [renderPreviewFromMarkdown](../../frontend/scripts/quill-app.js#L359).
-- Save/Save As updates `currentFilePath` at [quill-app.js:741](../../frontend/scripts/quill-app.js#L741) but does not rerender or rehydrate the preview.
+- Rendering derives image context from the typed document-status boundary inside [preview-renderer.ts](../../frontend/scripts/preview-renderer.ts).
+- Save/Save As updates the typed document-status boundary in [quill-app.ts](../../frontend/scripts/quill-app.ts).
 
 **Impact**
 
@@ -271,8 +271,8 @@ An integration test saves the same relative-image Markdown into two directories 
 
 **Evidence**
 
-- [quill-app.js:20](../../frontend/scripts/quill-app.js#L20) starts an async IIFE without a terminal `.catch`.
-- Recent-files and theme-selector templates are fetched at runtime; failed responses throw during initialization at [quill-app.js:31-49](../../frontend/scripts/quill-app.js#L31).
+- [quill-app.ts](../../frontend/scripts/quill-app.ts) starts the async bootstrap.
+- Recent-files and theme-selector templates are fetched at runtime; failed responses throw during initialization in [quill-app.ts](../../frontend/scripts/quill-app.ts).
 
 **Impact**
 
@@ -290,8 +290,8 @@ A test intentionally removes or rejects one fragment and verifies a readable err
 
 **Evidence**
 
-- Startup calls `recentFilesController.hydrate()` without awaiting it at [quill-app.js:937](../../frontend/scripts/quill-app.js#L937).
-- If an entry is recorded before storage resolves, [recent-files.js:274](../../frontend/scripts/recent-files.js#L274) returns when `state.entries.length` is nonzero instead of merging the stored list.
+- Startup calls `recentFilesController.hydrate()` without awaiting it in [quill-app.ts](../../frontend/scripts/quill-app.ts).
+- If an entry is recorded before storage resolves, [recent-files.ts:274](../../frontend/scripts/recent-files.ts#L274) returns when `state.entries.length` is nonzero instead of merging the stored list.
 
 **Impact**
 

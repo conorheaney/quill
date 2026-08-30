@@ -5,15 +5,15 @@ All repository-authored automated tests, fixtures, fakes, and supporting test da
 ## Layout
 
 - `node/`: JavaScript tests run by Node's built-in test runner.
-  - `determinism-contract.test.js`: runner, dependency, source-independence, and risk-matrix guardrails.
-  - `markdown-parsing.test.js`: Markdown block parsing cases.
-  - `markdown-rendering.test.js`: Markdown rendering, escaping, and URL-sanitization cases.
-  - `markdown-tables.test.js`: table-cell splitting and table-rendering cases.
-  - `markdown-serialization.test.js`: block conversion and Markdown serialization cases.
-  - `markdown-source-preservation.test.js`: byte-exact source-preservation contract cases.
-  - `persistence-latest-edit-wins.test.js`: deterministic save-race and dirty-state contracts.
-  - `persistence-draft-recovery.test.js`: newest-draft recovery contracts.
-  - `controller-workflows.test.js`: controller success, cancellation, failure, stale-timer, and missing-dependency workflows using fake ports.
+  - `determinism-contract.test.ts`: runner, dependency, source-independence, and risk-matrix guardrails.
+  - `markdown-parsing.test.ts`: Markdown block parsing cases.
+  - `markdown-rendering.test.ts`: Markdown rendering, escaping, and URL-sanitization cases.
+  - `markdown-tables.test.ts`: table-cell splitting and table-rendering cases.
+  - `markdown-serialization.test.ts`: block conversion and Markdown serialization cases.
+  - `markdown-source-preservation.test.ts`: byte-exact source-preservation contract cases.
+  - `persistence-latest-edit-wins.test.ts`: deterministic save-race and dirty-state contracts.
+  - `persistence-draft-recovery.test.ts`: newest-draft recovery contracts.
+  - `controller-workflows.test.ts`: controller success, cancellation, failure, stale-timer, and missing-dependency workflows using fake ports.
   - `helpers/`: shared Node-test setup for browser-oriented modules.
 - `fixtures/markdown/source-preservation/`: supported and unsupported Markdown source/expected pairs for owned-range edit contracts.
 - `manual/`: human-executed regression checklists kept outside the automated command.
@@ -37,7 +37,7 @@ Manual checklists under `manual/` are not discovered or run by `npm test`; execu
 
 ## Determinism contract
 
-Automated tests must not require network access, user files, user storage, real dialogs, wall-clock timing, fixed sleeps, browser downloads, execution order, prior-run state, or a hosted CI service. Use repository fixtures, injected fakes, controlled promises and sequence values, or per-test temporary directories instead. `determinism-contract.test.js` protects the canonical runner and rejects known external or nondeterministic runtime APIs in the automated test sources.
+Automated tests must not require network access, user files, user storage, real dialogs, wall-clock timing, fixed sleeps, browser downloads, execution order, prior-run state, or a hosted CI service. Use repository fixtures, injected fakes, controlled promises and sequence values, or per-test temporary directories instead. `determinism-contract.test.ts` protects the canonical runner and rejects known external or nondeterministic runtime APIs in the automated test sources.
 
 Coverage work follows `RISK-COVERAGE-MATRIX.md`. Quill does not use a numeric line, branch, function, or statement percentage as its coverage gate.
 

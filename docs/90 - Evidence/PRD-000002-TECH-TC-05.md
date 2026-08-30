@@ -15,14 +15,14 @@
 - Use product version `1.0.13`.
 - Run from the repository root with Node.js and the project dependencies available.
 - Ensure `QUILL_TEST_SEED_FAILURE` is unset.
-- Keep `tests/node/controller-workflows.test.js` and its approved fake dependencies unchanged before execution.
+- Keep `tests/node/controller-workflows.test.ts` and its approved fake dependencies unchanged before execution.
 
 ## Steps to Reproduce
 
 1. Confirm the checked-out commit is `af9df91f1de93a23523a460c3b87f5f665276d6e` and the product version is `1.0.13`.
 2. Clear `QUILL_TEST_SEED_FAILURE`.
-3. Run `node --test tests/node/controller-workflows.test.js`.
-4. If the managed sandbox blocks worker spawning with `spawn EPERM`, run the same file with `node --test --test-isolation=none tests/node/controller-workflows.test.js`.
+3. Run `node --test tests/node/controller-workflows.test.ts`.
+4. If the managed sandbox blocks worker spawning with `spawn EPERM`, run the same file with `node --test --test-isolation=none tests/node/controller-workflows.test.ts`.
 5. Verify successful load, save, and new-document results are applied through the controller callbacks.
 6. Verify dialog and desktop cancellations do not apply document callbacks.
 7. Verify desktop failures are reported without applying a document result.
@@ -39,12 +39,12 @@ All targeted assertions pass with exit code `0`. Successful controller operation
 | Check | Result |
 | --- | --- |
 | Candidate | Version `1.0.13`;; seed variable unset |
-| Isolated command | `node --test tests/node/controller-workflows.test.js` blocked by sandbox `spawn EPERM`; 0 assertions executed |
-| Executed fallback | `node --test --test-isolation=none tests/node/controller-workflows.test.js` |
+| Isolated command | `node --test tests/node/controller-workflows.test.ts` blocked by sandbox `spawn EPERM`; 0 assertions executed |
+| Executed fallback | `node --test --test-isolation=none tests/node/controller-workflows.test.ts` |
 | Outcome | 5 passed; 0 failed; exit `0`; duration `19.7222 ms` |
 | Success coverage | Load, save, and new-document results passed with expected bridge payloads and callbacks. |
 | Cancellation and failure coverage | Dirty-dialog cancellation, desktop cancellation, and desktop failure paths passed without applying stale document results. |
 | Stale-completion coverage | Draft rescheduling cleared the stale timer and persisted only the latest content. |
 | Missing-dependency coverage | Desktop bridge, dialog, storage, and clock omissions returned explicit unavailable outcomes. |
-| Sources | [Controller workflow suite](../../tests/node/controller-workflows.test.js); [controller fakes](../../tests/node/helpers/controller-fakes.js); [document controller](../../frontend/scripts/document-controller.js) |
+| Sources | [Controller workflow suite](../../tests/node/controller-workflows.test.ts); [controller fakes](../../tests/node/helpers/controller-fakes.ts); [document controller](../../frontend/scripts/document-controller.ts) |
 

@@ -31,12 +31,12 @@
 | PRD-000038-TECH   | TECH   | Make Recent-File Hydration Deterministic    | Proposed | Backlog | Address `REV-013` by preventing early recent-file activity from discarding persisted entries during hydration races.                                                                             |
 | PRD-000042-UI     | UI     | Extend Theme Surface Colors                 | Proposed | Backlog | Apply the PRD-000043-UI semantic theme tokens to dialogs, popup borders, toasts, and highlighted areas while preserving readability and visual hierarchy. |
 | PRD-000043-UI     | UI     | Refine Theme Token System                   | Proposed | Backlog | Establish a more cohesive, restrained visual language for Quill through semantic color roles, clearer elevation, focus states, and polished theme palettes. |
-| PRD-000044-TECH   | TECH   | Complete TypeScript Frontend Migration       | Proposed | Backlog | Complete the remaining staged TypeScript migration slices across shared contracts, frontend modules, tests, scripts, and enforcement while preserving Quill behavior and its native bridge. |
 
 ## In Progress
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000044-TECH | TECH | Complete TypeScript Frontend Migration | In Progress | Implement | Complete the remaining staged TypeScript migration slices across shared contracts, frontend modules, tests, scripts, and enforcement while preserving Quill behavior and its native bridge. |
 
 ## Done
 

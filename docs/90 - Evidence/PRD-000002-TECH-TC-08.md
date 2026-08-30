@@ -24,7 +24,7 @@
 2. Run `npm test` from the repository root and record whether both automated layers execute.
 3. If the managed sandbox denies Node worker creation with `spawn EPERM`, run `node --test --test-isolation=none` to execute the identical Node assertions without worker processes.
 4. Run `npm run test:rust` separately when the canonical command cannot reach the Rust layer because of the sandbox restriction.
-5. Confirm `tests/node/determinism-contract.test.js` passes its runner, dependency, external-API, nondeterministic-API, and risk-matrix checks.
+5. Confirm `tests/node/determinism-contract.test.ts` passes its runner, dependency, external-API, nondeterministic-API, and risk-matrix checks.
 6. Review `tests/RISK-COVERAGE-MATRIX.md` for explicit risk-based coverage and the absence of a numeric coverage threshold.
 7. Confirm the automated sources use repository fixtures, injected fakes, controlled promises or sequences, and isolated temporary directories instead of external state.
 8. Record commands, outcomes, test counts, runtime-independence checks, and environmental limitations under Evidence.
@@ -45,5 +45,5 @@ All Node and Rust assertions pass with exit code `0` using only local determinis
 | Runner dependencies | The root scripts use built-in `node --test` and `cargo test`; no browser runner, browser download, or code-coverage package is configured. |
 | Test state | Repository fixtures, injected fake ports, controlled promises and sequence values, and per-test temporary directories replaced user data and external state; the passing fallback followed the blocked canonical attempt without consuming prior results. |
 | Coverage policy | [Risk coverage matrix](../../tests/RISK-COVERAGE-MATRIX.md) governs critical, high, and moderate risks; every listed row is `covered`, and numeric code-coverage thresholds are explicitly excluded. |
-| Sources | [Determinism contract](../../tests/node/determinism-contract.test.js); [test documentation](../../tests/README.md); [risk coverage matrix](../../tests/RISK-COVERAGE-MATRIX.md) |
+| Sources | [Determinism contract](../../tests/node/determinism-contract.test.ts); [test documentation](../../tests/README.md); [risk coverage matrix](../../tests/RISK-COVERAGE-MATRIX.md) |
 

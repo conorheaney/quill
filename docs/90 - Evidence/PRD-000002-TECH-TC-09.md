@@ -35,14 +35,14 @@ The matrix provides complete ownership, activation, and failure-signal handoffs 
 | Check | Result |
 | --- | --- |
 | Candidate | Version `1.0.13`;. |
-| `REV-001` handoff | Contract: preserve every byte outside the Render-pane edit's owned range; owner: `PRD-000010-TECH`; activation: lossless source-backed edit implementation; signal: `markdown-source-preservation.test.js` reports the first unexpected outside-range byte change. |
-| `REV-002` handoff | Contract: stale save completion cannot clear a newer revision's dirty state; owner: `PRD-000010-TECH`; activation: revision-aware production persistence; signal: `persistence-latest-edit-wins.test.js` identifies the violating save order and dirty revision. |
-| `REV-003` handoff | Contract: startup recovers the newest valid draft without default-content overwrite; owner: `PRD-000023-CHANGE`; activation: file-persistence and recovery policy replacement; signal: `persistence-draft-recovery.test.js` identifies the incorrect document identity or revision sequence. |
+| `REV-001` handoff | Contract: preserve every byte outside the Render-pane edit's owned range; owner: `PRD-000010-TECH`; activation: lossless source-backed edit implementation; signal: `markdown-source-preservation.test.ts` reports the first unexpected outside-range byte change. |
+| `REV-002` handoff | Contract: stale save completion cannot clear a newer revision's dirty state; owner: `PRD-000010-TECH`; activation: revision-aware production persistence; signal: `persistence-latest-edit-wins.test.ts` identifies the violating save order and dirty revision. |
+| `REV-003` handoff | Contract: startup recovers the newest valid draft without default-content overwrite; owner: `PRD-000023-CHANGE`; activation: file-persistence and recovery policy replacement; signal: `persistence-draft-recovery.test.ts` identifies the incorrect document identity or revision sequence. |
 | Automated matrix guard | `priority-5 findings retain explicit owners and activation signals` passed during the clean 44-test Node run. |
 | Canonical attempt | `npm test` exited `1` because the managed sandbox denied Node worker creation with `spawn EPERM` before assertions executed. |
 | Clean fallback | `npm run test:node -- --test-isolation=none`: 44 passed, 0 failed, exit `0`; `npm run test:rust`: 7 passed, 0 failed, exit `0`. |
 | Node failure signal | With `QUILL_TEST_SEED_FAILURE=node`, the Node layer reported `Controlled Node test-layer failure was requested.` with 43 passed, 1 failed, exit `1`. |
 | Rust failure signal | With `QUILL_TEST_SEED_FAILURE=rust`, the Node layer passed 44 tests before Rust reported `Controlled Rust test-layer failure was requested.` and exited `101`. |
 | Cleanup | `QUILL_TEST_SEED_FAILURE` was cleared and confirmed unset after execution. |
-| Sources | [Risk coverage matrix](../../tests/RISK-COVERAGE-MATRIX.md); [determinism contract](../../tests/node/determinism-contract.test.js); [test documentation](../../tests/README.md) |
+| Sources | [Risk coverage matrix](../../tests/RISK-COVERAGE-MATRIX.md); [determinism contract](../../tests/node/determinism-contract.test.ts); [test documentation](../../tests/README.md) |
 

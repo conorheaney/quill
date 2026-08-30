@@ -15,17 +15,17 @@ This matrix governs Quill's automated test coverage. Coverage decisions are base
 
 | Risk area | Priority | Required coverage | Current automated coverage | Status |
 | --- | --- | --- | --- | --- |
-| Markdown parsing changes document structure incorrectly | High | Table-driven block-boundary and syntax cases | `tests/node/markdown-parsing.test.js` | covered |
-| Markdown rendering or URL sanitization emits incorrect or unsafe output | High | Table-driven rendering, escaping, link, and sanitization cases | `tests/node/markdown-rendering.test.js` | covered |
-| Table parsing or rendering changes cell boundaries or content | High | Escaped-cell and inline-rendering cases | `tests/node/markdown-tables.test.js` | covered |
-| Block conversion or serialization changes supported Markdown unexpectedly | High | Table-driven block conversion and serialization cases | `tests/node/markdown-serialization.test.js` | covered |
-| Render-pane edits alter bytes outside the owned source range | Critical | Supported and unsupported fixture pairs with byte-exact outside-range assertions | `tests/node/markdown-source-preservation.test.js` | covered |
-| Delayed or out-of-order saves clear newer dirty state | Critical | Controlled deferred writes covering current, stale, failed, cancelled, path-change, and document-change outcomes | `tests/node/persistence-latest-edit-wins.test.js` | covered |
-| Draft recovery selects stale content | Critical | Explicit revision, saved-sequence, and document-identity cases | `tests/node/persistence-draft-recovery.test.js` | covered |
-| Controller orchestration mishandles success, cancellation, failure, stale timers, or missing dependencies | High | Injected fake bridge, storage, clock, dialogs, and event ports | `tests/node/controller-workflows.test.js` | covered |
+| Markdown parsing changes document structure incorrectly | High | Table-driven block-boundary and syntax cases | `tests/node/markdown-parsing.test.ts` | covered |
+| Markdown rendering or URL sanitization emits incorrect or unsafe output | High | Table-driven rendering, escaping, link, and sanitization cases | `tests/node/markdown-rendering.test.ts` | covered |
+| Table parsing or rendering changes cell boundaries or content | High | Escaped-cell and inline-rendering cases | `tests/node/markdown-tables.test.ts` | covered |
+| Block conversion or serialization changes supported Markdown unexpectedly | High | Table-driven block conversion and serialization cases | `tests/node/markdown-serialization.test.ts` | covered |
+| Render-pane edits alter bytes outside the owned source range | Critical | Supported and unsupported fixture pairs with byte-exact outside-range assertions | `tests/node/markdown-source-preservation.test.ts` | covered |
+| Delayed or out-of-order saves clear newer dirty state | Critical | Controlled deferred writes covering current, stale, failed, cancelled, path-change, and document-change outcomes | `tests/node/persistence-latest-edit-wins.test.ts` | covered |
+| Draft recovery selects stale content | Critical | Explicit revision, saved-sequence, and document-identity cases | `tests/node/persistence-draft-recovery.test.ts` | covered |
+| Controller orchestration mishandles success, cancellation, failure, stale timers, or missing dependencies | High | Injected fake bridge, storage, clock, dialogs, and event ports | `tests/node/controller-workflows.test.ts` | covered |
 | Desktop path, MIME, read, or write contracts regress | High | Pure-helper cases and isolated per-test temporary-file contracts | `tests/rust/desktop_commands.rs` | covered |
-| Canonical runner stops reporting a failing automated layer | Critical | Node and Rust harness assertions with controlled failure support | `tests/node/test-harness.test.js`; `tests/rust/test_harness.rs` | covered |
-| Test implementation gains an external or environment-dependent runtime requirement | Critical | Static determinism contract over automated sources and root runner configuration | `tests/node/determinism-contract.test.js` | covered |
+| Canonical runner stops reporting a failing automated layer | Critical | Node and Rust harness assertions with controlled failure support | `tests/node/test-harness.test.ts`; `tests/rust/test_harness.rs` | covered |
+| Test implementation gains an external or environment-dependent runtime requirement | Critical | Static determinism contract over automated sources and root runner configuration | `tests/node/determinism-contract.test.ts` | covered |
 
 ## Priority-5 regression handoff
 
@@ -33,9 +33,9 @@ The product fixes remain outside `PRD-000002-TECH`. Their owning PRD must activa
 
 | Review finding | Required product contract | Owning product-fix PRD | Activation point | Regression contract and failure signal |
 | --- | --- | --- | --- | --- |
-| `REV-001` | A Render-pane edit changes only its owned source range; every untouched byte remains stable. | `PRD-000010-TECH` | Activate when its approved refactoring slice introduces the lossless source-backed edit model. | `tests/node/markdown-source-preservation.test.js` reports the first unexpected byte change outside the owned range. |
-| `REV-002` | A stale save completion cannot clear dirty state for a newer revision. | `PRD-000010-TECH` | Activate when its approved refactoring slice introduces revision-aware production persistence. | `tests/node/persistence-latest-edit-wins.test.js` identifies the save ordering and dirty revision that violated latest-edit-wins. |
-| `REV-003` | Startup recovery selects the newest valid draft without overwriting it with default content. | `PRD-000023-CHANGE` | Activate while replacing the current local-draft behavior with the planned file-persistence and recovery policy. | `tests/node/persistence-draft-recovery.test.js` identifies the document identity or revision sequence recovered incorrectly. |
+| `REV-001` | A Render-pane edit changes only its owned source range; every untouched byte remains stable. | `PRD-000010-TECH` | Activate when its approved refactoring slice introduces the lossless source-backed edit model. | `tests/node/markdown-source-preservation.test.ts` reports the first unexpected byte change outside the owned range. |
+| `REV-002` | A stale save completion cannot clear dirty state for a newer revision. | `PRD-000010-TECH` | Activate when its approved refactoring slice introduces revision-aware production persistence. | `tests/node/persistence-latest-edit-wins.test.ts` identifies the save ordering and dirty revision that violated latest-edit-wins. |
+| `REV-003` | Startup recovery selects the newest valid draft without overwriting it with default content. | `PRD-000023-CHANGE` | Activate while replacing the current local-draft behavior with the planned file-persistence and recovery policy. | `tests/node/persistence-draft-recovery.test.ts` identifies the document identity or revision sequence recovered incorrectly. |
 
 If an owner or activation point changes during planning, update this matrix and the owning PRD's audit record before implementing the product fix.
 

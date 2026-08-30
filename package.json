@@ -1,6 +1,6 @@
 {
   "name": "Quill",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Local-first Markdown editor with a Tauri desktop shell.",
   "private": true,
   "scripts": {
@@ -8,14 +8,14 @@
     "test:node": "node --test",
     "test:rust": "cargo test --manifest-path src-tauri/Cargo.toml",
     "start": "npm run tauri:dev",
-    "build:frontend": "node scripts/build-frontend.mjs",
+    "build:frontend": "node scripts/build-frontend.ts",
     "typecheck": "tsc --noEmit",
-    "smoke:dev": "npm run build:frontend && node scripts/serve-quill.mjs",
+    "smoke:dev": "npm run build:frontend && node scripts/serve-quill.ts",
     "check:workflow": "powershell -NoProfile -ExecutionPolicy Bypass -File .agents/lifecyle-agent/check-workflow.ps1",
     "check:workflow:details": "powershell -NoProfile -ExecutionPolicy Bypass -File .agents/lifecyle-agent/check-workflow.ps1 -Detailed",
     "tauri:info": "tauri info",
     "tauri:dev": "tauri dev",
-    "version:bump": "node scripts/bump-version.mjs",
+    "version:bump": "node scripts/bump-version.ts",
     "build": "npm run tauri:build",
     "tauri:build": "tauri build"
   },

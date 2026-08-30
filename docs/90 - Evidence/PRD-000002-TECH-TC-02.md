@@ -19,7 +19,7 @@
 ## Steps to Reproduce
 
 1. Confirm the checked-out commit is `af9df91f1de93a23523a460c3b87f5f665276d6e` and the product version is `1.0.13`.
-2. Run `node --test tests/node/markdown-parsing.test.js tests/node/markdown-rendering.test.js tests/node/markdown-tables.test.js tests/node/markdown-serialization.test.js`.
+2. Run `node --test tests/node/markdown-parsing.test.ts tests/node/markdown-rendering.test.ts tests/node/markdown-tables.test.ts tests/node/markdown-serialization.test.ts`.
 3. Confirm the parsing cases cover headings, paragraphs, lists, blockquotes, fenced code, and table rows.
 4. Confirm the rendering and sanitization cases cover block and inline Markdown, escaped HTML-like text, fenced code, safe HTTPS and anchor links, and rejected unsafe links.
 5. Confirm the table cases cover outer-pipe trimming, escaped pipes, pipes inside code spans, and inline Markdown within rendered tables.
@@ -33,8 +33,8 @@ All 20 table-driven Markdown cases pass with exit code `0`, and their actual par
 ## Evidence
 
 - Candidate identity: product version `1.0.13`;; `QUILL_TEST_SEED_FAILURE` unset.
-- Initial command: `node --test tests/node/markdown-parsing.test.js tests/node/markdown-rendering.test.js tests/node/markdown-tables.test.js tests/node/markdown-serialization.test.js`.
+- Initial command: `node --test tests/node/markdown-parsing.test.ts tests/node/markdown-rendering.test.ts tests/node/markdown-tables.test.ts tests/node/markdown-serialization.test.ts`.
 - Initial result: the managed sandbox denied Node worker creation with `spawn EPERM`; 0 assertions executed and the command exited `1`.
-- Executed fallback: `node --test --test-isolation=none tests/node/markdown-parsing.test.js tests/node/markdown-rendering.test.js tests/node/markdown-tables.test.js tests/node/markdown-serialization.test.js`.
+- Executed fallback: `node --test --test-isolation=none tests/node/markdown-parsing.test.ts tests/node/markdown-rendering.test.ts tests/node/markdown-tables.test.ts tests/node/markdown-serialization.test.ts`.
 - Final result: 20 tests passed, 0 failed, 0 cancelled, 0 skipped, 0 todo; exit code `0`; duration `26.9153 ms`.
 
