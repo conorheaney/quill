@@ -55,18 +55,18 @@ Each phase must keep the migration within the approved scope, run focused diagno
 
 | Test Case | Criteria | Product Version | Status | Description | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| TC-01 | AC-01 | pending | `planned` | Run shared-contract type checks and bridge contract tests against the existing Rust/Tauri command signatures and boundary payloads. | Not yet recorded. |
-| TC-02 | AC-02 | pending | `planned` | Run strict diagnostics and focused tests for the Phase 3 leaf modules, then run the complete Node test suite at the phase boundary. | Not yet recorded. |
-| TC-03 | AC-03 | pending | `planned` | Run strict diagnostics and focused persistence, controller, desktop-command, recent-file, cancellation, failure, and latest-edit-wins tests for Phase 4, followed by the complete Node test suite. | Not yet recorded. |
-| TC-04 | AC-04 | pending | `planned` | Run strict diagnostics, frontend smoke verification, and packaged desktop checks for Phase 5 startup, editing, rendering, save/load, recent files, themes, and window controls. | Not yet recorded. |
-| TC-05 | AC-05 | pending | `planned` | Run converted TypeScript tests/helpers and Node tooling through the preserved test, frontend-build, smoke, and packaged-build command names; search for remaining authored JavaScript/MJS. | Not yet recorded. |
-| TC-06 | AC-06 | pending | `planned` | Build from a clean checkout, verify strict checks and reproducible `dist/` output, run full tests and smoke/package checks, and confirm compatibility shims and obsolete global loading are absent. | Not yet recorded. |
+| TC-01 | AC-01 | 1.1.1 | `complete` | Run shared-contract type checks and bridge contract tests against the existing Rust/Tauri command signatures and boundary payloads. | [TC-01 evidence](../../docs/90%20-%20Evidence/PRD-000044-TECH-TC-01.md) |
+| TC-02 | AC-02 | 1.1.1 | `complete` | Run strict diagnostics and focused tests for the Phase 3 leaf modules, then run the complete Node test suite at the phase boundary. | [TC-02 evidence](../../docs/90%20-%20Evidence/PRD-000044-TECH-TC-02.md) |
+| TC-03 | AC-03 | 1.1.1 | `complete` | Run strict diagnostics and focused persistence, controller, desktop-command, recent-file, cancellation, failure, and latest-edit-wins tests for Phase 4, followed by the complete Node test suite. | [TC-03 evidence](../../docs/90%20-%20Evidence/PRD-000044-TECH-TC-03.md) |
+| TC-04 | AC-04 | 1.1.1 | `complete` | Run strict diagnostics, frontend smoke verification, and packaged desktop checks for Phase 5 startup, editing, rendering, save/load, recent files, themes, and window controls. | [TC-04 evidence](../../docs/90%20-%20Evidence/PRD-000044-TECH-TC-04.md) |
+| TC-05 | AC-05 | 1.1.1 | `complete` | Run converted TypeScript tests/helpers and Node tooling through the preserved test, frontend-build, smoke, and packaged-build command names; search for remaining authored JavaScript/MJS. | [TC-05 evidence](../../docs/90%20-%20Evidence/PRD-000044-TECH-TC-05.md) |
+| TC-06 | AC-06 | 1.1.1 | `complete` | Build from a clean checkout, verify strict checks and reproducible `dist/` output, run full tests and smoke/package checks, and confirm compatibility shims and obsolete global loading are absent. | [TC-06 evidence](../../docs/90%20-%20Evidence/PRD-000044-TECH-TC-06.md) |
 
 ## Next Step
 
 Phase 2 shared-contract implementation has started with typed storage, application-configuration, desktop-bridge, Markdown, document, and pane-controller contracts. The Phase 3 leaf modules are converted and verified, and Phase 4 `recent-files` and `document-controller` plus the Phase 5 `preview-pane`, `preview-renderer`, `window-chrome`, theme-selector, shell-layout, document-status, autosave, scroll-sync, code-dialog, desktop-shell, and file-drop controllers are converted to strict TypeScript with narrow contracts. The `quill-app` coordinator is now `quill-app.ts`, delegates dialog, code-image, toast, preview-rendering, pane-layout, document-status, autosave, scroll, code-dialog, desktop availability, file-drop, and Markdown toolbar behavior to typed adapters, and uses required DOM and document-result boundaries. Its duplicate code-image and Markdown-action implementations have been removed. The Phase 6 Markdown loader, controller fakes, persistence contract, source-preservation helpers, frontend build tool, dev server, version-bump tool, all authored Node test suites, and their canonical documentation links are now TypeScript and preserve their existing CommonJS/native-Node command boundaries. Phase 7 now has `allowJs` disabled, no `withGlobalTauri` or `window.__TAURI__` bridge usage, direct Tauri API imports, warning-free workflow checks, and verified generated bundle/package output. Continue with clean-build reproducibility and candidate preparation before promoting to `Test`.
 
-Candidate checkpoint: Product candidate `1.1.1` is built and synchronized and is ready for the commit checkpoint. After the candidate commit, invoke `prd-promote` for explicit Test-phase validation.
+Candidate `1.1.1` is committed and promoted to Test. TC-01 through TC-05 passed. TC-06 exposed a Windows line-ending portability defect in the source-preservation test helper; the working-tree correction passes, but a new committed candidate and rerun are required before Test can pass.
 
 ## History
 
@@ -75,6 +75,7 @@ Candidate checkpoint: Product candidate `1.1.1` is built and synchronized and is
 | 2026-08-29T16:09:35.7218332Z | Backlog |
 | 2026-08-29T20:26:18.7919865Z | Plan |
 | 2026-08-29T20:31:44.1709963Z | Implement |
+| 2026-08-30T21:07:46.3549701Z | Test |
 
 ## Audit
 
@@ -162,3 +163,4 @@ Candidate checkpoint: Product candidate `1.1.1` is built and synchronized and is
 | 2026-08-30T20:59:23.5386955Z | Verification | After the configuration cleanup, `npm run typecheck`, `npm run build:frontend`, `npm run check:workflow`, and `npx tauri build --debug` passed; the debug executable and NSIS installer were generated successfully. Current product version remains `1.1.0`; candidate preparation proposes patch version `1.1.1`. |
 | 2026-08-30T21:03:29.4839390Z | Candidate preparation | Created product candidate `1.1.1` by synchronizing `package.json`, `package-lock.json`, and `src-tauri/Cargo.toml`; release build produced `src-tauri/target/release/quill-tauri.exe` and `Quill_1.1.1_x64-setup.exe`; copied the release executable to root `quill.exe`. |
 | 2026-08-30T21:03:29.4839390Z | Candidate verification | Release and root executable SHA-256 hashes match: `439DF71A3BB653189A86B81B0022ECF11D2A8CE16A95910EBD98E2EB91771C60`. `npm run typecheck`, `npm test` (47 Node tests and 8 Rust tests), `npm run check:workflow`, and `git diff --check` passed. Candidate is ready for the commit checkpoint. |
+| 2026-08-30T21:07:46.3549701Z | Promotion | Promoted from Implement to Test after the committed `1.1.1` candidate, required implementation, release artifacts, synchronized root executable, and pre-promotion workflow validation were confirmed. |

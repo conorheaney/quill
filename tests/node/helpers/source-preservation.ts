@@ -12,11 +12,15 @@ interface ByteEdit {
 
 function replaceOwnedBytes(source: string, ownedSource: string, replacement: string): ByteEdit {
   const sourceBytes = Buffer.from(source, "utf8");
-  const ownedBytes = Buffer.from(ownedSource, "utf8");
+  const ownedCandidates = [ownedSource, ownedSource.replace(/\n/g, "\r\n")];
+  const ownedBytes = ownedCandidates
+    .map((candidate) => Buffer.from(candidate, "utf8"))
+    .find((candidate) => sourceBytes.indexOf(candidate) !== -1);
+  if (!ownedBytes) {
+    throw new Error("owned source range must exist in the fixture");
+  }
   const replacementBytes = Buffer.from(replacement, "utf8");
   const start = sourceBytes.indexOf(ownedBytes);
-
-  sourceAssert.notEqual(start, -1, "owned source range must exist in the fixture");
   sourceAssert.equal(
     sourceBytes.indexOf(ownedBytes, start + ownedBytes.length),
     -1,

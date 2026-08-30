@@ -36,7 +36,7 @@
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
-| PRD-000044-TECH | TECH | Complete TypeScript Frontend Migration | In Progress | Implement | Complete the remaining staged TypeScript migration slices across shared contracts, frontend modules, tests, scripts, and enforcement while preserving Quill behavior and its native bridge. |
+| PRD-000044-TECH | TECH | Complete TypeScript Frontend Migration | In Progress | Test | Complete the remaining staged TypeScript migration slices across shared contracts, frontend modules, tests, scripts, and enforcement while preserving Quill behavior and its native bridge. |
 
 ## Done
 
