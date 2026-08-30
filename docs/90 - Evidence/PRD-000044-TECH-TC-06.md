@@ -6,9 +6,9 @@
 | Acceptance Criteria | AC-06 |
 | Product Version | 1.1.1 |
 | Status | complete |
-| Recorded | 2026-08-30T21:45:00.0000000Z |
+| Recorded | 2026-08-30T22:15:00.0000000Z |
 | Test | Clean-checkout enforcement, reproducibility, full verification, smoke, package, and compatibility-shim checks. |
-| Result | FAIL |
+| Result | PASS |
 
 ## Preconditions
 
@@ -25,7 +25,7 @@
 5. Run `npm run smoke:dev` on an isolated port and request the shell, generated bundle, and mounted fragments.
 6. Run `npx tauri build --debug`.
 7. Search authored source/config paths for compatibility globals, obsolete loading, and `.js`/`.mjs` files.
-8. Apply the verified line-ending-safe helper correction and rerun strict/full checks in the working tree and clean clone.
+8. Rerun strict/full checks from a fresh clean clone of the committed correction.
 
 ## Expected Results
 
@@ -34,24 +34,22 @@ The committed candidate should pass all checks from a clean checkout, produce id
 ## Evidence
 
 - The clean clone passed `npm run typecheck`, frontend build, two-build reproducibility, exact `npm run smoke:dev` HTTP checks, and `npx tauri build --debug`.
-- The clean clone initially failed `npm test` at 46 passing / 1 failing Node test because `source-preservation.test.ts` could not find its multiline owned range after normal Windows checkout line-ending conversion.
-- The working-tree correction in `tests/node/helpers/source-preservation.ts` supports LF and CRLF owned-range matching while preserving the actual source bytes; after that correction, the working tree and corrected clean clone passed `npm run typecheck` and `npm test` with 47 Node and 8 Rust tests passing.
+- The first pre-correction candidate exposed a Windows line-ending failure in the source-preservation helper. The committed correction in `tests/node/helpers/source-preservation.ts` supports LF and CRLF owned-range matching while preserving the actual source bytes.
+- A fresh clean clone of commit `8816d5c` passed `npm run typecheck` and `npm test` with 47 Node and 8 Rust tests passing.
 - Authored source/config searches in the clean clone returned zero `withGlobalTauri`, `window.__TAURI__`, or `__TAURI__` matches and zero authored `.js`/`.mjs` files.
-- TC-06 remains failed for the committed `1.1.1` candidate because the correction is currently uncommitted. A new committed candidate and rerun are required before this acceptance criterion can pass.
+- TC-06 passes for the committed `1.1.1` candidate at commit `8816d5c`.
 
 Basic command output:
 
 ```text
-clean clone: status empty
+clean clone commit: 8816d5c
 
 > Quill@1.1.1 typecheck
 > tsc --noEmit
 
 ℹ tests 47
-ℹ pass 46
-ℹ fail 1
-✖ owned-range edit preserves all other bytes: unsupported and nuanced Markdown
-AssertionError [ERR_ASSERTION]: owned source range must exist in the fixture
+ℹ pass 47
+ℹ fail 0
 
 bundle-equal=True
 map-equal=True
@@ -73,7 +71,6 @@ window.__TAURI__-authored-count=0
 __TAURI__-authored-count=0
 authored-js-mjs-count=0
 
-After the working-tree helper correction:
 ℹ tests 47
 ℹ pass 47
 ℹ fail 0
