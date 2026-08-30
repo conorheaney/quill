@@ -2,7 +2,7 @@
 
 | Field | Detail |
 | --- | --- |
-| PRD | [PRD-000044-TECH](../../docs/20%20-%20Test/PRD-000044-TECH.md) |
+| PRD | [PRD-000044-TECH](../../docs/25%20-%20Closed/PRD-000044-TECH.md) |
 | Acceptance Criteria | AC-05 |
 | Product Version | 1.1.1 |
 | Status | complete |

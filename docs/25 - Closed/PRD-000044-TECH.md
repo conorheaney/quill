@@ -76,6 +76,7 @@ Candidate `1.1.1` is committed and promoted to Test. TC-01 through TC-06 pass. T
 | 2026-08-29T20:26:18.7919865Z | Plan |
 | 2026-08-29T20:31:44.1709963Z | Implement |
 | 2026-08-30T21:07:46.3549701Z | Test |
+| 2026-08-30T21:52:22.4580305Z | Closed |
 
 ## Audit
 
@@ -164,3 +165,4 @@ Candidate `1.1.1` is committed and promoted to Test. TC-01 through TC-06 pass. T
 | 2026-08-30T21:03:29.4839390Z | Candidate preparation | Created product candidate `1.1.1` by synchronizing `package.json`, `package-lock.json`, and `src-tauri/Cargo.toml`; release build produced `src-tauri/target/release/quill-tauri.exe` and `Quill_1.1.1_x64-setup.exe`; copied the release executable to root `quill.exe`. |
 | 2026-08-30T21:03:29.4839390Z | Candidate verification | Release and root executable SHA-256 hashes match: `439DF71A3BB653189A86B81B0022ECF11D2A8CE16A95910EBD98E2EB91771C60`. `npm run typecheck`, `npm test` (47 Node tests and 8 Rust tests), `npm run check:workflow`, and `git diff --check` passed. Candidate is ready for the commit checkpoint. |
 | 2026-08-30T21:07:46.3549701Z | Promotion | Promoted from Implement to Test after the committed `1.1.1` candidate, required implementation, release artifacts, synchronized root executable, and pre-promotion workflow validation were confirmed. |
+| 2026-08-30T21:52:22.4580305Z | Promotion | Promoted from Test to Closed after all six planned test cases recorded PASS for exact product version `1.1.1`; clean-checkout, reproducibility, smoke, package, strict-check, and workflow evidence were complete. |

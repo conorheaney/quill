@@ -32,16 +32,11 @@
 | PRD-000042-UI     | UI     | Extend Theme Surface Colors                 | Proposed | Backlog | Apply the PRD-000043-UI semantic theme tokens to dialogs, popup borders, toasts, and highlighted areas while preserving readability and visual hierarchy. |
 | PRD-000043-UI     | UI     | Refine Theme Token System                   | Proposed | Backlog | Establish a more cohesive, restrained visual language for Quill through semantic color roles, clearer elevation, focus states, and polished theme palettes. |
 
-## In Progress
-
-| ID | Class | Short Name | Status | Phase | Brief Description |
-| --- | --- | --- | --- | --- | --- |
-| PRD-000044-TECH | TECH | Complete TypeScript Frontend Migration | In Progress | Test | Complete the remaining staged TypeScript migration slices across shared contracts, frontend modules, tests, scripts, and enforcement while preserving Quill behavior and its native bridge. |
-
 ## Done
 
 | ID | Class | Short Name | Status | Phase | Brief Description |
 | --- | --- | --- | --- | --- | --- |
+| PRD-000044-TECH | TECH | Complete TypeScript Frontend Migration | Done | Closed | Complete the remaining staged TypeScript migration slices across shared contracts, frontend modules, tests, scripts, and enforcement while preserving Quill behavior and its native bridge. |
 | PRD-000021-TECH | TECH | TypeScript Migration For Frontend Runtime | Done | Closed | Plan and execute a staged TypeScript migration for Quill's frontend runtime and desktop bridge so the editor gains stronger module contracts, safer state handling, and better refactor support. |
 | PRD-000041-UI | UI | Remove Theme Gradients | Done | Closed | Remove gradient treatments from Quill's themes so the application has a more current, restrained visual style while preserving theme distinction and readability. |
 | PRD-000040-UI | UI | Replace Tauri Chrome With HTML Title Bar | Done | Closed | Replace the current Tauri window chrome with a slightly taller HTML title bar containing the current title plus minimize, restore, and close controls. |
