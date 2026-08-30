@@ -15,7 +15,7 @@ description: Implement the code changes described by an existing project PRD onl
 
 ## Guardrail
 
-- Use `.agents/lifecyle-agent/lifecyle-agent.md` as the lifecycle authority, `BACKLOG.md` as the item-state authority, and `AGENTS.md` as the local safety contract.
+- Use `.agents/lifecyle-agent/lifecyle-agent.md` as the lifecycle authority, the target PRD folder as its phase authority, and `AGENTS.md` as the local safety contract. Read `BACKLOG.md` only when the operation concerns Backlog membership.
 - Validate the target PRD against those sources instead of re-stating their general rules here.
 - Refuse to use a PRD for code work if its planning sections are still too weak to guide implementation and verification safely.
 - Do not silently broaden scope. If the requested work goes beyond the approved PRD, stop and explain the mismatch.
@@ -23,13 +23,12 @@ description: Implement the code changes described by an existing project PRD onl
 ## Read First
 
 1. `.agents/lifecyle-agent/lifecyle-agent.md`
-2. `BACKLOG.md`
-3. `AGENTS.md`
-4. the target PRD file
+2. `AGENTS.md`
+3. the target PRD file
 
 Use the live repo text if it disagrees with this skill. For implementation gating, use the `Plan`, `Implement`, and `Test` phase contracts and the PRD structure defined by `.agents/lifecyle-agent/lifecyle-agent.md`.
 
-The minimum implementation context is `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, `AGENTS.md`, and the target PRD. Load implementation files and test instructions only after the readiness review passes.
+The minimum implementation context is `.agents/lifecyle-agent/lifecyle-agent.md`, `AGENTS.md`, the target PRD, and its current phase folder. Load `BACKLOG.md` only if the operation changes Backlog membership. Load implementation files and test instructions only after the readiness review passes.
 
 ## Implementation Readiness Review
 
@@ -40,7 +39,7 @@ Before touching code, verify that the target PRD satisfies the live workflow rul
 - `Verification` should describe how the change will be checked, not just that it should be tested later.
 - `Next Step` should point at real implementation work, not a planning task or workflow move.
 
-Run `npm run check:workflow` before touching code. Treat checker errors involving the target PRD, its backlog row, or workflow controls as implementation blockers. Legacy Closed warnings may remain non-blocking when they do not involve the target item.
+Run `npm run check:workflow` before touching code. Treat checker errors involving the target PRD, its phase folder, or workflow controls as implementation blockers. Legacy Closed warnings may remain non-blocking when they do not involve the target item.
 
 Treat presence alone as insufficient. If any section still reads like a template, a placeholder, or a vague note that could fit multiple implementations, the implementation gate is not satisfied.
 

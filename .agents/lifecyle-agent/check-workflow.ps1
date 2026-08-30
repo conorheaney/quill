@@ -3,7 +3,7 @@
 # This script intentionally remains a single PowerShell entry point because
 # package.json, local agents, and CI-style checks already invoke it directly.
 # The checks are grouped into four practical layers:
-#   1. State and identity: backlog rows, status/phase pairs, and PRD locations.
+#   1. State and identity: active backlog rows and PRD locations.
 #   2. Structure: PRD headings, History/Audit tables, and verification tables.
 #   3. Evidence and links: evidence metadata, filenames, references, and paths.
 #   4. Candidate consistency: product version agreement across release sources.
@@ -26,8 +26,7 @@ $ErrorActionPreference = "Stop"
 # directory. This makes npm invocation, direct invocation, and agent invocation
 # behave identically.
 $repoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$schemaPath = Join-Path $repoRoot ".agents\lifecyle-agent\prd-schema.md"
-$testCaseTemplatePath = Join-Path $repoRoot ".agents\lifecyle-agent\prd-testcase.md"
+$testCaseTemplatePath = Join-Path $repoRoot ".codex\skills\prd-testcase\references\TPL-TESTCASE.md"
 $statusMapPath = Join-Path $repoRoot ".agents\lifecyle-agent\status-phase-map.json"
 $backlogPath = Join-Path $repoRoot "BACKLOG.md"
 # These collections separate blocking findings from legacy or informational
@@ -177,7 +176,7 @@ function Test-History([string[]]$lines, [string]$id, [string]$expectedPhase, [bo
             if ($legacy) { Add-Warning $message } else { Add-Error $message }
         }
     }
-    if ($entries[-1].Stage -ne $expectedPhase) {
+    if ($expectedPhase -and $entries[-1].Stage -ne $expectedPhase) {
         $message = "$id History ends at $($entries[-1].Stage), expected $expectedPhase"
         if ($legacy) { Add-Warning $message } else { Add-Error $message }
     }
@@ -250,7 +249,6 @@ function Test-EvidenceRecord([System.IO.FileInfo]$file, [string]$expectedProduct
 # Confirm the shared control files exist before validating their consumers.
 # Missing authority files are always blocking because the validator would
 # otherwise be operating without the repository's declared contract.
-if (-not (Test-Path -LiteralPath $schemaPath)) { Add-Error "Missing shared schema: $schemaPath" }
 if (-not (Test-Path -LiteralPath $testCaseTemplatePath)) { Add-Error "Missing test-case evidence template: $testCaseTemplatePath" }
 if (-not (Test-Path -LiteralPath $statusMapPath)) { Add-Error "Missing status/phase map: $statusMapPath" }
 if (-not (Test-Path -LiteralPath $backlogPath)) { Add-Error "Missing backlog: $backlogPath" }
@@ -284,10 +282,8 @@ if (Test-Path -LiteralPath $testCaseTemplatePath) {
     }
 }
 
-# Layer 1: parse the backlog as the current-state authority.
-#
-# The section name is retained so a valid status/phase row cannot silently be
-# placed in the wrong human-facing dashboard section.
+# Layer 1: parse BACKLOG.md as the active Backlog-phase index. Items in every
+# other phase are identified by their folder and do not belong in this file.
 $backlogEntries = @{}
 if (Test-Path -LiteralPath $backlogPath) {
     $backlogSection = ""
@@ -299,42 +295,38 @@ if (Test-Path -LiteralPath $backlogPath) {
         $id = $cells[0]
         if ($backlogEntries.ContainsKey($id)) { Add-Error "Duplicate backlog ID: $id"; continue }
         $backlogEntries[$id] = [pscustomobject]@{ Class = $cells[1]; ShortName = $cells[2]; Status = $cells[3]; Phase = $cells[4]; Description = $cells[5]; Section = $backlogSection }
-        $allowedPhases = @($statusPhaseMap.($cells[3]))
-        if ($allowedPhases.Count -eq 0 -or $allowedPhases -notcontains $cells[4]) { Add-Error "$id has invalid status/phase pairing: $($cells[3]) / $($cells[4])" }
-        $expectedSection = switch ($cells[3]) {
-            "Proposed" { "Backlogged" }
-            "Planned" { "Backlogged" }
-            "In Progress" { "In Progress" }
-            "Blocked" { "In Progress" }
-            "Done" { "Done" }
-            default { "" }
-        }
-        if ($expectedSection -and $backlogSection -ne $expectedSection) { Add-Error "$id is in BACKLOG.md section '$backlogSection' but status $($cells[3]) requires '$expectedSection'" }
+        if ($cells[3] -ne "Proposed" -or $cells[4] -ne "Backlog") { Add-Error "$id must be listed only as Proposed / Backlog in BACKLOG.md" }
+        if ($backlogSection -ne "Backlog") { Add-Error "$id is in BACKLOG.md section '$backlogSection'; active backlog rows must be under 'Backlog'" }
     }
 }
 
-# Discover exactly the canonical PRD files in the five lifecycle phase folders.
-# Evidence and scratch Markdown files are intentionally excluded from this
-# identity scan.
+# Discover canonical PRD files in the five lifecycle phase folders and the
+# blocked holding folder. Evidence and scratch Markdown files are excluded.
 $prdFiles = @()
-foreach ($directory in $phaseDirectories) {
+$allPrdDirectories = $phaseDirectories + @("06 - Blocked")
+foreach ($directory in $allPrdDirectories) {
     $path = Join-Path $repoRoot "docs\$directory"
     if (Test-Path -LiteralPath $path) { $prdFiles += Get-ChildItem -LiteralPath $path -Filter "PRD-*.md" -File }
 }
 
 # Layer 2: validate PRD identity, phase placement, structure, history, audit,
-# and verification content against the backlog entry found above.
+# and verification content against the folder state and, for Backlog items,
+# the active backlog entry found above.
 $filesById = @{}
 foreach ($file in $prdFiles) {
     $id = $file.BaseName
     if ($filesById.ContainsKey($id)) { Add-Error "Duplicate PRD file: $id"; continue }
     $filesById[$id] = $file
-    if (-not $backlogEntries.ContainsKey($id)) { Add-Error "PRD has no backlog row: $id"; continue }
-
     $directoryName = Split-Path -Leaf (Split-Path -Parent $file.FullName)
-    $expectedPhase = $phaseByDirectory[$directoryName]
+    $isBlocked = ($directoryName -eq "06 - Blocked")
+    $expectedPhase = if ($isBlocked) { $null } else { $phaseByDirectory[$directoryName] }
     $entry = $backlogEntries[$id]
-    if ($entry.Phase -ne $expectedPhase) { Add-Error "$id backlog phase does not match folder: $($entry.Phase) / $expectedPhase" }
+    if ($expectedPhase -eq "Backlog") {
+        if (-not $entry) { Add-Error "Backlog PRD has no backlog row: $id" }
+        elseif ($entry.Phase -ne "Backlog") { Add-Error "$id backlog phase does not match folder: $($entry.Phase) / Backlog" }
+    } elseif ($entry) {
+        Add-Error "$id has a BACKLOG.md row but is not in the Backlog folder"
+    }
 
     $lines = @(Get-Content -LiteralPath $file.FullName)
     $headings = @($lines | Where-Object { $_ -match '^##\s+(.+?)\s*$' } | ForEach-Object { $matches[1].Trim() })
@@ -358,7 +350,7 @@ foreach ($file in $prdFiles) {
     if ($historyIndex -ge 0) { Test-History $lines $id $expectedPhase $legacyClosed }
     if ($auditIndex -ge 0) { Test-Audit $lines $id $legacyClosed }
 
-    if ($expectedPhase -ne "Closed") {
+    if ($expectedPhase -and $expectedPhase -ne "Closed") {
         $verificationHeadingIndex = [array]::IndexOf($lines, "## Verification")
         if ($verificationHeadingIndex -lt 0) {
             Add-Error "$id is missing its Verification section"
@@ -513,7 +505,7 @@ if ($errors.Count -gt 0) {
 }
 
 $evidenceCount = if (Test-Path -LiteralPath $evidencePath) { @(Get-ChildItem -LiteralPath $evidencePath -Filter "PRD-*.md" -File).Count } else { 0 }
-$summary = "Workflow check passed: $($backlogEntries.Count) tracked items, $($prdFiles.Count) canonical phase PRDs, and $evidenceCount evidence records."
+$summary = "Workflow check passed: $($backlogEntries.Count) active backlog items, $($prdFiles.Count) canonical PRDs, and $evidenceCount evidence records."
 if ($Detailed -or $warnings.Count -gt 0) {
     $backlogPhaseSummary = @($backlogEntries.Values | Group-Object Phase | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ", "
     $backlogStatusSummary = @($backlogEntries.Values | Group-Object Status | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ", "

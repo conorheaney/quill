@@ -10,14 +10,14 @@ Create one PRD test-case evidence record and leave the PRD workflow unchanged.
 ## Resolve the target
 
 - Require `TC-NN` or a bare two-digit number; normalize to `TC-NN`.
-- Read `.agents/lifecyle-agent/lifecyle-agent.md`, `AGENTS.md`, and `BACKLOG.md`.
+- Read `.agents/lifecyle-agent/lifecyle-agent.md` and `AGENTS.md`.
 - Find the matching PRD in `docs/20 - Test/`. If there is not exactly one candidate, ask for the PRD ID.
 - Confirm the PRD is in `Test` and its `Verification` table contains the requested test case.
 
 ## Generate the record
 
 1. Read the matching Verification row, acceptance criteria, and relevant PRD context.
-2. Copy `.agents/lifecyle-agent/prd-testcase.md` to `docs/90 - Evidence/PRD-NNNNNN-{CLASS}-TC-NN.md` and fill its metadata, timestamp, test description, and result fields.
+2. Copy `.codex/skills/prd-testcase/references/TPL-TESTCASE.md` to `docs/90 - Evidence/PRD-NNNNNN-{CLASS}-TC-NN.md` and fill its metadata, timestamp, test description, and result fields.
 3. Set `Test` to the concise test description only, without the words `pass` or `fail`; set `Result` to exactly `PASS` or `FAIL` with no additional text. Fill `Preconditions`, numbered `Steps to Reproduce`, `Expected Results`, and `Evidence` in that order. Derive content from the PRD; do not claim unprovided results or evidence.
 4. Use `open` status unless the user supplied a result and evidence. Never guess the product version; retain a clear placeholder when it cannot be established.
 5. Do not overwrite an existing record. Validate the new file's name, exact `PASS`/`FAIL` result, description-only `Test` field without pass/fail wording, and four required headings/order, then run `npm run check:workflow`.

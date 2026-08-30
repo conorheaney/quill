@@ -9,18 +9,18 @@ Use this skill to validate and promote an existing project PRD. This skill owns 
 
 ## Guardrail
 
-- Use `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, and `AGENTS.md` as the workflow and safety authorities.
+- Use `.agents/lifecyle-agent/lifecyle-agent.md`, the PRD's current folder, and `AGENTS.md` as the workflow authorities. Read `BACKLOG.md` when the target is in or entering/leaving Backlog.
 - If the requested promotion would violate the workflow, stop and explain why.
 - Never skip phases.
 - Never implement code work from this skill unless the repo workflow separately authorizes it.
-- Treat `BACKLOG.md` as the source of truth for the PRD's current overall status and phase.
+- Treat the PRD folder as the source of truth for its current phase. `BACKLOG.md` contains only `Proposed / Backlog` entries.
 
 ## Read First
 
 1. `.agents/lifecyle-agent/lifecyle-agent.md`
-2. `BACKLOG.md`
-3. `AGENTS.md`
-4. the target PRD file
+2. `AGENTS.md`
+3. the target PRD file
+4. `BACKLOG.md` only when the target is in or entering/leaving `docs/05 - Backlog/`
 
 Use the live repo text if it disagrees with this skill.
 
@@ -36,10 +36,10 @@ Load `.codex/skills/prd-grill-me/SKILL.md` only if the target PRD has a weak or 
 ## Promotion Flow
 
 1. Identify the target PRD number. If the user did not provide it clearly, ask for it first.
-2. Find the target PRD row in `BACKLOG.md`.
-3. Find the matching PRD file.
+2. Find the matching PRD file in its current phase folder (or `docs/06 - Blocked/`).
+3. Read a `BACKLOG.md` row only when the target is in `docs/05 - Backlog/` or the requested transition changes Backlog membership.
 4. Give the user a concise 3 to 4 line summary of the PRD and ask whether they want to continue.
-5. Only after the user confirms, determine the current phase and the next allowed phase by following `.agents/lifecyle-agent/lifecyle-agent.md` and the current `BACKLOG.md` row explicitly.
+5. Only after the user confirms, determine the current phase and the next allowed phase by following `.agents/lifecyle-agent/lifecyle-agent.md` and the PRD's current folder explicitly.
 6. Validate the PRD using the checks and phase gates below, applying `.agents/lifecyle-agent/lifecyle-agent.md` as the authority for any conflict.
 
 - For an `Implement` to `Test` promotion of a product-affecting item, verify that the candidate patch-version bump and product change are committed to `main` before moving the PRD.
@@ -55,17 +55,15 @@ Run these checks before every promotion attempt.
 
 ### Identity and state
 
-- A backlog row exists for the target PRD.
 - Exactly one matching PRD file exists in the phase folders.
+- A PRD in `docs/05 - Backlog/` has exactly one `Proposed / Backlog` row; PRDs in other phase folders have no backlog row.
 - The PRD ID, filename, and backlog ID match exactly.
-- The backlog phase is one of `Backlog`, `Plan`, `Implement`, `Test`, or `Closed`.
-- The backlog state is one of `Proposed`, `Planned`, `In Progress`, `Blocked`, or `Done`, and the phase matches it: `Proposed / Backlog`, `Planned / Plan`, `In Progress / Implement`, `In Progress / Test`, `Blocked / Implement`, `Blocked / Test`, or `Done / Closed`.
-- The backlog phase, PRD folder, and latest `History` stage agree before promotion.
+- The PRD folder and latest `History` stage agree before promotion; a PRD in `docs/06 - Blocked/` retains its last active phase in `History`.
 - A mismatch is a blocker; repair alignment before evaluating the next gate.
 
 ### Required structure
 
-- The PRD satisfies the required structure in `.agents/lifecyle-agent/prd-schema.md`.
+- The PRD satisfies the required structure in the `PRD structural schema` section of `.agents/lifecyle-agent/lifecyle-agent.md`.
 - `History` and `Audit` are Markdown tables.
 - `Legacy Notes`, when present, remains after the main workflow record.
 - Required sections are materially filled and are not placeholders for a later phase.
@@ -78,36 +76,36 @@ Flag a blocker when a required section is empty, `Next Step` points to the curre
 
 ### Backlog -> Plan
 
-Allow only when the baseline PRD is valid, the backlog row says `Proposed / Backlog`, the file is in `docs/05 - Backlog/`, and `History` contains the `Backlog` entry. On success, change the row to `Planned / Plan`, move the PRD to `docs/10 - Plan/`, and append `Plan` to `History`.
+Allow only when the baseline PRD is valid, the row says `Proposed / Backlog`, the file is in `docs/05 - Backlog/`, and `History` contains the `Backlog` entry. On success, remove the row, move the PRD to `docs/10 - Plan/`, and append `Plan` to `History`.
 
 ### Plan -> Implement
 
-Allow only when `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` are concrete enough to guide implementation and verification, the backlog row says `Planned / Plan`, and the PRD is in `docs/10 - Plan/`. On success, change the row to `In Progress / Implement`, move the PRD to `docs/15 - Implement/`, and append `Implement` to `History`.
+Allow only when `Plan`, `Acceptance Criteria`, `Verification`, and `Next Step` are concrete enough to guide implementation and verification, and the PRD is in `docs/10 - Plan/`. On success, move the PRD to `docs/15 - Implement/` and append `Implement` to `History`.
 
 ### Implement -> Test
 
-Allow only when implementation is complete enough to verify, `Verification` describes a real test approach, `Next Step` points to verification or acceptance, the backlog row says `In Progress / Implement` or `Blocked / Implement`, and the PRD is in `docs/15 - Implement/`. For product-affecting work, also verify the committed patch candidate and product change required by `.agents/lifecyle-agent/lifecyle-agent.md`. On success, change the row to `In Progress / Test`, move the PRD to `docs/20 - Test/`, and append `Test` to `History`.
+Allow only when implementation is complete enough to verify, `Verification` describes a real test approach, `Next Step` points to verification or acceptance, and the PRD is in `docs/15 - Implement/`. For product-affecting work, also verify the committed patch candidate and product change required by `.agents/lifecyle-agent/lifecyle-agent.md`. On success, move the PRD to `docs/20 - Test/` and append `Test` to `History`.
 
 ### Test -> Closed
 
-Allow only when planned verification is complete enough to support acceptance, the PRD records outcomes and evidence, no unresolved implementation or retest signal remains, the backlog row says `In Progress / Test` or `Blocked / Test`, and the PRD is in `docs/20 - Test/`. Verify that each complete test record identifies the exact product version. On success, change the row to `Done / Closed`, move the PRD to `docs/25 - Closed/`, and append `Closed` to `History`.
+Allow only when planned verification is complete enough to support acceptance, the PRD records outcomes and evidence, no unresolved implementation or retest signal remains, and the PRD is in `docs/20 - Test/`. Verify that each complete test record identifies the exact product version. On success, move the PRD to `docs/25 - Closed/` and append `Closed` to `History`.
 
 ### Test -> Implement return
 
-When testing finds code work, do not continue testing or editing in place. Move the PRD back to `docs/15 - Implement/`, change the backlog row to `In Progress / Implement`, append the return stage to `History`, and record the reason in `Audit` before implementation resumes.
+When testing finds code work, do not continue testing or editing in place. Move the PRD back to `docs/15 - Implement/`, append the return stage to `History`, and record the reason in `Audit` before implementation resumes.
 
 ## Promotion mutation contract
 
 Only after validation succeeds and the user has confirmed continuation:
 
-1. Update the matching backlog row.
+1. Remove the backlog row only when the PRD leaves `docs/05 - Backlog/`.
 2. Move the existing PRD file to the next phase folder.
 3. Append the new phase to `History` with the actual UTC timestamp.
 4. Add an `Audit` note when the promotion needs context.
 5. Re-run the identity and alignment checks.
 6. Run `npm run check:workflow` again and report any post-promotion errors before treating the move as complete.
 
-The backlog update and PRD move are one logical operation. Do not create replacement PRDs, skip phases, or mutate files when blockers remain.
+The phase-folder move and any applicable backlog-index update are one logical operation. Do not create replacement PRDs, skip phases, or mutate files when blockers remain.
 
 ## How To Use `prd-grill-me`
 
@@ -128,7 +126,7 @@ Keep the `prd-grill-me` pass brief and targeted. Ask only enough to turn the wea
 ## Expected Result
 
 - follow the live workflow rules in `.agents/lifecyle-agent/lifecyle-agent.md`
-- use `BACKLOG.md` as the source of truth for current state
+- use the PRD folder as the source of truth for current phase and `BACKLOG.md` as the active Backlog index
 - use `prd-grill-me` only when a gate-critical section needs targeted strengthening
 - promote the PRD only after it satisfies the repo workflow requirements
 - make whatever paired backlog, PRD move, `History`, and `Audit` updates the workflow explicitly requires

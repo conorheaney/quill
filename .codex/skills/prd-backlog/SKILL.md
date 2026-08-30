@@ -9,7 +9,7 @@ This skill owns backlog-item creation: the light shaping pass, the initial PRD s
 
 ## Guardrail
 
-- Use `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, and `AGENTS.md` as the workflow and safety authorities.
+- Use `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, and `AGENTS.md` as the workflow and safety authorities. `BACKLOG.md` is only the active Backlog-phase index; the PRD folder governs later phases.
 - If the requested item would not conform to the current workflow, stop and explain why.
 - Do not create code-authorizing state. A new item remains `Proposed / Backlog`.
 - Use the templates in this skill instead of inventing a new PRD or backlog-row shape.
@@ -23,8 +23,8 @@ Load only `.agents/lifecyle-agent/lifecyle-agent.md`, `BACKLOG.md`, `AGENTS.md`,
 1. Read the current workflow contract, backlog, local agent contract, and `.codex/skills/prd-grill-me/SKILL.md`.
 2. Run a light repo-local `prd-grill-me` pass to surface the basics of the item.
 3. Allocate the next unused PRD ID and choose its class.
-4. Add one row to the appropriate `BACKLOG.md` table using `templates/BACKLOG-row.md`.
-5. Create the matching file in `docs/05 - Backlog/` from `templates/PRD-backlog.md`.
+4. Add one row to the appropriate `BACKLOG.md` table using `references/TPL-BACKLOG-ROW.md`.
+5. Create the matching file in `docs/05 - Backlog/` from `references/TPL-BACKLOG-FILE.md`.
 6. Run the creation checklist below before reporting completion.
 7. Fill the shaped requirement into the template without adding implementation authorization or silently broadening scope.
 8. Run `npm run check:workflow` after both files are created. Treat errors involving the new item as blockers; legacy Closed warnings may remain non-blocking.
@@ -91,6 +91,6 @@ Create the new item in the repo's normal workflow shape:
 
 ## Notes
 
-- Treat `BACKLOG.md` as the source of truth for IDs and item state.
+- Treat `BACKLOG.md` as the source of truth for active Backlog membership and IDs; use the PRD folder and lifecycle contract for items beyond Backlog.
 - Use the lightest wording that still produces a clear, useful backlog item.
 - If historical workflow examples differ from the templates, follow this skill's current template and the live invariants in `.agents/lifecyle-agent/lifecyle-agent.md`.
