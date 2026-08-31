@@ -22,4 +22,5 @@ import "./window-chrome.ts";
 import "./dialog-controller.ts";
 import "./code-image-tool.ts";
 import "./toast-controller.ts";
+import "./startup-controller.ts";
 import "./quill-app.ts";

@@ -549,6 +549,7 @@ export interface SaveMarkdownPayload {
 
 declare global {
   interface Window {
+    QuillStartup: StartupControllerPort;
     QuillConfig: AppConfig;
     QuillDesktop: DesktopBridgePort;
     QuillMarkdown: MarkdownApi;
@@ -610,4 +611,9 @@ declare global {
       create(options: ToastControllerOptions): ToastControllerPort;
     };
   }
+}
+
+export interface StartupControllerPort {
+  setReady(): void;
+  showFailure(): void;
 }

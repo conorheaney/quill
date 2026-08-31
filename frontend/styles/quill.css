@@ -11,6 +11,217 @@
       background: var(--bg);
     }
 
+    .startup-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      color: var(--text);
+      opacity: 1;
+      transition: opacity 0.22s ease;
+    }
+
+    .startup-overlay[data-state="ready"] {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .startup-card {
+      width: min(560px, calc(100vw - 40px));
+      text-align: center;
+    }
+
+    .startup-illustration {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+      filter: saturate(0.96);
+    }
+
+    .startup-desk-glow {
+      fill: var(--accent);
+      opacity: 0.1;
+      filter: blur(12px);
+    }
+
+    .startup-page {
+      fill: url(#startupPaperGradient);
+      stroke: var(--border);
+      stroke-width: 1.5;
+      stroke-linejoin: round;
+    }
+
+    .startup-paper-highlight {
+      stop-color: color-mix(in srgb, var(--panel-strong) 92%, white);
+    }
+
+    .startup-paper-shadow {
+      stop-color: color-mix(in srgb, var(--panel) 86%, var(--accent) 14%);
+    }
+
+    .startup-page-fold {
+      fill: color-mix(in srgb, var(--panel) 72%, var(--accent) 28%);
+      stroke: var(--border);
+      stroke-linejoin: round;
+      stroke-width: 1.5;
+    }
+
+    .startup-page-margin {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 1.5;
+      opacity: 0.3;
+    }
+
+    .startup-page-line {
+      fill: none;
+      stroke: var(--muted);
+      stroke-linecap: round;
+      stroke-width: 1.5;
+      opacity: 0.22;
+    }
+
+    .startup-page-mark {
+      fill: var(--accent);
+      opacity: 0.28;
+    }
+
+    .startup-ink {
+      fill: none;
+      stroke: var(--accent);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 3.5;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+
+    .startup-ink-primary {
+      animation: startup-write-primary 4.4s cubic-bezier(0.42, 0, 0.3, 1) infinite;
+    }
+
+    .startup-ink-secondary {
+      animation: startup-write-secondary 4.4s cubic-bezier(0.42, 0, 0.3, 1) infinite;
+    }
+
+    .startup-quill {
+      transform: translate(130px, 140px) rotate(-8deg);
+      animation: startup-quill-write 4.4s cubic-bezier(0.42, 0, 0.3, 1) infinite;
+      will-change: transform;
+    }
+
+    .startup-feather {
+      fill: url(#startupFeatherGradient);
+      stroke: color-mix(in srgb, var(--accent-strong) 78%, var(--text));
+      stroke-width: 1.5;
+      stroke-linejoin: round;
+    }
+
+    .startup-feather-highlight {
+      stop-color: color-mix(in srgb, var(--accent) 45%, white);
+    }
+
+    .startup-feather-mid {
+      stop-color: var(--accent);
+    }
+
+    .startup-feather-shadow {
+      stop-color: color-mix(in srgb, var(--accent-strong) 78%, var(--bg));
+    }
+
+    .startup-feather-cutout {
+      fill: none;
+      stroke: color-mix(in srgb, var(--panel-strong) 70%, transparent);
+      stroke-linecap: round;
+      stroke-width: 3;
+      opacity: 0.72;
+    }
+
+    .startup-feather-shaft {
+      fill: none;
+      stroke: color-mix(in srgb, var(--accent-strong) 74%, white);
+      stroke-linecap: round;
+      stroke-width: 4.5;
+    }
+
+    .startup-quill-nib {
+      fill: color-mix(in srgb, var(--accent-strong) 72%, var(--text));
+      stroke: color-mix(in srgb, var(--text) 70%, transparent);
+      stroke-width: 1;
+    }
+
+    .startup-quill-nib-detail {
+      fill: none;
+      stroke: color-mix(in srgb, var(--panel-strong) 82%, white);
+      stroke-linecap: round;
+      stroke-width: 1.4;
+    }
+
+    .startup-message,
+    .startup-error {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+    }
+
+    .startup-error {
+      color: var(--text);
+    }
+
+    .startup-retry {
+      margin-top: 16px;
+    }
+
+    @keyframes startup-write-primary {
+      0%, 6% { stroke-dashoffset: 1; opacity: 0; }
+      8% { opacity: 1; }
+      43%, 88% { stroke-dashoffset: 0; opacity: 1; }
+      98%, 100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+
+    @keyframes startup-write-secondary {
+      0%, 50% { stroke-dashoffset: 1; opacity: 0; }
+      52% { opacity: 1; }
+      82%, 88% { stroke-dashoffset: 0; opacity: 1; }
+      98%, 100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+
+    @keyframes startup-quill-write {
+      0%, 6% { transform: translate(130px, 140px) rotate(-8deg); }
+      18% { transform: translate(190px, 151px) rotate(-3deg); }
+      30% { transform: translate(265px, 143px) rotate(4deg); }
+      43% { transform: translate(352px, 137px) rotate(8deg); }
+      47% { transform: translate(358px, 116px) rotate(2deg); }
+      51% { transform: translate(131px, 174px) rotate(-9deg); }
+      62% { transform: translate(190px, 184px) rotate(-3deg); }
+      72% { transform: translate(258px, 176px) rotate(3deg); }
+      82% { transform: translate(338px, 175px) rotate(7deg); }
+      88% { transform: translate(346px, 151px) rotate(1deg); }
+      100% { transform: translate(130px, 140px) rotate(-8deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .startup-overlay,
+      .startup-ink,
+      .startup-quill {
+        animation: none;
+        transition: none;
+      }
+
+      .startup-ink {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
+
+      .startup-quill {
+        transform: translate(338px, 175px) rotate(7deg);
+      }
+    }
+
     body {
       padding: 0;
       height: 100vh;

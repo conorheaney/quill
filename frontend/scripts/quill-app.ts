@@ -23,7 +23,7 @@ const codeImageTool = window.QuillCodeImageTool.create({
   languageMeta: LANGUAGE_META
 });
 
-(async function () {
+async function initialiseQuill(): Promise<void> {
   interface DocumentResult {
     content: string;
     fileName?: string;
@@ -523,4 +523,10 @@ const codeImageTool = window.QuillCodeImageTool.create({
   layoutController.setMarkdownPaneCollapsed(false);
   layoutController.setPreviewEditingEnabled(false);
   desktopShellController.loadProductVersion();
-})();
+  window.QuillStartup.setReady();
+}
+
+initialiseQuill().catch((error: unknown) => {
+  console.error("Unable to initialise Quill", error);
+  window.QuillStartup.showFailure();
+});
