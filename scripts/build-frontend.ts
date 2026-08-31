@@ -28,6 +28,17 @@ async function buildFrontend(): Promise<void> {
     logLevel: "info"
   });
 
+  await build({
+    absWorkingDir: buildRepositoryRoot,
+    entryPoints: ["frontend/scripts/splashscreen.ts"],
+    bundle: true,
+    format: "iife",
+    platform: "browser",
+    sourcemap: true,
+    outfile: "dist/scripts/splashscreen.js",
+    logLevel: "info"
+  });
+
   console.log(`Frontend built from ${buildFrontendRoot} to ${buildDistRoot}.`);
 }
 

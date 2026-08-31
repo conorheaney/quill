@@ -23,6 +23,17 @@
       transition: opacity 0.22s ease;
     }
 
+    .startup-window {
+      display: block;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .startup-window .startup-overlay {
+      position: relative;
+      min-height: 100vh;
+    }
+
     .startup-overlay[data-state="ready"] {
       opacity: 0;
       pointer-events: none;

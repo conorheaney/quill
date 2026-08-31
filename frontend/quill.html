@@ -13,59 +13,6 @@
   <link rel="stylesheet" href="./styles/recent-files.css?v=1">
 </head>
 <body class="dark">
-  <section id="startupOverlay" class="startup-overlay" aria-live="polite" aria-atomic="true">
-    <div class="startup-card">
-      <svg class="startup-illustration" viewBox="0 0 480 300" role="img" aria-labelledby="startupIllustrationTitle startupIllustrationDescription">
-        <title id="startupIllustrationTitle">Quill writing on a page</title>
-        <desc id="startupIllustrationDescription">A detailed feather quill writes two flowing lines on a softly lit sheet of paper.</desc>
-        <defs>
-          <linearGradient id="startupPaperGradient" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" class="startup-paper-highlight"></stop>
-            <stop offset="1" class="startup-paper-shadow"></stop>
-          </linearGradient>
-          <linearGradient id="startupFeatherGradient" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" class="startup-feather-highlight"></stop>
-            <stop offset="0.55" class="startup-feather-mid"></stop>
-            <stop offset="1" class="startup-feather-shadow"></stop>
-          </linearGradient>
-          <filter id="startupPaperShadow" x="-30%" y="-30%" width="160%" height="180%">
-            <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000" flood-opacity="0.22"></feDropShadow>
-          </filter>
-          <filter id="startupQuillShadow" x="-40%" y="-40%" width="190%" height="190%">
-            <feDropShadow dx="4" dy="7" stdDeviation="5" flood-color="#000" flood-opacity="0.24"></feDropShadow>
-          </filter>
-        </defs>
-
-        <ellipse class="startup-desk-glow" cx="240" cy="255" rx="176" ry="20"></ellipse>
-        <g class="startup-paper-group" filter="url(#startupPaperShadow)">
-          <path class="startup-page" d="M72 42H382L414 74V248H72Z"></path>
-          <path class="startup-page-fold" d="M382 42V74H414"></path>
-          <path class="startup-page-margin" d="M112 78V222"></path>
-          <path class="startup-page-line" d="M132 105H366M132 137H366M132 169H366M132 201H342"></path>
-          <circle class="startup-page-mark" cx="93" cy="106" r="3"></circle>
-          <circle class="startup-page-mark" cx="93" cy="138" r="3"></circle>
-          <circle class="startup-page-mark" cx="93" cy="170" r="3"></circle>
-          <circle class="startup-page-mark" cx="93" cy="202" r="3"></circle>
-        </g>
-
-        <g class="startup-written-lines" aria-hidden="true">
-          <path class="startup-ink startup-ink-primary" pathLength="1" d="M132 162C150 143 166 183 187 160C206 139 218 179 240 158C263 137 278 178 299 158C316 142 331 150 353 159"></path>
-          <path class="startup-ink startup-ink-secondary" pathLength="1" d="M132 198C151 180 166 216 186 197C205 179 217 211 238 194C258 177 271 210 291 194C307 181 322 190 337 196"></path>
-        </g>
-
-        <g class="startup-quill" filter="url(#startupQuillShadow)" aria-hidden="true">
-          <path class="startup-feather" d="M2 -8C20 -50 46 -93 96 -130C119 -147 147 -156 171 -149C171 -124 161 -93 139 -67C108 -31 67 -14 8 3Z"></path>
-          <path class="startup-feather-cutout" d="M43 -47L22 -57M60 -67L35 -82M80 -89L56 -106M105 -110L86 -130M126 -119L149 -139M111 -94L145 -110M91 -72L130 -86M68 -50L110 -61M46 -31L86 -39"></path>
-          <path class="startup-feather-shaft" d="M-2 7C40 -41 91 -95 163 -147"></path>
-          <path class="startup-quill-nib" d="M-3 8L8 -2L14 8L2 22L-6 20Z"></path>
-          <path class="startup-quill-nib-detail" d="M8 3L2 18M1 11L7 12"></path>
-        </g>
-      </svg>
-      <p id="startupMessage" class="startup-message" role="status">Starting Quill…</p>
-      <p id="startupError" class="startup-error" role="alert" hidden>Quill could not start. Please try again.</p>
-      <button id="startupRetry" class="startup-retry" type="button" data-primary="true" hidden>RETRY</button>
-    </div>
-  </section>
   <header class="window-chrome" aria-label="Application window controls">
     <div class="window-chrome-title">Quill Markdown Editor</div>
     <div class="window-chrome-controls" role="group" aria-label="Window controls">

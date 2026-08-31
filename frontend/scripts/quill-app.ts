@@ -523,10 +523,10 @@ async function initialiseQuill(): Promise<void> {
   layoutController.setMarkdownPaneCollapsed(false);
   layoutController.setPreviewEditingEnabled(false);
   desktopShellController.loadProductVersion();
-  window.QuillStartup.setReady();
+  await desktopBridge?.completeStartup();
 }
 
 initialiseQuill().catch((error: unknown) => {
   console.error("Unable to initialise Quill", error);
-  window.QuillStartup.showFailure();
+  void window.QuillDesktop?.showStartupFailure();
 });

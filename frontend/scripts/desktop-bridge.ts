@@ -1,6 +1,8 @@
 import { getVersion } from "@tauri-apps/api/app";
 import { invoke, isTauri } from "@tauri-apps/api/core";
+import { emitTo, listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { open as openDialog, save as saveDialog } from "@tauri-apps/plugin-dialog";
 import type { DesktopBridgePort, FileState, SaveMarkdownPayload } from "./contracts";
 
@@ -10,6 +12,30 @@ import type { DesktopBridgePort, FileState, SaveMarkdownPayload } from "./contra
   }
 
   const currentWindow = getCurrentWindow();
+  const MIN_SPLASH_DURATION_MS = 5000;
+  let splashStartedAt = Date.now();
+
+  void listen("startup-retry", () => window.location.reload());
+  void listen("splash-ready", () => {
+    splashStartedAt = Date.now();
+  });
+
+  function wait(milliseconds: number): Promise<void> {
+    return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+  }
+
+  async function completeStartup(): Promise<void> {
+    const remaining = Math.max(0, MIN_SPLASH_DURATION_MS - (Date.now() - splashStartedAt));
+    await wait(remaining);
+    const splashWindow = await WebviewWindow.getByLabel("splashscreen");
+    await splashWindow?.close();
+    await currentWindow.show();
+    await currentWindow.setFocus();
+  }
+
+  async function showStartupFailure(): Promise<void> {
+    await emitTo("splashscreen", "startup-failed");
+  }
 
   const MARKDOWN_FILE_FILTERS = [
     {
@@ -93,6 +119,9 @@ import type { DesktopBridgePort, FileState, SaveMarkdownPayload } from "./contra
     async onWindowCloseRequested(handler) {
       return currentWindow.onCloseRequested(handler as never);
     },
+
+    completeStartup,
+    showStartupFailure,
 
     async getAppVersion() {
       return getVersion();

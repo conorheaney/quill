@@ -518,6 +518,8 @@ export interface DesktopBridgePort {
   startWindowDragging(): Promise<unknown>;
   setWindowTitle(title: string): Promise<unknown>;
   onWindowCloseRequested(handler: (...args: unknown[]) => unknown): Promise<unknown>;
+  completeStartup(): Promise<unknown>;
+  showStartupFailure(): Promise<unknown>;
   getAppVersion(): Promise<string | null>;
   openMarkdownFile(): Promise<unknown | null>;
   reopenMarkdownFile(filePath: string): Promise<unknown | null>;
@@ -549,7 +551,6 @@ export interface SaveMarkdownPayload {
 
 declare global {
   interface Window {
-    QuillStartup: StartupControllerPort;
     QuillConfig: AppConfig;
     QuillDesktop: DesktopBridgePort;
     QuillMarkdown: MarkdownApi;
@@ -611,9 +612,4 @@ declare global {
       create(options: ToastControllerOptions): ToastControllerPort;
     };
   }
-}
-
-export interface StartupControllerPort {
-  setReady(): void;
-  showFailure(): void;
 }
