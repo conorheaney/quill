@@ -266,7 +266,7 @@ async function initialiseQuill(): Promise<void> {
       setTimeout: (callback, delay) => window.setTimeout(callback, delay)
     },
     desktopBridge: desktopShellController.isReady ? desktopBridge || undefined : undefined,
-    dialogs: { confirmExternalChange, confirmIfDirty },
+    dialogs: { confirmAction: openConfirmDialog, confirmExternalChange, confirmIfDirty },
     document: {
       getContent: () => markdownPane.getValue(),
       setContent: (content) => markdownPane.setValue(content),
@@ -303,6 +303,8 @@ async function initialiseQuill(): Promise<void> {
         const saved = result as DocumentResult;
         documentStatus.setIdentity({ filePath: saved.filePath || "" });
         documentStatus.setIdentity({ fileName: saved.fileName || documentStatus.currentFileName });
+        markdownPane.setValue(saved.content || markdownPane.getValue());
+        previewRenderer.render(markdownPane.getValue());
 
         if (documentStatus.currentFilePath) {
           const recentEntry = recentFilesController.recordRecentFile(documentStatus.currentFilePath, documentStatus.currentFileName);

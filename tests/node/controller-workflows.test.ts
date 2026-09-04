@@ -75,6 +75,63 @@ test("controller workflows apply successful load, save, and new-document results
   assert.equal(calls.newDocuments, 1);
 });
 
+test("Save As asks before copying a document with relative images", async () => {
+  const payloads: any[] = [];
+  let prompts = 0;
+  const controller = createDocumentController({
+    desktopBridge: {
+      async saveMarkdownFile(payload: any) {
+        payloads.push(payload);
+        assert.equal(await payload.beforeWrite("C:/Temp/copy.md"), true);
+        return { fileName: "copy.md", filePath: "C:/Temp/copy.md" };
+      }
+    },
+    dialogs: {
+      confirmIfDirty: async () => true,
+      confirmAction: async (title: string, message: string, acceptLabel: string) => {
+        prompts += 1;
+        assert.equal(title, "Relative images in copied file");
+        assert.match(message, /relative images/);
+        assert.equal(acceptLabel, "Continue");
+        return true;
+      }
+    },
+    document: createDocumentPort({
+      content: "![diagram](images/diagram.png)",
+      fileName: "current.md",
+      filePath: "C:/notes/current.md"
+    }),
+    events: {}
+  });
+
+  assert.equal((await controller.saveDocument(true)).status, "saved");
+  assert.equal(prompts, 1);
+  assert.equal(payloads[0].sourceFilePath, "C:/notes/current.md");
+});
+
+test("cancelling the relative-image Save As warning prevents the save", async () => {
+  const controller = createDocumentController({
+    desktopBridge: {
+      async saveMarkdownFile(payload: any) {
+        assert.equal(await payload.beforeWrite("C:/Temp/copy.md"), false);
+        return null;
+      }
+    },
+    dialogs: {
+      confirmIfDirty: async () => true,
+      confirmAction: async () => false
+    },
+    document: createDocumentPort({
+      content: "![diagram](images/diagram.png)",
+      fileName: "current.md",
+      filePath: "C:/notes/current.md"
+    }),
+    events: {}
+  });
+
+  assert.equal((await controller.saveDocument(true)).status, "cancelled");
+});
+
 test("dialog and desktop cancellations leave controller callbacks untouched", async () => {
   let openCalls = 0;
   const { calls, events } = createControllerEvents();

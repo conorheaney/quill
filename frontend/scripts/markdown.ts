@@ -332,6 +332,55 @@ window.QuillMarkdown = (() => {
         return normalizeWindowsLikePath(combined);
       }
 
+      function rebaseRelativeImageReferences(content: string, sourceFilePath: string, targetFilePath: string): string {
+        const sourceDirectory = getPathDirectory(sourceFilePath);
+        const targetDirectory = getPathDirectory(targetFilePath);
+        if (!sourceDirectory || !targetDirectory || sourceDirectory.toLowerCase() === targetDirectory.toLowerCase()) {
+          return content;
+        }
+
+        return String(content || "").replace(/(!\[[^\]]*\]\(\s*)(<[^>\r\n]+>|[^\s)\r\n]+)([^)]*\))/g, (match, prefix: string, rawDestination: string, suffix: string) => {
+          const isWrapped = rawDestination.startsWith("<") && rawDestination.endsWith(">");
+          const destination = isWrapped ? rawDestination.slice(1, -1) : rawDestination;
+          if (!isRelativeMarkdownAssetUrl(destination)) {
+            return match;
+          }
+
+          const imagePath = normalizeWindowsLikePath(`${sourceDirectory}\\${destination.replace(/\//g, "\\")}`);
+          const rebasedDestination = getPathRoot(sourceDirectory) === getPathRoot(targetDirectory)
+            ? getRelativeWindowsPath(targetDirectory, imagePath)
+            : imagePath;
+          return `${prefix}${isWrapped ? `<${rebasedDestination}>` : rebasedDestination}${suffix}`;
+        });
+      }
+
+      function getPathDirectory(filePath: string): string {
+        const normalized = String(filePath || "").trim().replace(/\//g, "\\");
+        const separatorIndex = normalized.lastIndexOf("\\");
+        return separatorIndex >= 0 ? normalized.slice(0, separatorIndex) : "";
+      }
+
+      function getPathRoot(filePath: string): string {
+        const normalized = String(filePath || "").replace(/\//g, "\\");
+        const uncMatch = normalized.match(/^\\\\[^\\]+\\[^\\]+/);
+        if (uncMatch) return uncMatch[0].toLowerCase();
+        const driveMatch = normalized.match(/^[A-Za-z]:/);
+        return driveMatch ? driveMatch[0].toLowerCase() : "";
+      }
+
+      function getRelativeWindowsPath(fromDirectory: string, targetPath: string): string {
+        const fromSegments = normalizeWindowsLikePath(fromDirectory).split("\\").filter(Boolean);
+        const targetSegments = normalizeWindowsLikePath(targetPath).split("\\").filter(Boolean);
+        let commonLength = 0;
+        while (commonLength < fromSegments.length
+          && commonLength < targetSegments.length
+          && fromSegments[commonLength].toLowerCase() === targetSegments[commonLength].toLowerCase()) {
+          commonLength += 1;
+        }
+        const upward = new Array(fromSegments.length - commonLength).fill("..");
+        return upward.concat(targetSegments.slice(commonLength)).join("\\") || ".";
+      }
+
       function normalizeWindowsLikePath(pathValue: string): string {
         const hasDrivePrefix = /^[A-Za-z]:\\/.test(pathValue);
         const segments = pathValue.split("\\");
@@ -836,6 +885,7 @@ window.QuillMarkdown = (() => {
     renderBlockContent,
     renderMarkdown,
     renderTableFromRows,
+    rebaseRelativeImageReferences,
     setRenderContext,
     splitTableCells,
     tableRowsToMarkdown

@@ -5,7 +5,8 @@ import type {
   DocumentControllerEvents,
   DocumentControllerOptions,
   DocumentControllerPort,
-  FileState
+  FileState,
+  SaveMarkdownPayload
 } from "./contracts";
 
 (function (root: Window | null, factory: () => { createDocumentController: (options?: DocumentControllerOptions) => DocumentControllerPort }): void {
@@ -137,12 +138,32 @@ import type {
       const useSaveAs = Boolean(saveAs);
 
       try {
-        const result = await desktopBridge.saveMarkdownFile({
+        const savePayload: SaveMarkdownPayload = {
           content: documentPort.getContent(),
           filePath: useSaveAs ? "" : identity?.filePath || "",
           saveAs: useSaveAs,
           suggestedName: identity?.fileName || "document.md"
-        });
+        };
+        if (useSaveAs && identity?.filePath) {
+          savePayload.sourceFilePath = identity.filePath;
+        }
+        if (useSaveAs) {
+          savePayload.beforeWrite = async () => {
+            if (!hasRelativeImageReferences(documentPort.getContent())) {
+              return true;
+            }
+            if (!dialogs || typeof dialogs.confirmAction !== "function") {
+              reportMissing("dialogs.confirmAction");
+              return false;
+            }
+            return dialogs.confirmAction(
+              "Relative images in copied file",
+              "This file contains relative images. Quill will adjust their references for the copied document, but some images may not resolve correctly in the new location. Do you want to continue?",
+              "Continue"
+            );
+          };
+        }
+        const result = await desktopBridge.saveMarkdownFile(savePayload);
         if (!result) return { status: "cancelled" };
         if (typeof events.onSaved === "function") {
           await events.onSaved(result, { saveAs: useSaveAs });
@@ -257,6 +278,10 @@ import type {
 
   function isAbortError(error: unknown): boolean {
     return Boolean(error && typeof error === "object" && "name" in error && error.name === "AbortError");
+  }
+
+  function hasRelativeImageReferences(content: string): boolean {
+    return /!\[[^\]]*\]\(\s*(?![a-z][a-z0-9+.-]*:|[\\/]|#)[^)]*\)/i.test(content || "");
   }
 
   return { createDocumentController };

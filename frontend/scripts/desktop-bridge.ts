@@ -180,7 +180,14 @@ import type { DesktopBridgePort, FileState, SaveMarkdownPayload } from "./contra
         targetPath = String(selectedPath);
       }
 
-      return writeMarkdownFile(targetPath, options.content || "");
+      if (typeof options.beforeWrite === "function" && !(await options.beforeWrite(targetPath))) {
+        return null;
+      }
+
+      const content = options.saveAs && options.sourceFilePath
+        ? window.QuillMarkdown.rebaseRelativeImageReferences(options.content || "", options.sourceFilePath, targetPath)
+        : options.content || "";
+      return writeMarkdownFile(targetPath, content);
     }
   };
 

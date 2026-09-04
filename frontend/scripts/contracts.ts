@@ -60,6 +60,7 @@ export interface MarkdownApi extends MarkdownPort {
   normaliseLanguage(language: string): string;
   renderBlockContent(block: MarkdownBlock): string;
   renderTableFromRows(rows: string[][]): string;
+  rebaseRelativeImageReferences(content: string, sourceFilePath: string, targetFilePath: string): string;
   setRenderContext(context: RenderContext): void;
   tableRowsToMarkdown(rows: string[][]): string;
 }
@@ -432,6 +433,7 @@ export type ExternalChangeChoice = "reload" | "keep" | "cancel";
 
 export interface DialogPort {
   confirmIfDirty(title: string, message: string, acceptLabel: string): Promise<boolean>;
+  confirmAction?(title: string, message: string, acceptLabel: string): Promise<boolean>;
   confirmExternalChange?(): Promise<ExternalChangeChoice>;
 }
 
@@ -547,6 +549,8 @@ export interface SaveMarkdownPayload {
   filePath: string;
   saveAs: boolean;
   suggestedName: string;
+  sourceFilePath?: string;
+  beforeWrite?(filePath: string): Promise<boolean>;
 }
 
 declare global {
